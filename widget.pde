@@ -1,6 +1,6 @@
 class widget {
   int x, y, width, height;
-  String label; int event;
+  String label, widgetName; int event;
   color widgetColor, labelColor, StrokeColor;
   PFont widgetFont;
   PShape widgetShape;
@@ -26,10 +26,12 @@ class widget {
     StrokeColor = color (0);
    }
    
-    widget(PShape widgetShape){
-    this.widgetShape = widgetShape;
-
+    widget(PShape widgetShape, color widgetColor, String widgetName){
+      this.widgetShape = widgetShape;
+      this.widgetColor = widgetColor;
+      this.widgetName = widgetName;
    }
+   
   void draw(){
     fill(widgetColor);
     stroke(StrokeColor);
@@ -40,12 +42,13 @@ class widget {
     text(label, x+10, y+height-10);
   }
   
-  void draw(PShape x) {
-    fill(153, 0, 0);
-    noStroke();
-    // Draw a single state
-    shape(x, -60, 25);
-    
+  void draw(PShape state) {
+    state.setFill(widgetColor);
+    shape(state, -60, 0);
+  }
+  
+  String getWidgetName () {
+    return widgetName;
   }
 }
   

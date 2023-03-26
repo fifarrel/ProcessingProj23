@@ -12,37 +12,15 @@ PFont font, niceFont;
 
 widget a , b;
 
-Display [] someMessage, someMessage2, someMessage3, someMessage4, someMessage5, someMessage6,
-someMessage7, someMessage8, someMessage9, someMessage10, someMessage11, someMessage12, someMessage13, someMessage14,
-someMessage15, someMessage16, someMessage17, someMessage18;
-
+Message message;
 float [] chart = new float [2000];
 int [] onOfVDistance = new int [2000];
 
 PShape usa;
 
-PShape alabama, alaska, arizona, arkansas, california,
-  colorado, connecticut, delaware, districtofColumbia, florida, georgia,
-  hawaii, idaho, illinois, indiana, iowa, kansas, kentucky, louisiana,
-  maine, maryland, massachusetts, michigan, minnesota, mississippi, missouri, montana,
-  nebraska, nevada, newHampshire, newJersey,
-  newMexico, newYork, northCarolina, northDakota,
-  ohio, oklahoma, oregon, pennsylvania, virginIsland, rhodeIsland, southCarolina,
-  southDakota, tennessee, texas, utah, vermont, virginia,
-  washington, westVirginia, wisconsin, wyoming;
+Map map;
 
-
-widget michiganWidget, ohioWidget, alabamaWidget, alaskaWidget, arizonaWidget,
-  arkansasWidget, californiaWidget, coloradoWidget, connecticutWidget, delawareWidget, districtofColumbiaWidget,
-  floridaWidget, georgiaWidget, hawaiiWidget, idahoWidget, illinoisWidget, indianaWidget, iowaWidget,
-  kansasWidget, kentuckyWidget,
-  louisianaWidget, maineWidget, marylandWidget, massachusettsWidget, minnesotaWidget,
-  mississippiWidget, missouriWidget, montanaWidget, nebraskaWidget, nevadaWidget, newHampshireWidget, newJerseyWidget,
-  newMexicoWidget, newYorkWidget, northCarolinaWidget, northDakotaWidget,
-  oklahomaWidget, oregonWidget, pennsylvaniaWidget, rhodeIslandWidget, southCarolinaWidget,
-  southDakotaWidget, tennesseeWidget, texasWidget, utahWidget, vermontWidget, virginiaWidget,
-  washingtonWidget, westVirginiaWidget, wisconsinWidget, wyomingWidget;
-
+widget [] states;
 
 void setup() {
   
@@ -71,40 +49,7 @@ void setup() {
   someMessage17 = new Display[table.getRowCount()];
   someMessage18 = new Display[table.getRowCount()];
   
-
-  for (TableRow row : table.rows()) {  // this prints out some info on to the terminal 
-    date = row.getString("FL_DATE");
-    carrier = row.getString("MKT_CARRIER");
-    flightNumber = row.getInt("MKT_CARRIER_FL_NUM");
-    origin = row.getString("ORIGIN");
-    originCity = row.getString("ORIGIN_CITY_NAME");
-    orginCityAbr = row.getString("ORIGIN_STATE_ABR");
-    
-    originAirportWAC = row.getInt("ORIGIN_WAC");
-    destination = row.getString("DEST");
-    destinationCity = row.getString("DEST_CITY_NAME");
-    destinationWAC = row.getInt("DEST_WAC");
-    
-    ScheduledDepTime = row.getInt("CRS_DEP_TIME");
-    ActDepTime = row.getInt("DEP_TIME");
-    
-    cancelled = row.getInt("CANCELLED");
-    diverted = row.getInt("DIVERTED");
-   
-    distance = row.getInt("DISTANCE");
-    
-    
-    
-    println(date.substring(0, 10) + " "+ carrier + " " + flightNumber + " " 
-      + origin + " (" + originCity + ") " + orginCityAbr + originAirportWAC);
-    
-    //a = new widget (10, 15, 100, 40,
-    //"FL_DATE", color(255),
-    //font, FLIGHTDATE_BUTTON);
-    
-    //b = new widget (150, 15, 150, 40,
-    //"MKT_CARRIER", color(255),
-    //font, EVENT_BUTTON2);
+  message = new Message();
     
     //screen1 = new screen (color(150), new ArrayList<widget>());
     //screen2 = new screen(color(150), new ArrayList<widget>());
@@ -113,7 +58,7 @@ void setup() {
     
     //screen = 1;
     
-  }
+  
   
   // from here it displays it on a screen
   int i = 0;
@@ -121,34 +66,23 @@ void setup() {
      for (TableRow row : table.rows()) { 
        date = row.getString("FL_DATE");
        date = date.substring(0, 10);
-       
        carrier = row.getString("MKT_CARRIER");
-       
        flightNumber = row.getInt("MKT_CARRIER_FL_NUM");
-       
        origin = row.getString("ORIGIN");
-       
        originCity = row.getString("ORIGIN_CITY_NAME");
-       
        orginCityAbr = row.getString("ORIGIN_STATE_ABR");
-       
        originAirportWAC = row.getInt("ORIGIN_WAC");
        destination = row.getString("DEST");
        destinationCity = row.getString("DEST_CITY_NAME");
        destinationWAC = row.getInt("DEST_WAC");
-    
        ScheduledDepTime = row.getInt("CRS_DEP_TIME");
        ActDepTime = row.getInt("DEP_TIME");
-    
        ScheduledArrTime = row.getInt("CRS_ARR_TIME");
        ActARRTime = row.getInt("ARR_TIME");
-       
        cancelled = row.getInt("CANCELLED");
        diverted = row.getInt("DIVERTED");
-   
        distance = row.getInt("DISTANCE");
        onOfVDistance[i] = distance;
-       
        niceFont = loadFont("AdelleSansDevanagari-Regular-20.vlw");
        
        someMessage[i] = new Display(date, niceFont);
@@ -156,7 +90,6 @@ void setup() {
        someMessage3[i] = new Display(flightNumber, niceFont);
        someMessage4[i] = new Display(origin, niceFont);
        someMessage5[i] = new Display(originCity, niceFont);
-       // someMessage6[i] = new Display(orginCityAbr, niceFont); // dont think we need this one
        someMessage7[i] = new Display(originAirportWAC, niceFont);
        someMessage8[i] = new Display(destination, niceFont);
        someMessage9[i] = new Display(destinationCity, niceFont);
@@ -166,15 +99,13 @@ void setup() {
        someMessage13[i] = new Display(ScheduledArrTime, niceFont);
        someMessage14[i] = new Display(ActARRTime, niceFont);
        someMessage15[i] = new Display(destinationWAC, niceFont);
-       
        someMessage16[i] = new Display(distance, 0 , 0, niceFont);
-       
        someMessage17[i] = new Display(cancelled, 0, niceFont);
        someMessage18[i] = new Display(diverted, 0, niceFont );
        i++;
      }
    }
-   
+
   michigan = usa.getChild("MI");
   ohio = usa.getChild("OH");
   massachusetts = usa.getChild("MA");
@@ -227,193 +158,78 @@ void setup() {
   wisconsin = usa.getChild("WI"); // 55
   wyoming = usa.getChild("WY"); // 56
 
-  michiganWidget = new widget(michigan);
-  ohioWidget = new widget (ohio);
-  alabamaWidget = new widget (alabama);
-  alaskaWidget = new widget (alaska);
-  arizonaWidget = new widget (arizona);
-  arkansasWidget = new widget (arkansas);
-  californiaWidget = new widget (california);
-  coloradoWidget = new widget (colorado);
-  connecticutWidget = new widget (connecticut);
-  delawareWidget = new widget (delaware);
-  districtofColumbiaWidget = new widget (districtofColumbia);
 
-  floridaWidget = new widget (florida);
-  georgiaWidget = new widget (georgia);
-  hawaiiWidget = new widget (hawaii);
-  idahoWidget = new widget (idaho);
-  illinoisWidget = new widget (illinois);
-
-  indianaWidget = new widget (indiana);
-  iowaWidget = new widget (iowa);
-
-  kansasWidget = new widget (kansas);
-  kentuckyWidget = new widget (kentucky);
-
-  louisianaWidget = new widget (louisiana);
-  maineWidget = new widget (maine);
-  marylandWidget = new widget (maryland);
-  massachusettsWidget = new widget (massachusetts);
-  minnesotaWidget = new widget (minnesota);
-  mississippiWidget = new widget (mississippi);
-  missouriWidget = new widget (missouri);
-  montanaWidget = new widget (montana);
-  nebraskaWidget = new widget (nebraska);
-  nevadaWidget = new widget (nevada);
-  newHampshireWidget = new widget (newHampshire);
-  newJerseyWidget = new widget (newJersey);
-  newMexicoWidget = new widget (newMexico);
-  newYorkWidget = new widget (newYork);
-  northCarolinaWidget = new widget (northCarolina);
-  northDakotaWidget = new widget (northDakota);
-
-  oklahomaWidget = new widget (oklahoma);
-  oregonWidget = new widget (oregon);
-  pennsylvaniaWidget = new widget (pennsylvania);
-  rhodeIslandWidget = new widget (rhodeIsland);
-  southCarolinaWidget = new widget (southCarolina);
-  southDakotaWidget = new widget (southDakota);
-  tennesseeWidget = new widget (tennessee);
-  texasWidget = new widget (texas);
-  utahWidget = new widget (utah);
-  vermontWidget = new widget (vermont);
-  virginiaWidget = new widget (virginia);
-  washingtonWidget = new widget (washington);
-  westVirginiaWidget = new widget (westVirginia);
-  wisconsinWidget = new widget (wisconsin);
-  wyomingWidget = new widget (wyoming);
+michiganWidget = new widget(michigan, 90, "Michigan");
+ohioWidget = new widget (ohio, 90, "Ohio");
+alabamaWidget = new widget (alabama, 90, "Alabama");
+alaskaWidget = new widget (alaska, 90, "Alaska");
+arizonaWidget = new widget (arizona, 90, "Arizona");
+arkansasWidget = new widget (arkansas, 90, "Arkansas");
+californiaWidget = new widget (california, 90, "California");
+coloradoWidget = new widget (colorado, 90, "Colorado");
+connecticutWidget = new widget (connecticut, 90, "Connecticut");
+delawareWidget = new widget (delaware, 90, "Delaware");
+districtofColumbiaWidget = new widget (districtofColumbia, 90, "District of Columbia");
+floridaWidget = new widget (florida, 90, "Florida");
+georgiaWidget = new widget (georgia, 90, "Georgia");
+hawaiiWidget = new widget (hawaii, 90, "Hawaii");
+idahoWidget = new widget (idaho, 90, "Idaho");
+illinoisWidget = new widget (illinois, 90, "Illinois");
+indianaWidget = new widget (indiana, 90, "Indiana");
+iowaWidget = new widget (iowa, 90, "Iowa");
+kansasWidget = new widget (kansas, 90, "Kansas");
+kentuckyWidget = new widget (kentucky, 90, "Kentucky");
+louisianaWidget = new widget (louisiana, 90, "Louisiana");
+maineWidget = new widget (maine, 90, "Maine");
+marylandWidget = new widget (maryland, 90, "Maryland");
+massachusettsWidget = new widget (massachusetts, 90, "Massachusetts");
+minnesotaWidget = new widget (minnesota, 90, "Minnesota");
+mississippiWidget = new widget (mississippi, 90, "Mississippi");
+missouriWidget = new widget (missouri, 90, "Missouri");
+montanaWidget = new widget (montana, 90, "Montana");
+nebraskaWidget = new widget (nebraska, 90, "Nebraska");
+nevadaWidget = new widget (nevada, 90, "Nevada");
+newHampshireWidget = new widget (newHampshire, 90, "New Hampshire");
+newJerseyWidget = new widget (newJersey, 90, "New Jersey");
+newMexicoWidget = new widget (newMexico, 90, "New Mexico");
+newYorkWidget = new widget (newYork, 90, "New York");
+northCarolinaWidget = new widget (northCarolina, 90, "North Carolina");
+northDakotaWidget = new widget (northDakota, 90, "North Dakota");
+oklahomaWidget = new widget (oklahoma, 90, "Oklahoma");
+oregonWidget = new widget (oregon, 90, "Oregon");
+pennsylvaniaWidget = new widget (pennsylvania, 90, "Pennsylvania");
+rhodeIslandWidget = new widget (rhodeIsland, 90, "Rhode Island");
+southCarolinaWidget = new widget (southCarolina, 90, "South Carolina");
+southDakotaWidget = new widget (southDakota, 90, "South Dakota");
+tennesseeWidget = new widget (tennessee, 90, "Tennessee");
+texasWidget = new widget (texas, 90, "Texas");
+utahWidget = new widget (utah, 90, "Utah");
+vermontWidget = new widget (vermont, 90, "Vermont");
+virginiaWidget = new widget (virginia, 90, "Virginia");
+washingtonWidget = new widget (washington, 90, "Washington");
+westVirginiaWidget = new widget (westVirginia, 90, "West Virginia");
+wisconsinWidget = new widget (wisconsin, 90, "Wisconsin");
+wyomingWidget = new widget (wyoming, 90, "Wyoming");
+  
+  map = new Map(michiganWidget, ohioWidget, alabamaWidget, alaskaWidget, arizonaWidget,
+  arkansasWidget, californiaWidget, coloradoWidget, connecticutWidget, delawareWidget, districtofColumbiaWidget,
+  floridaWidget, georgiaWidget, hawaiiWidget, idahoWidget, illinoisWidget, indianaWidget, iowaWidget,
+  kansasWidget, kentuckyWidget, louisianaWidget, maineWidget, marylandWidget, massachusettsWidget, minnesotaWidget,
+  mississippiWidget, missouriWidget, montanaWidget, nebraskaWidget, nevadaWidget, newHampshireWidget, newJerseyWidget,
+  newMexicoWidget, newYorkWidget, northCarolinaWidget, northDakotaWidget,
+  oklahomaWidget, oregonWidget, pennsylvaniaWidget, rhodeIslandWidget, southCarolinaWidget,
+  southDakotaWidget, tennesseeWidget, texasWidget, utahWidget, vermontWidget, virginiaWidget,
+  washingtonWidget, westVirginiaWidget, wisconsinWidget, wyomingWidget);
 }
 
 void draw() {
-  //line 289 - 333 display the message
-  //background(255);
-  //fill(0);
-  //int tmp = i+2;
-  //text("The flight date for the " + tmp + "th row in the table is: ", 5, 25);
-  //someMessage[i].draw(770, 25);
-  //text("The Carrier Initials for the " + tmp + "th row in the table is: ", 5, 75);
-  //someMessage2[i].draw(770, 75);
-  //text("The flight number for the " + tmp + "th row in the table is: ", 5, 125);
-  //someMessage3[i].draw(770, 125);
-  //text("The orgin airport's initials for the " + tmp + "th row in the table is: ", 5, 175);
-  //someMessage4[i].draw(770, 175);
-  //text("The orgin city for the " + tmp + "th row in the table is: ", 5, 225);
-  //someMessage5[i].draw(770, 225);
-  
-  //text("The World Area Code of orgin airport for the " + tmp + "th row in the table is: ", 5, 275);
-  //someMessage7[i].draw(770, 275);
-  //text("The destination airport's initials  " + tmp + "th row in the table is: ", 5, 325);
-  //someMessage8[i].draw(770, 325);
-  //text("The destination city for the " + tmp + "th row in the table is: ", 5, 375);
-  //someMessage9[i].draw(770, 375);
-  //text("The World Area Code of destination airport " + tmp + "th row in the table is: ", 5, 425);
-  //someMessage10[i].draw(770, 425);
-  
-  //text("The Scheduled Dep. time for the " + tmp + "th row in the table is: ", 5, 475);
-  //someMessage11[i].draw(770, 475);
-  //text("The Actual Dep. time for the " + tmp + "th row in the table is: ", 5, 525);
-  //someMessage12[i].draw(770, 525);
-  //text("The Scheduled Arr. time for the " + tmp + "th row in the table is: ", 5, 575);
-  //someMessage13[i].draw(770, 575);
-  //text("The Actual Arr. time for the " + tmp + "th row in the table is: ", 5, 625);
-  //someMessage14[i].draw(770, 625);
-  
-  //text("The World Area Code of destination airport for the " + tmp + " th row in the table is: ", 5, 675);
-  //someMessage15[i].draw(770, 675);
-  
-  //text("The distance of flight in the " + tmp + "th row in the table is: ", 5, 725);
-  //someMessage16[i].draw(770, 725);
-  
-  //text("The flight in the " + tmp + "th row in the table is cancelled: ", 5, 775);
-  //someMessage17[i].draw(770, 775);
-  //text("The flight in the " + tmp + "th row in the table is diverted: ", 5, 825);
-  //someMessage18[i].draw(770, 825);
-  //i++;
+  background(255);
+  fill(0);
+  //message.draw();
   //frameRate(1);
   
+  map.draw();
   
-  
-  //line 338 - 388 draws the map
-  //ohioWidget.draw(ohio);
-  //michiganWidget.draw(michigan);
-  //alabamaWidget.draw(alabama);
-  //alaskaWidget.draw(alaska);
-  //arizonaWidget.draw(arizona);
-  //arkansasWidget.draw(arkansas);
-  //californiaWidget.draw(california);
-  //coloradoWidget.draw(colorado);
-  //connecticutWidget.draw(connecticut);
-  //delawareWidget.draw(delaware);
-  //districtofColumbiaWidget.draw(districtofColumbia);
-  //floridaWidget.draw(florida);
-  //georgiaWidget.draw(georgia);
-  //hawaiiWidget.draw(hawaii);
-  //idahoWidget.draw(idaho);
-  //illinoisWidget.draw(illinois);
-  //indianaWidget.draw(indiana);
-  //iowaWidget.draw(iowa);
-  //kansasWidget.draw(kansas);
-  //kentuckyWidget.draw(kentucky);
-  //louisianaWidget.draw(louisiana);
-  //maineWidget.draw(maine);
-  //marylandWidget.draw(maryland);
-  //massachusettsWidget.draw(massachusetts);
-  //minnesotaWidget.draw(minnesota);
-  //mississippiWidget.draw(mississippi);
-  //missouriWidget.draw(missouri);
-  //montanaWidget.draw(montana);
-  //nebraskaWidget.draw(nebraska);
-  //nevadaWidget.draw(nevada);
-  //newHampshireWidget.draw(newHampshire);
-  //newJerseyWidget.draw(newJersey);
-  //newMexicoWidget.draw(newMexico);
-  //newYorkWidget.draw(newYork);
-  //northCarolinaWidget.draw(northCarolina);
-  //northDakotaWidget.draw(northDakota);
-  //oklahomaWidget.draw(oklahoma);
-  //oregonWidget.draw(oregon);
-  //pennsylvaniaWidget.draw(pennsylvania);
-  //rhodeIslandWidget.draw(rhodeIsland);
-  //southCarolinaWidget.draw(southCarolina);
-  //southDakotaWidget.draw(southDakota);
-  //tennesseeWidget.draw(tennessee);
-  //texasWidget.draw(texas);
-  //utahWidget.draw(utah);
-  //vermontWidget.draw(vermont);
-  //virginiaWidget.draw(virginia);
-  //washingtonWidget.draw(washington);
-  //westVirginiaWidget.draw(westVirginia);
-  //wisconsinWidget.draw(wisconsin);
-  //wyomingWidget.draw(wyoming);
-  
-  
-  
-  // line 393 - 415 draw the bar chart (if someone has a better one we can replace mine one)
-  //int gap = 0;
-  //background(255);
-  //textSize(20);
-  //fill(0);
-  //line(100, 0, 100, 1000);
-  //text("distance (10m) , starting from 0, 100, 200.. ", 200, 10, 500, 320); // each gap is 100
-  //line(100, height/10, 1000, height/10);
-  //fill(0);
-  //text("number of rows", 0, 40, 100, 320); // each box / line (when there is a lot of boxes) represents a column in the sheet
-
-  //fill(255);
-  //for (int i = 0; i < table.getRowCount(); i++) {
-  //  line(100 + gap, 70, 100 + gap, 90);
-  //  gap = gap + 10;
-  //}
-
-  //for (int i = 0; i < 10; i++){
-  //  chart[i] = onOfVDistance[i]/10;
-  //}
-
-  //for (int i = 0; i < 10; i++){
-  //  rect(100, (i*height/10) + height/10, chart[i], height/10);
-  //}
-
   //  below is not important
   //if (screen == 1){
   //  screen1.draw();
@@ -456,4 +272,13 @@ void mousePressed() {
 
 void mouseReleased() {
   loop();
+}
+
+void mouseMoved(){
+  if (mouseX > 596 && mouseX < 723 && mouseY > 80 && mouseY < 207){
+      michiganWidget = new widget(michigan, 0, "Michagan" );
+    }
+    else {
+      michiganWidget = new widget(michigan, 90, "Michagan" );
+    }
 }
