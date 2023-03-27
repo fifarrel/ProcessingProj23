@@ -13,7 +13,7 @@ class DistributionMetrics{
         sum += curr;
         count++;
     }
-    println(sum);
+    //println(sum);
     return sum/count;
   }
   
@@ -27,7 +27,7 @@ class DistributionMetrics{
           n++;
       }
       sum /= n;
-      println(Math.sqrt(sum));
+      //println(Math.sqrt(sum));
       return Math.sqrt(sum);
   }
    

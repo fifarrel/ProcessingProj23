@@ -1,4 +1,11 @@
+import java.util.*; 
 Table table;
+
+HashMap<String,Double> co2Map,delaysMap,cancellationsMap;
+double Co2Mean, delaysMean, cancellationsMean;
+double Co2SD, delaysSD, cancellationsSD;
+String[] airlineNames = {"AA", "AS", "B6", "HA", "NK", "G4", "WN", "F9", "UA"};
+TreeMap<String, Double> ratings;
 
 String date , carrier, origin, originCity, orginCityAbr, 
 destination, destinationCity, destinationStateAbr;
@@ -97,6 +104,31 @@ void setup() {
     
     println(date.substring(0, 10) + " "+ carrier + " " + flightNumber + " " 
       + origin + " (" + originCity + ") " + orginCityAbr + originAirportWAC);
+      
+     cancellationsMap = new HashMap<String, Double>();
+     delaysMap = new HashMap<String, Double>();
+     co2Map = new HashMap<String, Double>(); 
+     ratings =  new TreeMap<String, Double>();
+
+     double[] cancellationData = getData("CANCELLED");
+     DistributionMetrics cancellationsMetrics = new DistributionMetrics(cancellationData);
+     cancellationsMean = cancellationsMetrics.calculateMean();
+     cancellationsSD = cancellationsMetrics.calculateSD();
+     
+     double[] delaysData = getData("DIVERTED");
+     DistributionMetrics delaysMetrics = new DistributionMetrics(delaysData);
+     delaysMean = delaysMetrics.calculateMean();
+     delaysSD = delaysMetrics.calculateSD();
+     
+     double[] distanceData = getData("DISTANCE");
+     DistributionMetrics distanceMetrics = new DistributionMetrics(distanceData);
+     Co2Mean = distanceMetrics.calculateMean() * CO2_EMISSIONS;
+     Co2SD = distanceMetrics.calculateSD() * CO2_EMISSIONS; 
+     
+     combineCancellations();
+     combinedelays();
+     combineCo2();
+     calculateRating(); 
     
     //a = new widget (10, 15, 100, 40,
     //"FL_DATE", color(255),
@@ -285,6 +317,69 @@ void setup() {
   wyomingWidget = new widget (wyoming);
 }
 
+
+  public void combineCancellations(){
+      for(int i = 0;i<airlineNames.length;i++){
+         double[] currData = getData("CANCELLED", airlineNames[i], "MKT_CARRIER"); //<>//
+         AirlineMetrics currMetrics = new AirlineMetrics(currData, cancellationsMean, cancellationsSD, false);
+         double currZScore = currMetrics.calculateZScore();
+         cancellationsMap.put(airlineNames[i], currZScore); 
+      }
+  }
+  
+    public void combinedelays(){
+      for(int i = 0;i<airlineNames.length;i++){
+         double[] currData = getData("DIVERTED", airlineNames[i], "MKT_CARRIER"); //<>//
+         AirlineMetrics currMetrics = new AirlineMetrics(currData, delaysMean, delaysSD, false);
+         double currZScore = currMetrics.calculateZScore();
+         delaysMap.put(airlineNames[i], currZScore); 
+      }
+  }
+  
+    public void combineCo2(){
+      for(int i = 0;i<airlineNames.length;i++){
+         double[] currData = getData("DISTANCE", airlineNames[i], "MKT_CARRIER"); //<>//
+         AirlineMetrics currMetrics = new AirlineMetrics(currData, Co2Mean, Co2SD, true);
+         double currZScore = currMetrics.calculateZScore();
+         co2Map.put(airlineNames[i], currZScore); 
+      }
+  }
+  
+  //get data for data point 
+  public double[] getData(String column){
+    double[] data = new double[table.getRowCount()];
+    for(int i = 0;i<table.getRowCount();i++){
+      data[i] = table.getDouble(i, column);
+    }
+    return data;
+  }
+  
+  //get data for airline 
+  public double[] getData(String columnName, String airlineName, String airlinecol){
+    double[] data = new double[table.getRowCount()];
+    int i = 0;
+    for(TableRow row: table.findRows(airlineName, airlinecol)){
+        //println(row.getInt(columnName));
+        data[i] = row.getInt(columnName);
+        i++;
+    }
+    return data;
+  }
+  
+  //Calculate rating for each airline 
+  public void calculateRating(){
+    for(int i = 0;i<airlineNames.length;i++){
+        String currAirline = airlineNames[i];
+        double co2Score = 6 - (co2Map.get(currAirline) + 3);
+        double cancScore = 6 - (cancellationsMap.get(currAirline) + 3);
+        double delaysScore =6 -  (delaysMap.get(currAirline) + 3); 
+        //assuming the weights for time-being, eventually get input from user 
+        Double rating = (WEIGHT_1 * (co2Score) + WEIGHT_2 * cancScore + WEIGHT_3 * delaysScore) * 5/6 ; //<>//
+        ratings.put(currAirline, rating); 
+        //println(ratings.get(currAirline)); 
+    }
+  }
+  
 void draw() {
   //line 289 - 333 display the message
   //background(255);
