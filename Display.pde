@@ -54,5 +54,19 @@ class Display {
     textFont(f); 
     text(displayMessage, x , y);
     
+    //for (int k = 0; k < arrayOfMessages.length; k++)
+    //{
+    //  text(arrayOfMessages[k], 50 , 50 + (k * gap));
+    //}
+
+    //int x = 10;
+    //for (int i = 0; i < displayMessage.length(); i++) {
+    //  textSize(15);
+    //  text(displayMessage.charAt(i),x,height/2);
+    //  x += textWidth(displayMessage.charAt(i));
+    //}
+    //text(displayMessage,50,50 + (gap * x)); make the message move
+    //x++;
+    }
   
 }
