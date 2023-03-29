@@ -9,4 +9,4 @@ final double WEIGHT_1 = 0.4;
 final double WEIGHT_2 = 0.35;
 final double WEIGHT_3 = 0.25; 
 
-final double CO2_EMISSIONS = 2.786e-11;
+final double CO2_EMISSIONS = 2.786e-4;

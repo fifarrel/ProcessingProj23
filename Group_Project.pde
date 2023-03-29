@@ -1,11 +1,14 @@
 import java.util.*; 
 Table table;
-
+//z scores for each airline 
 HashMap<String,Double> co2Map,delaysMap,cancellationsMap;
 double Co2Mean, delaysMean, cancellationsMean;
 double Co2SD, delaysSD, cancellationsSD;
-String[] airlineNames = {"AA", "AS", "B6", "HA", "NK", "G4", "WN", "F9", "UA"};
+String[] airlineNames = {"AA", "AS", "B6", "HA", "NK", "G4", "WN", "F9", "UA", "DL"};
+//ratings for each airline 
 TreeMap<String, Double> ratings;
+TreeMap<String, Double> weightedRatings; 
+heatMapMetrics delaysHM, cancellationsHM, Co2HM;
 
 String date , carrier, origin, originCity, orginCityAbr, 
 destination, destinationCity, destinationStateAbr;
@@ -56,59 +59,66 @@ void setup() {
   size (1000, 835);
   background (255);
   table = loadTable("flights2k(1).csv", "header");
-  println(table.getRowCount() + " total rows in table");
-  usa = loadShape("us.svg");
+  //println(table.getRowCount() + " total rows in table");
+  //usa = loadShape("us.svg");
   
-  someMessage =  new Display[table.getRowCount()];
-  someMessage2 = new Display[table.getRowCount()];
-  someMessage3 = new Display[table.getRowCount()];
-  someMessage4 = new Display[table.getRowCount()];
-  someMessage5 = new Display[table.getRowCount()];
-  someMessage6 = new Display[table.getRowCount()];
-  someMessage7 =  new Display[table.getRowCount()];
-  someMessage8 = new Display[table.getRowCount()];
-  someMessage9 = new Display[table.getRowCount()];
-  someMessage10 = new Display[table.getRowCount()];
-  someMessage11 = new Display[table.getRowCount()];
-  someMessage12 = new Display[table.getRowCount()];
-  someMessage13 = new Display[table.getRowCount()];
-  someMessage14 = new Display[table.getRowCount()];
-  someMessage15 = new Display[table.getRowCount()];
-  someMessage16 = new Display[table.getRowCount()];
-  someMessage17 = new Display[table.getRowCount()];
-  someMessage18 = new Display[table.getRowCount()];
+  //someMessage =  new Display[table.getRowCount()];
+  //someMessage2 = new Display[table.getRowCount()];
+  //someMessage3 = new Display[table.getRowCount()];
+  //someMessage4 = new Display[table.getRowCount()];
+  //someMessage5 = new Display[table.getRowCount()];
+  //someMessage6 = new Display[table.getRowCount()];
+  //someMessage7 =  new Display[table.getRowCount()];
+  //someMessage8 = new Display[table.getRowCount()];
+  //someMessage9 = new Display[table.getRowCount()];
+  //someMessage10 = new Display[table.getRowCount()];
+  //someMessage11 = new Display[table.getRowCount()];
+  //someMessage12 = new Display[table.getRowCount()];
+  //someMessage13 = new Display[table.getRowCount()];
+  //someMessage14 = new Display[table.getRowCount()];
+  //someMessage15 = new Display[table.getRowCount()];
+  //someMessage16 = new Display[table.getRowCount()];
+  //someMessage17 = new Display[table.getRowCount()];
+  //someMessage18 = new Display[table.getRowCount()];
   
 
-  for (TableRow row : table.rows()) {  // this prints out some info on to the terminal 
-    date = row.getString("FL_DATE");
-    carrier = row.getString("MKT_CARRIER");
-    flightNumber = row.getInt("MKT_CARRIER_FL_NUM");
-    origin = row.getString("ORIGIN");
-    originCity = row.getString("ORIGIN_CITY_NAME");
-    orginCityAbr = row.getString("ORIGIN_STATE_ABR");
+  //for (TableRow row : table.rows()) {  // this prints out some info on to the terminal 
+  //  date = row.getString("FL_DATE");
+  //  carrier = row.getString("MKT_CARRIER");
+  //  flightNumber = row.getInt("MKT_CARRIER_FL_NUM");
+  //  origin = row.getString("ORIGIN");
+  //  originCity = row.getString("ORIGIN_CITY_NAME");
+  //  orginCityAbr = row.getString("ORIGIN_STATE_ABR");
     
-    originAirportWAC = row.getInt("ORIGIN_WAC");
-    destination = row.getString("DEST");
-    destinationCity = row.getString("DEST_CITY_NAME");
-    destinationWAC = row.getInt("DEST_WAC");
+  //  originAirportWAC = row.getInt("ORIGIN_WAC");
+  //  destination = row.getString("DEST");
+  //  destinationCity = row.getString("DEST_CITY_NAME");
+  //  destinationWAC = row.getInt("DEST_WAC");
     
-    ScheduledDepTime = row.getInt("CRS_DEP_TIME");
-    ActDepTime = row.getInt("DEP_TIME");
+  //  ScheduledDepTime = row.getInt("CRS_DEP_TIME");
+  //  ActDepTime = row.getInt("DEP_TIME");
     
-    cancelled = row.getInt("CANCELLED");
-    diverted = row.getInt("DIVERTED");
+  //  cancelled = row.getInt("CANCELLED");
+  //  diverted = row.getInt("DIVERTED");
    
-    distance = row.getInt("DISTANCE");
-    
-    
-    
-    println(date.substring(0, 10) + " "+ carrier + " " + flightNumber + " " 
-      + origin + " (" + originCity + ") " + orginCityAbr + originAirportWAC);
+  //  distance = row.getInt("DISTANCE");
+  //   //println(date.substring(0, 10) + " "+ carrier + " " + flightNumber + " " 
+  //   // + origin + " (" + originCity + ") " + orginCityAbr + originAirportWAC);
+  //}
       
      cancellationsMap = new HashMap<String, Double>();
      delaysMap = new HashMap<String, Double>();
      co2Map = new HashMap<String, Double>(); 
      ratings =  new TreeMap<String, Double>();
+     weightedRatings = new TreeMap<String, Double>(); 
+     
+     //Creating objects for each data point 
+     delaysHM = new heatMapMetrics("DIVERTED"); //<>//
+     cancellationsHM = new heatMapMetrics("CANCELLED"); 
+     Co2HM = new heatMapMetrics("DISTANCE");
+     delaysHM.insertFrequencies();
+     cancellationsHM.insertFrequencies();
+     Co2HM.insertFrequencies(); 
 
      double[] cancellationData = getData("CANCELLED");
      DistributionMetrics cancellationsMetrics = new DistributionMetrics(cancellationData);
@@ -122,13 +132,58 @@ void setup() {
      
      double[] distanceData = getData("DISTANCE");
      DistributionMetrics distanceMetrics = new DistributionMetrics(distanceData);
+     double distanceMean = distanceMetrics.calculateMean();
      Co2Mean = distanceMetrics.calculateMean() * CO2_EMISSIONS;
      Co2SD = distanceMetrics.calculateSD() * CO2_EMISSIONS; 
-     
      combineCancellations();
      combinedelays();
      combineCo2();
      calculateRating(); 
+     
+     //adjusting ratings to be relative 
+     float[] ratingsArray = new float[10];
+     int i = 0;
+     for(String key:ratings.keySet()){
+       float currRating = (float)(double)ratings.get(key);
+       ratingsArray[i] = currRating; 
+       i++; 
+     }
+     ratingsArray = sort(ratingsArray);  
+     for(float curr: ratingsArray){
+       println(curr);
+     }
+     for(int j = 0;j<ratingsArray.length-1;j++){
+       String currAirline = airlineNames[j]; 
+       float searchRating = (float)(double)ratings.get(currAirline); 
+       int index = 0;
+       for(int k = 0;k<ratingsArray.length-1;k++){
+           if(ratingsArray[k] == searchRating) index = k;
+       }
+       Double newRating = ((double)index * 0.5)+1; 
+       weightedRatings.put(currAirline, newRating);
+     }
+     
+     for(String key: weightedRatings.keySet()){
+         println(key + ":" + weightedRatings.get(key)); 
+     }
+     
+     println("The following is a rating out of 5 for each airline"); 
+    for(String key: ratings.keySet()){
+      println(key + ":" + ratings.get(key));
+    }
+    
+    println("Mean distance: " + Math.round(distanceMean) + " miles. ");
+    //state with highest number of cancellations
+    double highestFreq = 0;
+    String highestState = ""; 
+    for(String keys: cancellationsHM.frequencies.keySet()){
+      if(cancellationsHM.frequencies.get(keys) > highestFreq) {
+        highestFreq = cancellationsHM.frequencies.get(keys);
+        highestState = keys; 
+      }
+    }
+    println("The state with the highest number of cancellations is " + highestState + " with "+ highestFreq + " cancellations. ");
+    
     
     //a = new widget (10, 15, 100, 40,
     //"FL_DATE", color(255),
@@ -145,177 +200,176 @@ void setup() {
     
     //screen = 1;
     
-  }
   
   // from here it displays it on a screen
-  int i = 0;
-   while (i < table.getRowCount()){ 
-     for (TableRow row : table.rows()) { 
-       date = row.getString("FL_DATE");
-       date = date.substring(0, 10);
+  //int i = 0;
+  // while (i < table.getRowCount()){ 
+  //   for (TableRow row : table.rows()) { 
+  //     date = row.getString("FL_DATE");
+  //     date = date.substring(0, 10);
        
-       carrier = row.getString("MKT_CARRIER");
+  //     carrier = row.getString("MKT_CARRIER");
        
-       flightNumber = row.getInt("MKT_CARRIER_FL_NUM");
+  //     flightNumber = row.getInt("MKT_CARRIER_FL_NUM");
        
-       origin = row.getString("ORIGIN");
+  //     origin = row.getString("ORIGIN");
        
-       originCity = row.getString("ORIGIN_CITY_NAME");
+  //     originCity = row.getString("ORIGIN_CITY_NAME");
        
-       orginCityAbr = row.getString("ORIGIN_STATE_ABR");
+  //     orginCityAbr = row.getString("ORIGIN_STATE_ABR");
        
-       originAirportWAC = row.getInt("ORIGIN_WAC");
-       destination = row.getString("DEST");
-       destinationCity = row.getString("DEST_CITY_NAME");
-       destinationWAC = row.getInt("DEST_WAC");
+  //     originAirportWAC = row.getInt("ORIGIN_WAC");
+  //     destination = row.getString("DEST");
+  //     destinationCity = row.getString("DEST_CITY_NAME");
+  //     destinationWAC = row.getInt("DEST_WAC");
     
-       ScheduledDepTime = row.getInt("CRS_DEP_TIME");
-       ActDepTime = row.getInt("DEP_TIME");
+  //     ScheduledDepTime = row.getInt("CRS_DEP_TIME");
+  //     ActDepTime = row.getInt("DEP_TIME");
     
-       ScheduledArrTime = row.getInt("CRS_ARR_TIME");
-       ActARRTime = row.getInt("ARR_TIME");
+  //     ScheduledArrTime = row.getInt("CRS_ARR_TIME");
+  //     ActARRTime = row.getInt("ARR_TIME");
        
-       cancelled = row.getInt("CANCELLED");
-       diverted = row.getInt("DIVERTED");
+  //     cancelled = row.getInt("CANCELLED");
+  //     diverted = row.getInt("DIVERTED");
    
-       distance = row.getInt("DISTANCE");
-       onOfVDistance[i] = distance;
+  //     distance = row.getInt("DISTANCE");
+  //     onOfVDistance[i] = distance;
        
-       niceFont = loadFont("AdelleSansDevanagari-Regular-20.vlw");
+  //     niceFont = loadFont("AdelleSansDevanagari-Regular-20.vlw");
        
-       someMessage[i] = new Display(date, niceFont);
-       someMessage2[i] = new Display(carrier, niceFont);
-       someMessage3[i] = new Display(flightNumber, niceFont);
-       someMessage4[i] = new Display(origin, niceFont);
-       someMessage5[i] = new Display(originCity, niceFont);
-       // someMessage6[i] = new Display(orginCityAbr, niceFont); // dont think we need this one
-       someMessage7[i] = new Display(originAirportWAC, niceFont);
-       someMessage8[i] = new Display(destination, niceFont);
-       someMessage9[i] = new Display(destinationCity, niceFont);
-       someMessage10[i] = new Display(destinationWAC, niceFont);
-       someMessage11[i] = new Display(ScheduledDepTime, niceFont);
-       someMessage12[i] = new Display(ActDepTime, niceFont);
-       someMessage13[i] = new Display(ScheduledArrTime, niceFont);
-       someMessage14[i] = new Display(ActARRTime, niceFont);
-       someMessage15[i] = new Display(destinationWAC, niceFont);
+       //someMessage[i] = new Display(date, niceFont);
+       //someMessage2[i] = new Display(carrier, niceFont);
+       //someMessage3[i] = new Display(flightNumber, niceFont);
+       //someMessage4[i] = new Display(origin, niceFont);
+       //someMessage5[i] = new Display(originCity, niceFont);
+       //// someMessage6[i] = new Display(orginCityAbr, niceFont); // dont think we need this one
+       //someMessage7[i] = new Display(originAirportWAC, niceFont);
+       //someMessage8[i] = new Display(destination, niceFont);
+       //someMessage9[i] = new Display(destinationCity, niceFont);
+       //someMessage10[i] = new Display(destinationWAC, niceFont);
+       //someMessage11[i] = new Display(ScheduledDepTime, niceFont);
+       //someMessage12[i] = new Display(ActDepTime, niceFont);
+       //someMessage13[i] = new Display(ScheduledArrTime, niceFont);
+       //someMessage14[i] = new Display(ActARRTime, niceFont);
+       //someMessage15[i] = new Display(destinationWAC, niceFont);
        
-       someMessage16[i] = new Display(distance, 0 , 0, niceFont);
+       //someMessage16[i] = new Display(distance, 0 , 0, niceFont);
        
-       someMessage17[i] = new Display(cancelled, 0, niceFont);
-       someMessage18[i] = new Display(diverted, 0, niceFont );
-       i++;
+       //someMessage17[i] = new Display(cancelled, 0, niceFont);
+       //someMessage18[i] = new Display(diverted, 0, niceFont );
+       //i++;
      }
-   }
    
-  michigan = usa.getChild("MI");
-  ohio = usa.getChild("OH");
-  massachusetts = usa.getChild("MA");
-  alabama = usa.getChild("AL");
-  alaska = usa.getChild("AK");  // 5
-  arizona = usa.getChild("AZ");  // 7
-  arkansas = usa.getChild("AR"); // 8
-  california = usa.getChild("CA"); //9
-  colorado = usa.getChild("CO"); // 10
-  connecticut = usa.getChild("CT"); // 11
-  delaware = usa.getChild("DE"); // 12
-  districtofColumbia = usa.getChild("DC"); //13
-  florida = usa.getChild("FL"); //14
-  georgia = usa.getChild("GA"); // 15
-  hawaii = usa.getChild("HI"); // 17
-  idaho = usa.getChild("ID");  // 18
-  illinois = usa.getChild("IL"); // 19
-  indiana = usa.getChild("IN"); // 20
-  iowa = usa.getChild("IA"); // 21
-  kansas = usa.getChild("KS"); // 22
-  kentucky = usa.getChild("KY"); //23
-  louisiana = usa.getChild("LA"); //24
-  maine = usa.getChild("ME"); // 25
-  maryland = usa.getChild("MD");
-  minnesota = usa.getChild("MN"); //27
-  mississippi = usa.getChild("MS");
-  missouri = usa.getChild("MO"); // 29
-  montana = usa.getChild("MT");
-  nebraska = usa.getChild("NE"); //31
-  nevada = usa.getChild("NV");
-  newHampshire = usa.getChild("NH"); //33
-  newJersey = usa.getChild("NJ");
-  newMexico = usa.getChild("NM"); // 35
-  newYork = usa.getChild("NY");
-  northCarolina = usa.getChild("NC"); //37
-  northDakota = usa.getChild("ND");
-  oklahoma = usa.getChild("OK");
-  oregon = usa.getChild("OR"); // 41
-  pennsylvania = usa.getChild("PA");
-  rhodeIsland = usa.getChild("RI"); // 45
-  southCarolina = usa.getChild("SC");
-  southDakota = usa.getChild("SD"); // 47
-  tennessee = usa.getChild("TN");
-  texas = usa.getChild("TX"); // 49
-  utah = usa.getChild("UT");
-  vermont = usa.getChild("VT"); // 51
-  virginia = usa.getChild("VA");
-  washington = usa.getChild("WA"); // 53
-  westVirginia = usa.getChild("WV");
-  wisconsin = usa.getChild("WI"); // 55
-  wyoming = usa.getChild("WY"); // 56
+   
+  //michigan = usa.getChild("MI");
+  //ohio = usa.getChild("OH");
+  //massachusetts = usa.getChild("MA");
+  //alabama = usa.getChild("AL");
+  //alaska = usa.getChild("AK");  // 5
+  //arizona = usa.getChild("AZ");  // 7
+  //arkansas = usa.getChild("AR"); // 8
+  //california = usa.getChild("CA"); //9
+  //colorado = usa.getChild("CO"); // 10
+  //connecticut = usa.getChild("CT"); // 11
+  //delaware = usa.getChild("DE"); // 12
+  //districtofColumbia = usa.getChild("DC"); //13
+  //florida = usa.getChild("FL"); //14
+  //georgia = usa.getChild("GA"); // 15
+  //hawaii = usa.getChild("HI"); // 17
+  //idaho = usa.getChild("ID");  // 18
+  //illinois = usa.getChild("IL"); // 19
+  //indiana = usa.getChild("IN"); // 20
+  //iowa = usa.getChild("IA"); // 21
+  //kansas = usa.getChild("KS"); // 22
+  //kentucky = usa.getChild("KY"); //23
+  //louisiana = usa.getChild("LA"); //24
+  //maine = usa.getChild("ME"); // 25
+  //maryland = usa.getChild("MD");
+  //minnesota = usa.getChild("MN"); //27
+  //mississippi = usa.getChild("MS");
+  //missouri = usa.getChild("MO"); // 29
+  //montana = usa.getChild("MT");
+  //nebraska = usa.getChild("NE"); //31
+  //nevada = usa.getChild("NV");
+  //newHampshire = usa.getChild("NH"); //33
+  //newJersey = usa.getChild("NJ");
+  //newMexico = usa.getChild("NM"); // 35
+  //newYork = usa.getChild("NY");
+  //northCarolina = usa.getChild("NC"); //37
+  //northDakota = usa.getChild("ND");
+  //oklahoma = usa.getChild("OK");
+  //oregon = usa.getChild("OR"); // 41
+  //pennsylvania = usa.getChild("PA");
+  //rhodeIsland = usa.getChild("RI"); // 45
+  //southCarolina = usa.getChild("SC");
+  //southDakota = usa.getChild("SD"); // 47
+  //tennessee = usa.getChild("TN");
+  //texas = usa.getChild("TX"); // 49
+  //utah = usa.getChild("UT");
+  //vermont = usa.getChild("VT"); // 51
+  //virginia = usa.getChild("VA");
+  //washington = usa.getChild("WA"); // 53
+  //westVirginia = usa.getChild("WV");
+  //wisconsin = usa.getChild("WI"); // 55
+  //wyoming = usa.getChild("WY"); // 56
 
-  michiganWidget = new widget(michigan);
-  ohioWidget = new widget (ohio);
-  alabamaWidget = new widget (alabama);
-  alaskaWidget = new widget (alaska);
-  arizonaWidget = new widget (arizona);
-  arkansasWidget = new widget (arkansas);
-  californiaWidget = new widget (california);
-  coloradoWidget = new widget (colorado);
-  connecticutWidget = new widget (connecticut);
-  delawareWidget = new widget (delaware);
-  districtofColumbiaWidget = new widget (districtofColumbia);
+  //michiganWidget = new widget(michigan);
+  //ohioWidget = new widget (ohio);
+  //alabamaWidget = new widget (alabama);
+  //alaskaWidget = new widget (alaska);
+  //arizonaWidget = new widget (arizona);
+  //arkansasWidget = new widget (arkansas);
+  //californiaWidget = new widget (california);
+  //coloradoWidget = new widget (colorado);
+  //connecticutWidget = new widget (connecticut);
+  //delawareWidget = new widget (delaware);
+  //districtofColumbiaWidget = new widget (districtofColumbia);
 
-  floridaWidget = new widget (florida);
-  georgiaWidget = new widget (georgia);
-  hawaiiWidget = new widget (hawaii);
-  idahoWidget = new widget (idaho);
-  illinoisWidget = new widget (illinois);
+  //floridaWidget = new widget (florida);
+  //georgiaWidget = new widget (georgia);
+  //hawaiiWidget = new widget (hawaii);
+  //idahoWidget = new widget (idaho);
+  //illinoisWidget = new widget (illinois);
 
-  indianaWidget = new widget (indiana);
-  iowaWidget = new widget (iowa);
+  //indianaWidget = new widget (indiana);
+  //iowaWidget = new widget (iowa);
 
-  kansasWidget = new widget (kansas);
-  kentuckyWidget = new widget (kentucky);
+  //kansasWidget = new widget (kansas);
+  //kentuckyWidget = new widget (kentucky);
 
-  louisianaWidget = new widget (louisiana);
-  maineWidget = new widget (maine);
-  marylandWidget = new widget (maryland);
-  massachusettsWidget = new widget (massachusetts);
-  minnesotaWidget = new widget (minnesota);
-  mississippiWidget = new widget (mississippi);
-  missouriWidget = new widget (missouri);
-  montanaWidget = new widget (montana);
-  nebraskaWidget = new widget (nebraska);
-  nevadaWidget = new widget (nevada);
-  newHampshireWidget = new widget (newHampshire);
-  newJerseyWidget = new widget (newJersey);
-  newMexicoWidget = new widget (newMexico);
-  newYorkWidget = new widget (newYork);
-  northCarolinaWidget = new widget (northCarolina);
-  northDakotaWidget = new widget (northDakota);
+  //louisianaWidget = new widget (louisiana);
+  //maineWidget = new widget (maine);
+  //marylandWidget = new widget (maryland);
+  //massachusettsWidget = new widget (massachusetts);
+  //minnesotaWidget = new widget (minnesota);
+  //mississippiWidget = new widget (mississippi);
+  //missouriWidget = new widget (missouri);
+  //montanaWidget = new widget (montana);
+  //nebraskaWidget = new widget (nebraska);
+  //nevadaWidget = new widget (nevada);
+  //newHampshireWidget = new widget (newHampshire);
+  //newJerseyWidget = new widget (newJersey);
+  //newMexicoWidget = new widget (newMexico);
+  //newYorkWidget = new widget (newYork);
+  //northCarolinaWidget = new widget (northCarolina);
+  //northDakotaWidget = new widget (northDakota);
 
-  oklahomaWidget = new widget (oklahoma);
-  oregonWidget = new widget (oregon);
-  pennsylvaniaWidget = new widget (pennsylvania);
-  rhodeIslandWidget = new widget (rhodeIsland);
-  southCarolinaWidget = new widget (southCarolina);
-  southDakotaWidget = new widget (southDakota);
-  tennesseeWidget = new widget (tennessee);
-  texasWidget = new widget (texas);
-  utahWidget = new widget (utah);
-  vermontWidget = new widget (vermont);
-  virginiaWidget = new widget (virginia);
-  washingtonWidget = new widget (washington);
-  westVirginiaWidget = new widget (westVirginia);
-  wisconsinWidget = new widget (wisconsin);
-  wyomingWidget = new widget (wyoming);
-}
+  //oklahomaWidget = new widget (oklahoma);
+  //oregonWidget = new widget (oregon);
+  //pennsylvaniaWidget = new widget (pennsylvania);
+  //rhodeIslandWidget = new widget (rhodeIsland);
+  //southCarolinaWidget = new widget (southCarolina);
+  //southDakotaWidget = new widget (southDakota);
+  //tennesseeWidget = new widget (tennessee);
+  //texasWidget = new widget (texas);
+  //utahWidget = new widget (utah);
+  //vermontWidget = new widget (vermont);
+  //virginiaWidget = new widget (virginia);
+  //washingtonWidget = new widget (washington);
+  //westVirginiaWidget = new widget (westVirginia);
+  //wisconsinWidget = new widget (wisconsin);
+  //wyomingWidget = new widget (wyoming);
+//}
 
 
   public void combineCancellations(){
@@ -380,7 +434,20 @@ void setup() {
     }
   }
   
-void draw() {
+void draw() { 
+  //for(String key: ratings.keySet()){ //<>//
+  //    text(key + ":" + ratings.get(key), 5, 25);
+  // }
+}
+   
+   
+   
+  //text("Frequencies of cancellations by state: ", 5, 25); 
+  //for(int i = 0;i<cancellationsHM.states.length;i++){
+  //    String currState = cancellationsHM.states[i];
+  //    //text(cancellationsHM.frequencies.get(currState), 20, 25+i);
+  //}
+  
   //line 289 - 333 display the message
   //background(255);
   //fill(0);
@@ -518,7 +585,7 @@ void draw() {
   //}
   //a.draw();
   //b.draw();
-}
+//}
 
 void mousePressed() {
   noLoop();
