@@ -4,9 +4,10 @@ class widget {
   int width, height;
   int direction;
   String label;
-  color widgetColour, fontColour;
+  color widgetColour, fontColour, shadeColour;
   PFont widgetFont;
   PShape triangle;
+  float trustRating;
 
   widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour) {
     this.x1 = x1;
@@ -20,7 +21,7 @@ class widget {
   }
 
   widget(int x, int y, int width, int height, int direction, String label,
-    color widgetColour, PFont widgetFont) {
+    color widgetColour, color shadeColour, float trustRating, PFont widgetFont) {
     this.x=x;
     this.y=y;
     this.width = width;
@@ -29,6 +30,8 @@ class widget {
     this.direction = direction;
     this.widgetColour=widgetColour;
     this.widgetFont=widgetFont;
+    this.shadeColour = shadeColour;
+    this.trustRating = trustRating;
   }
 
   int getEvent(int mouseX, int mouseY) {
@@ -79,12 +82,16 @@ class widget {
     }
     return 0;
   }
+  
+  
 
   void draw() {
     fill(widgetColour);
     rect(x, y, width, height, 28);
+    fill(shadeColour);
+    rect(x, y, width*(trustRating), height, 28);
     fill(#39994a);
-    text(label, 410, 105);
+    text(label, x+50, y+68);
   }
   void drawTriangle() {
     triangle(x1, y1, x2, y2, x3, y3);
