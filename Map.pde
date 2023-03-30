@@ -1,36 +1,3 @@
-//PShape usa;
-//PShape michigan;
-//PShape ohio;
-
-//void setup() {
-//  size(640, 360);  
-//  usa = loadShape("usa-wikipedia.svg");
-//  michigan = usa.getChild("MI");
-//  ohio = usa.getChild("OH");
-//}
-
-//void draw() {
-//  background(255);
-  
-//  // Draw the full map
-//  shape(usa, -600, -180);
-  
-//  // Disable the colors found in the SVG file
-//  michigan.disableStyle();
-//  // Set our own coloring
-//  fill(0, 51, 102);
-//  noStroke();
-//  // Draw a single state
-//  shape(michigan, -600, -180); // Wolverines!
-  
-//  // Disable the colors found in the SVG file
-//  ohio.disableStyle();
-//  // Set our own coloring
-//  fill(153, 0, 0);
-//  noStroke();
-//  // Draw a single state
-//  shape(ohio, -600, -180);  // Buckeyes!
-//}
 
 widget michiganWidget, ohioWidget, alabamaWidget, alaskaWidget, arizonaWidget,
   arkansasWidget, californiaWidget, coloradoWidget, connecticutWidget, delawareWidget, districtofColumbiaWidget,
@@ -163,6 +130,9 @@ class Map {
     westVirginiaWidget.draw(westVirginia);
     wisconsinWidget.draw(wisconsin);
     wyomingWidget.draw(wyoming);
+    
+    triangleWidget1.drawTriangle();
+    triangleWidget2.drawTriangle();
   }
 
 }

@@ -1,15 +1,23 @@
 class widget {
+  
   int x, y;
   int x1, x2, x3, y1, y2, y3;
   int width, height;
   int direction;
-  String label;
+  String label = " ";
   color widgetColour, fontColour, shadeColour;
   PFont widgetFont;
   PShape triangle;
   float trustRating;
+   
+  String widgetName; 
+  int event;
+  color widgetColor, labelColor, StrokeColor;
 
-  widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour) {
+  PShape widgetShape;
+
+  widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour) 
+  {
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;
@@ -34,7 +42,7 @@ class widget {
     this.trustRating = trustRating;
   }
 
-  int getEvent(int mouseX, int mouseY) {
+   int getEvent(int mouseX, int mouseY) {
     if ((mouseX >= 100) && (mouseX <= 300) && (mouseY >= 200) && (mouseY <= 325)) {
       return 1;
     }
@@ -82,9 +90,13 @@ class widget {
     }
     return 0;
   }
-  
-  
-
+   
+   widget(PShape widgetShape, color widgetColor, String widgetName){
+      this.widgetShape = widgetShape;
+      this.widgetColor = widgetColor;
+      this.widgetName = widgetName;
+   }
+   
   void draw() {
     fill(widgetColour);
     rect(x, y, width, height, 28);
@@ -93,7 +105,13 @@ class widget {
     fill(#39994a);
     text(label, x+50, y+68);
   }
-  void drawTriangle() {
+  
+   void draw(PShape state) {
+    state.setFill(widgetColor);
+    shape(state, -60, 0);
+  }
+  
+  void drawTriangle(){
     triangle(x1, y1, x2, y2, x3, y3);
   }
 }
