@@ -33,19 +33,13 @@ class screen {
   void draw(int a){
     background(bG);
     a = a - 1;
-    for (int i = 0; i < w.size(); i++){
-      
-      if (i == w.size() - 1){
-        w.get(i).drawTriangle();
-        
-      }
-      if (i == w.size() - 2){
-        w.get(i).drawTriangle();
-        break;
-      }
-      
-      w.get(i).draw(w.get(i).widgetShape);
+    int i = 0;
+    for (i = 0; i < w.size() - 2; i++){
+      w.get(i).draw(w.get(i).widgetShape);  
     }
+     w.get(i).drawTriangle();
+     i++;
+     w.get(i).drawTriangle();
   }
   
   void addWidget(widget widget1) {

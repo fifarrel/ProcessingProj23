@@ -27,9 +27,9 @@ ArrayList states;
 float trustRating;
 
 PFont titleFont;
-
+int flightDelay;
 void setup() {
-  
+
   size (1000, 835);
   background (255);
   table = loadTable("flights2k(1).csv", "header");
@@ -253,7 +253,7 @@ wyomingWidget = new widget (wyoming, 140, "Wyoming");
   carrierWidgets.add(triangleWidget1);
   carrierWidgets.add(triangleWidget2);
   
-  states = new ArrayList();
+states = new ArrayList();
 states.add(michiganWidget); 
 states.add(ohioWidget);
 states.add(alabamaWidget);
@@ -312,6 +312,7 @@ states.add(triangleWidget2);
 }
 
 void draw() {
+  
   background(255);
   fill(0);
   //message.draw();
@@ -323,9 +324,15 @@ void draw() {
   }
   else{
     mapScreen.draw(1);
+     
+    for (int i = 0; i < states.size() - 2; i++){
+      widget cur = (widget) states.get(i);
+      if (cur.widgetColor == 0){
+        fill(0);
+        text(cur.widgetName + " delayed flights = " +  cur.flightDelay, 100, 700);
+      }
+    }
   }
-  
-  
   int event;
   for (int i = 0; i < carrierWidgets.size(); i++) {
     widget currentWidget = (widget) carrierWidgets.get(i);
@@ -432,11 +439,11 @@ int event;
       break;
     case triLeft:
       println("TRIANGLE LEFT");
+      screen = 0;
       break;
     case triRight:
       println("TRIANGLE RIGHT");
       screen = 1;
-      mapScreen.draw(1);
       break;
     }
   }
@@ -504,7 +511,6 @@ void mouseMoved(){
 
       break;
     case 90:
-      
       michiganWidget.widgetColor = 0;
       ohioWidget.widgetColor = 91;
       alabamaWidget.widgetColor = 92;

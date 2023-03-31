@@ -1,3 +1,18 @@
+  int x, y;
+  int x1, x2, x3, y1, y2, y3;
+  int width, height;
+  int direction;
+  String label = " ";
+  color widgetColour, fontColour, shadeColour;
+  PFont widgetFont;
+
+   
+  String widgetName; 
+  int event;
+  color widgetColor, labelColor, StrokeColor;
+
+  PShape widgetShape;
+
 class widget {
   
   int x, y;
@@ -15,7 +30,7 @@ class widget {
   color widgetColor, labelColor, StrokeColor;
 
   PShape widgetShape;
-
+  int flightDelay = (int) random(0, 10);
   widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour) 
   {
     this.x1 = x1;
@@ -26,6 +41,7 @@ class widget {
     this.y3 = y3;
     this.direction = direction;
     this.widgetColour = widgetColour;
+    
   }
 
   widget(int x, int y, int width, int height, int direction, String label,
@@ -108,10 +124,11 @@ class widget {
   
    void draw(PShape state) {
     state.setFill(widgetColor);
-    shape(state, -60, 0);
+    shape(state, -60, 75);
   }
   
   void drawTriangle(){
+    fill(0, 255, 0);
     triangle(x1, y1, x2, y2, x3, y3);
   }
 }
