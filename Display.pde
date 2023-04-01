@@ -1,5 +1,3 @@
-
-
 class Display {
   int gap = 20;
   int x = 50;

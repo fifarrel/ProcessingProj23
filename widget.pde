@@ -25,10 +25,9 @@ class widget {
   PShape triangle;
   float trustRating;
    
-  String widgetName; 
+  String widgetName, origin; 
   int event;
   color widgetColor, labelColor, StrokeColor;
-
   PShape widgetShape;
   int flightDelay = (int) random(0, 10);
   widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour) 
@@ -107,13 +106,15 @@ class widget {
     return 0;
   }
    
-   widget(PShape widgetShape, color widgetColor, String widgetName){
+   widget(PShape widgetShape, color widgetColor, String widgetName, String origin){
       this.widgetShape = widgetShape;
+      this.origin = origin; 
       this.widgetColor = widgetColor;
       this.widgetName = widgetName;
    }
    
   void draw() {
+    //widgetColor = (int)(double)Co2HM.frequencies.get(origin);
     fill(widgetColour);
     rect(x, y, width, height, 28);
     fill(shadeColour);

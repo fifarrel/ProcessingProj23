@@ -8,10 +8,14 @@ class heatMapMetrics{
       states = table.getStringColumn("ORIGIN_STATE_ABR");
       frequencies = new TreeMap<String, Double>(); 
     }
+    int i = 0;
     public void insertFrequencies(){
       for(String state: states){
-        frequencies.put(state, (200-calculateFrequency(state))); 
+        double currFrequency = calculateFrequency(state);
+        if(currFrequency <10) currFrequency +=  2*i;
+        frequencies.put(state, (200-currFrequency)); 
       }
+      i++;
     }
    
     private double calculateFrequency(String state) {
