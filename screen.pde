@@ -3,6 +3,7 @@ class screen {
   ArrayList<widget> w;
   int event;
   
+
   screen(color bG, ArrayList<widget> widget){
     this.bG = bG;
     this.w = widget;
@@ -17,7 +18,7 @@ class screen {
   //  }
   //  return EVENT_NULL;
   //}
-  
+
   void draw() {
     background(bG);
     for (int i = 0; i < w.size(); i++){

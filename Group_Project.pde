@@ -32,7 +32,7 @@ float trustRating;
 PFont titleFont;
 //<<<<<<< HEAD
 int flightDelay;
-//=======
+
 
 //z scores for each airline 
 HashMap<String,Double> co2Map,delaysMap,cancellationsMap;
@@ -47,7 +47,7 @@ heatMapMetrics delaysHM, cancellationsHM, Co2HM;
 
 //>>>>>>> 79523ae65028150909a7bc4268f3d9f044c2abe1
 void setup() {
-
+  screen = 0;
   size (1000, 835);
   background (255);
   table = loadTable("flights2k(1).csv", "header");
@@ -346,10 +346,12 @@ states = new ArrayList();
 for(int k = 0;k<statesWidArray.length;k++){
   states.add(statesWidArray[k]); 
 }
-
+states.add(triangleWidget1); 
+states.add(triangleWidget2); 
 
   mainScreen = new screen(255, carrierWidgets);
   mapScreen = new screen (255, states);
+  
 }
 
 void draw() {
@@ -357,15 +359,18 @@ void draw() {
   background(255);
   fill(0);
   //message.draw();
-  //frameRate(1);
   
-  //map.draw();
-  if (screen != 1){
+  
+  if (screen == 0){
     mainScreen.draw();
   }
-  else{
+  else if (screen == 1){
     mapScreen.draw(1);
-     
+  //}
+  //else if (screen == 2){
+  //  messageScreen.draw("Messages");
+  
+  
     for (int i = 0; i < states.size() - 2; i++){
       widget cur = (widget) states.get(i);
       if (cur.widgetColor == 0){
@@ -414,7 +419,7 @@ void draw() {
       println("HOME");
       break;
     case triLeft:
-      println("TRIANGLE LEFT");
+      //println("TRIANGLE LEFT");
       break;
     case triRight:
       println("TRIANGLE RIGHT");
@@ -422,6 +427,7 @@ void draw() {
     }
   }
 }
+
 widget previousWidget = null; 
 int previousColor = 0; 
 void mousePressed() {
@@ -481,27 +487,21 @@ int event;
       carrierWid11.trustRating = 0;
       break;
     case triLeft:
-//<<<<<<< HEAD
       println("TRIANGLE LEFT");
       screen = 0;
-//=======
-      //println("TRIANGLE LEFT");
-//>>>>>>> 79523ae65028150909a7bc4268f3d9f044c2abe1
       break;
     case triRight:
-      //println("TRIANGLE RIGHT");
       screen = 1;
       break;
     }
   }
   color x = get(mouseX, mouseY);
-
     for(widget state: statesWidArray){
     if((int)blue(x) == state.widgetColor){
       if(previousWidget != null && previousColor != 0) previousWidget.widgetColor = previousColor;
-      previousWidget = state; 
-      previousColor = state.widgetColor;
-      state.widgetColor = 0; 
+        previousWidget = state; 
+        previousColor = state.widgetColor;
+        state.widgetColor = 0; 
       }
     }
 
