@@ -114,7 +114,6 @@ class widget {
    }
    
   void draw() {
-    //widgetColor = (int)(double)Co2HM.frequencies.get(origin);
     fill(widgetColour);
     rect(x, y, width, height, 28);
     fill(shadeColour);
@@ -124,6 +123,7 @@ class widget {
   }
   
    void draw(PShape state) {
+     //if(screen == 2) this.widgetColor = 10;
     state.setFill(widgetColor);
     shape(state, -60, 75);
   }

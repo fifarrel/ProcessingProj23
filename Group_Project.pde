@@ -8,13 +8,13 @@ int flightNumber, originAirportWAC, destinationWAC, ScheduledDepTime, ActDepTime
 ActARRTime, distance, diverted, cancelled;
 
 int screen, i;
-screen mainScreen, mapScreen;
+screen mainScreen, mapScreen, mapScreen2;
 PFont font, niceFont;
 
 widget titleWidget, triangleWidget1, triangleWidget2, carrierWid1, carrierWid2, carrierWid3, carrierWid4,
-carrierWid5, carrierWid6, carrierWid7, carrierWid8, carrierWid9, carrierWid10, carrierWid11, carrierWid12;
+carrierWid5, carrierWid6, carrierWid7, carrierWid8, carrierWid9, carrierWid10, carrierWid11, carrierWid12, messageWidget;
 
-widget statesWidArray[];
+widget statesWidArray[], delaysArray[], cancellationsA[];
 
 Message message;
 float [] chart = new float [2000];
@@ -26,14 +26,17 @@ Map map;
 
 PShape triangle;
 ArrayList carrierWidgets;
-ArrayList states;
+ArrayList states, delaysStates;
 float trustRating;
 
 PFont titleFont;
 //<<<<<<< HEAD
 int flightDelay;
 
-
+int xPos, yPos;
+int previousWidgetX, previousWidgetY, previousWidgetX1, previousWidgetY1;
+boolean displayStateToStateDist, displayState, displayPopUp;
+widget previousWidget, newWidget, previousWidget1; 
 //z scores for each airline 
 HashMap<String,Double> co2Map,delaysMap,cancellationsMap;
 double Co2Mean, delaysMean, cancellationsMean;
@@ -57,6 +60,8 @@ void setup() {
   textFont(titleFont);
   
   statesWidArray = new widget[51];
+  delaysArray = new widget[51];
+  cancellationsA = new widget[51]; 
         
      cancellationsMap = new HashMap<String, Double>();
      delaysMap = new HashMap<String, Double>();
@@ -65,12 +70,6 @@ void setup() {
      weightedRatings = new TreeMap<String, Double>(); 
      
      //Creating objects for each data point 
-     delaysHM = new heatMapMetrics("DIVERTED");
-     cancellationsHM = new heatMapMetrics("CANCELLED"); 
-     Co2HM = new heatMapMetrics("DISTANCE");
-     delaysHM.insertFrequencies();
-     cancellationsHM.insertFrequencies();
-     Co2HM.insertFrequencies(); 
 
      double[] cancellationData = getData("CANCELLED");
      DistributionMetrics cancellationsMetrics = new DistributionMetrics(cancellationData);
@@ -118,22 +117,26 @@ void setup() {
          println(key + ":" + weightedRatings.get(key)); 
      }
 
+
+    //println("Mean distance: " + Math.round(distanceMean) + " miles. ");
+    ////state with highest number of cancellations
+    //double highestFreq = 0;
+    //String highestState = ""; 
+    //int count = 0;
+    //for(String keys: cancellationsHM.frequencies.keySet()){
+    //  println(keys); 
+    //  count++;
+    //  if(cancellationsHM.frequencies.get(keys) > highestFreq) {
+    //    highestFreq = cancellationsHM.frequencies.get(keys);
+    //    highestState = keys; 
+    //  }
+    //}
+    //println(count);
+    //println("The state with the highest number of cancellations is " + highestState + " with "+ highestFreq + " cancellations. ");
     
-    println("Mean distance: " + Math.round(distanceMean) + " miles. ");
-    //state with highest number of cancellations
-    double highestFreq = 0;
-    String highestState = ""; 
-    for(String keys: cancellationsHM.frequencies.keySet()){
-      if(cancellationsHM.frequencies.get(keys) > highestFreq) {
-        highestFreq = cancellationsHM.frequencies.get(keys);
-        highestState = keys; 
-      }
-    }
-    println("The state with the highest number of cancellations is " + highestState + " with "+ highestFreq + " cancellations. ");
-    
-    for(String HMKey:Co2HM.frequencies.keySet()){
-      println(HMKey + ":" + Co2HM.frequencies.get(HMKey));
-    }
+    //for(String HMKey:Co2HM.frequencies.keySet()){
+    //  println(HMKey + ":" + Co2HM.frequencies.get(HMKey));
+    //}
   
   someMessage =  new Display[table.getRowCount()];
   someMessage2 = new Display[table.getRowCount()];
@@ -259,7 +262,7 @@ statesWidArray[1] = new widget (ohio, 195, "Ohio", "OH");
 statesWidArray[2] = new widget (alabama, 210, "Alabama", "AL");
 statesWidArray[3] = new widget (alaska, 93, "Alaska", "AK");
 statesWidArray[4] = new widget (arizona, 94, "Arizona", "AZ");
-statesWidArray[5] = new widget (arkansas, 243, "Arkansas", "AR");
+statesWidArray[5] = new widget (arkansas, 245, "Arkansas", "AR");
 statesWidArray[6] = new widget (california, 20, "California", "CA");
 statesWidArray[7] = new widget (colorado, 134, "Colorado", "CO");
 statesWidArray[8] = new widget (connecticut, 169, "Connecticut", "CT");
@@ -304,9 +307,22 @@ statesWidArray[46] = new widget (virginia, 86, "Virginia", "VA");
 statesWidArray[47] = new widget (washington, 46, "Washington", "WA");
 statesWidArray[48] = new widget (westVirginia, 235, "West Virginia", "WV");
 statesWidArray[50]= new widget (wisconsin, 139, "Wisconsin", "WI");
-statesWidArray[49] = new widget (wyoming, 140, "Wyoming", "WY");
+statesWidArray[49] = new widget (wyoming, 243, "Wyoming", "WY");
   
-  
+  String[] originArray = new String[51];
+  int s = 0;
+  for(widget w:statesWidArray){
+    originArray[s] = w.origin;
+    s++;
+  }
+     delaysHM = new heatMapMetrics("DIVERTED", originArray);
+     cancellationsHM = new heatMapMetrics("CANCELLED", originArray); 
+     Co2HM = new heatMapMetrics("DISTANCE", originArray);
+     delaysHM.insertFrequencies();
+     cancellationsHM.insertFrequencies();
+     Co2HM.insertFrequencies(); 
+     
+
   map = new Map(statesWidArray); 
   titleWidget = new widget(325, 40, 400, 100, 1, "TRUST-PILOT*", color(#123266), color(#123266), (1), titleFont);
   triangleWidget1 = new widget(950, 425, 950, 475, 975, 450, 1, color(#123266));
@@ -325,7 +341,7 @@ statesWidArray[49] = new widget (wyoming, 140, "Wyoming", "WY");
   carrierWid9 = new widget(700, 516, 200, 125, 2, "UA", color(#123266), color(#166bba), (0), titleFont);
   carrierWid11 = new widget(400, 674, 200, 125, 2, "DL", color(#123266), color(#166bba), (0), titleFont);
 
-
+  messageWidget = new widget(20, 30, 50, 50, 2, "Press", color(0), color(255), 0, titleFont); 
   
   carrierWidgets = new ArrayList();
   carrierWidgets.add(carrierWid1);
@@ -342,13 +358,77 @@ statesWidArray[49] = new widget (wyoming, 140, "Wyoming", "WY");
   carrierWidgets.add(triangleWidget1);
   carrierWidgets.add(triangleWidget2);
   
+//  println(statesWidArray.length);
 states = new ArrayList();
+//widget[] copy = statesWidArray; 
 for(int k = 0;k<statesWidArray.length;k++){
   states.add(statesWidArray[k]); 
 }
 states.add(triangleWidget1); 
 states.add(triangleWidget2); 
 
+delaysStates = new ArrayList(); 
+delaysArray[0] = new widget(michigan, color(240, 158, 105), "Michigan", "MI");
+delaysArray[1] = new widget (ohio, color(242, 138, 73), "Ohio", "OH");
+delaysArray[2] = new widget (alabama, color(240, 158, 103), "Alabama", "AL");
+delaysArray[3] = new widget (alaska, color(117, 46, 1), "Alaska", "AK");
+delaysArray[4] = new widget (arizona, color(209, 88, 11), "Arizona", "AZ");
+delaysArray[5] = new widget (arkansas, color(240, 160, 105), "Arkansas", "AR");
+delaysArray[6] = new widget (california, color(242, 158, 105), "California", "CA");
+delaysArray[7] = new widget (colorado, color(240, 155, 105), "Colorado", "CO");
+delaysArray[8] = new widget (connecticut, color(240, 158, 102), "Connecticut", "CT");
+delaysArray[9] = new widget (delaware, color(240, 154, 105), "Delaware", "DE");
+delaysArray[10] = new widget (districtofColumbia, color(241, 153, 105), "District of Columbia", "DC");
+delaysArray[11] = new widget (florida, color(244, 158, 105), "Florida", "FL");
+delaysArray[12] = new widget (georgia, color(240, 158, 109), "Georgia", "GA");
+delaysArray[13] = new widget (hawaii, color(232, 158, 105), "Hawaii", "HI");
+delaysArray[14] = new widget (idaho, color(246, 158, 105), "Idaho", "ID");
+delaysArray[15] = new widget (illinois, color(208, 88, 8), "Illinois", "IL");
+delaysArray[16] = new widget (indiana, color(246, 158, 105), "Indiana", "IN");
+delaysArray[17] = new widget (iowa, color(240, 158, 99), "Iowa", "IA");
+delaysArray[18] = new widget (kansas, color(248, 158, 105), "Kansas", "KS");
+delaysArray[19] = new widget (kentucky, color(240, 168, 105), "Kentucky", "KY");
+delaysArray[20] = new widget (louisiana, color(240, 158, 113), "Louisiana", "LA");
+delaysArray[21] = new widget (maine, color(247, 159, 105), "Maine", "ME");
+delaysArray[22] = new widget (maryland, color(240, 158, 112), "Maryland", "MD");
+delaysArray[23] = new widget (massachusetts, color(240, 155, 106), "Massachusetts", "MA");
+delaysArray[24] = new widget (minnesota, color(241, 148, 105), "Minnesota", "MN");
+delaysArray[25] = new widget (mississippi, color(243, 158, 107), "Mississippi", "MS");
+delaysArray[26] = new widget (missouri, color(243, 159, 106), "Missouri", "MO");
+delaysArray[27] = new widget (montana, color(241, 155, 103), "Montana", "MT");
+delaysArray[28] = new widget (nebraska, color(247, 158, 103), "Nebraska", "NE");
+delaysArray[29] = new widget (nevada, color(241, 157, 109), "Nevada", "NV");
+delaysArray[30] = new widget (newHampshire, color(240, 158, 109), "New Hampshire", "NH");
+delaysArray[31] = new widget (newJersey, color(242, 158, 109), "New Jersey", "NJ");
+delaysArray[32] = new widget (newMexico, color(241, 155, 105), "New Mexico", "NM");
+delaysArray[33] = new widget (newYork, color(168, 71, 10), "New York", "NY");
+delaysArray[34] = new widget (northCarolina, color(241, 158, 107), "North Carolina", "NC");
+delaysArray[35] = new widget (northDakota, color(240, 158, 111), "North Dakota", "NK");
+delaysArray[36] = new widget (oklahoma, color(240, 168, 105), "Oklahoma", "OK");
+delaysArray[37] = new widget (oregon,color(226, 158, 105), "Oregon", "OR");
+delaysArray[38] = new widget (pennsylvania, color(241, 153, 105), "Pennsylvania", "PA");
+delaysArray[39] = new widget (rhodeIsland, color(240, 158, 101), "Rhode Island", "RI");
+delaysArray[40] = new widget (southCarolina, color(240, 157, 102), "South Carolina", "SC");
+delaysArray[41]= new widget (southDakota, color(234, 156, 105), "South Dakota", "SD");
+delaysArray[42] = new widget (tennessee, color(233, 154, 105), "Tennessee", "TN");
+delaysArray[43] = new widget (texas, color(209, 86, 9), "Texas", "TX");
+delaysArray[44] = new widget (utah, color(240, 156, 110), "Utah", "UT");
+delaysArray[45] = new widget (vermont, color(242, 155, 105), "Vermont", "VT");
+delaysArray[46] = new widget (virginia, color(227, 159, 105), "Virginia", "VA");
+delaysArray[47] = new widget (washington, color(206, 88, 13), "Washington", "WA");
+delaysArray[48] = new widget (westVirginia, color(243, 154, 106), "West Virginia", "WV");
+delaysArray[50]= new widget (wisconsin, color(207, 88, 10), "Wisconsin", "WI");
+delaysArray[49] = new widget (wyoming, color(244, 151, 108), "Wyoming", "WY"); 
+ 
+ 
+  for(int k = 0;k<delaysArray.length;k++){
+    delaysStates.add(delaysArray[k]);
+  }
+  delaysStates.add(triangleWidget1); 
+  delaysStates.add(triangleWidget2); 
+  println(delaysStates.size());
+
+  mapScreen2 = new screen(255, delaysStates); 
   mainScreen = new screen(255, carrierWidgets);
   mapScreen = new screen (255, states);
   
@@ -359,26 +439,74 @@ void draw() {
   background(255);
   fill(0);
   //message.draw();
-  
-  
+
   if (screen == 0){
     mainScreen.draw();
   }
   else if (screen == 1){
     mapScreen.draw(1);
+    fill(60); stroke(0);
+    text("Co2 emissions per state", 250, 65); 
+    line(250, 80, 770, 80);
+
   //}
   //else if (screen == 2){
   //  messageScreen.draw("Messages");
-  
-  
+  if(previousWidgetX != 0 && xPos != 0) line(previousWidgetX, previousWidgetY, xPos, yPos);
+  if(displayStateToStateDist && newWidget != null){
+    fill(0);
+    int S2SCo2 = calculateDistance(previousWidget.origin, newWidget.origin);
+    text("Distance from " + previousWidget.widgetName+" airport to ", 70, 700);
+    text(newWidget.widgetName + " airport is " + S2SCo2 + " miles", 80, 750);
+  }
     for (int i = 0; i < states.size() - 2; i++){
       widget cur = (widget) states.get(i);
-      if (cur.widgetColor == 0){
+      if (cur.widgetColor == 0 && displayState == true){
         fill(0);
         long frequency = Math.round(Co2HM.calculateFrequency(cur.origin));
         text(cur.widgetName + " Co2 emissions = " +  frequency + ((frequency == 1) ? " tonne" : " tonnes"), 90, 700);
       }
     }
+  }
+  else if(screen == 2){
+    mapScreen2.draw(1); 
+    fill(173, 71, 3); stroke(0);
+    text("Delays per state", 300, 65); 
+    line(300, 80, 630, 80);
+    for (int i = 0; i < delaysStates.size() - 2; i++){
+      widget cur = (widget) delaysStates.get(i);
+      if (cur.widgetColor == 0 && displayState == true){
+        fill(0);
+        long frequency = Math.round(delaysHM.calculateFrequency(cur.origin));
+        text(cur.widgetName + " delays = " +  frequency, 190, 700);
+      }
+    }
+    
+  }
+  else if(screen == 3){
+    mapScreen.draw(1); 
+    fill(148, 10, 10); stroke(0);
+    text("Cancellations per state", 250, 65); 
+    line(250, 80, 750, 80);
+    fill(148, 10, 10);
+    for (int i = 0; i < states.size() - 2; i++){
+      widget cur = (widget) states.get(i);
+      if (cur.widgetColor == 0 && displayState == true){
+        fill(0);
+        long frequency = Math.round(cancellationsHM.calculateFrequency(cur.origin));
+        text(cur.widgetName + " Cancellations = " +  frequency, 90, 700);
+      }
+    }
+  }
+    if(displayPopUp == true && screen == 1) {
+    println("Yes");
+    fill(88, 172, 191);
+    rect(mouseX, mouseY, 120, 40, 10);
+    fill(255); textSize(12);
+    text("Click and drag to", mouseX+10, mouseY+20);
+    text("get the distance!", mouseX + 10, mouseY + 33); 
+    textSize(48);
+   //messageWidget.draw(); 
   }
   int event;
   for (int i = 0; i < carrierWidgets.size(); i++) {
@@ -422,14 +550,16 @@ void draw() {
       //println("TRIANGLE LEFT");
       break;
     case triRight:
-      println("TRIANGLE RIGHT");
+      //println("TRIANGLE RIGHT");
       break;
     }
   }
 }
 
-widget previousWidget = null; 
-int previousColor = 0; 
+//previousWidget = null; 
+int previousColor = 0;
+int previousColor1 = 0;
+color xCol = 0;
 void mousePressed() {
  
 int event;
@@ -488,24 +618,77 @@ int event;
       break;
     case triLeft:
       println("TRIANGLE LEFT");
-      screen = 0;
+      if(screen == 3) screen = 2;
+      else if(screen == 2) screen = 1; 
+      else screen = 0; 
       break;
     case triRight:
-      screen = 1;
+      if(screen == 1) screen =2;
+      else if(screen == 2) screen = 3;
+      else screen = 1; 
       break;
     }
   }
-  color x = get(mouseX, mouseY);
+    xCol = get(mouseX, mouseY);
+    xPos = 0; 
+    yPos = 0;
+    displayStateToStateDist = false; 
     for(widget state: statesWidArray){
-    if((int)blue(x) == state.widgetColor){
+    if((int)blue(xCol) == state.widgetColor){
       if(previousWidget != null && previousColor != 0) previousWidget.widgetColor = previousColor;
         previousWidget = state; 
         previousColor = state.widgetColor;
+        previousWidgetX = mouseX; 
+        previousWidgetY = mouseY; 
+        state.widgetColor = 0; 
+        displayPopUp = false;
+      }
+    }
+    for(widget state: delaysArray){
+    if((int)blue(xCol) ==(int)blue(state.widgetColor)){
+      if(previousWidget != null && previousColor1 != 0) previousWidget1.widgetColor = previousColor1;
+        previousWidget1 = state; 
+        previousColor1 = state.widgetColor;
+        previousWidgetX1 = mouseX; 
+        previousWidgetY1 = mouseY; 
         state.widgetColor = 0; 
       }
     }
 
+
 }
+void mouseMoved(){
+  color xCol = get(mouseX, mouseY); 
+  if((int)blue(xCol) != 255) displayPopUp = true; 
+  else displayPopUp = false;
+}
+void mouseReleased(){
+  color newCol = get(mouseX, mouseY); 
+  if((int)blue(xCol) != (int)blue(newCol) && (int)blue(newCol) != 0){
+    displayStateToStateDist = true;  
+    displayState = false; 
+    
+  }
+  else{
+    displayState = true;  
+    displayStateToStateDist = false; 
+  }
+}
+
+void mouseDragged(){
+  xPos = mouseX; 
+  yPos = mouseY; 
+  color currCol = get(mouseX, mouseY); 
+  for(widget state: statesWidArray){
+      if((int)blue(currCol) == state.widgetColor){
+          newWidget = state;
+          println("located"); 
+        }
+      }
+  
+}
+
+
 
   public void combineCancellations(){
       for(int i = 0;i<airlineNames.length;i++){
@@ -548,7 +731,6 @@ int event;
     double[] data = new double[table.getRowCount()];
     int i = 0;
     for(TableRow row: table.findRows(airlineName, airlinecol)){
-        //println(row.getInt(columnName));
         data[i] = row.getInt(columnName);
         i++;
     }
@@ -567,3 +749,15 @@ int event;
         ratings.put(currAirline, rating); 
     }
   }
+  
+  public int calculateDistance(String origin, String destination){
+
+    for(TableRow currRow: table.findRows(origin, "ORIGIN_STATE_ABR")){
+        String currDest = currRow.getString("DEST_STATE_ABR"); 
+        if(currDest.equals(destination)){
+          return currRow.getInt("DISTANCE") ; 
+        } 
+    }
+    return -1; 
+  }
+  
