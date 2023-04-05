@@ -38,7 +38,6 @@ class screen {
     for (i = 0; i < w.size() - 2; i++){
       w.get(i).draw(w.get(i).widgetShape);  
     }
-     println(i);
      w.get(i).drawTriangle();
      i++;
      w.get(i).drawTriangle();

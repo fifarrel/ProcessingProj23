@@ -8,7 +8,7 @@ int flightNumber, originAirportWAC, destinationWAC, ScheduledDepTime, ActDepTime
 ActARRTime, distance, diverted, cancelled;
 
 int screen, i;
-screen mainScreen, mapScreen, mapScreen2;
+screen mainScreen, mapScreen, mapScreen2, mapScreen3;
 PFont font, niceFont;
 
 widget titleWidget, triangleWidget1, triangleWidget2, carrierWid1, carrierWid2, carrierWid3, carrierWid4,
@@ -26,7 +26,7 @@ Map map;
 
 PShape triangle;
 ArrayList carrierWidgets;
-ArrayList states, delaysStates;
+ArrayList states, delaysStates, cancellationsStates;
 float trustRating;
 
 PFont titleFont;
@@ -34,9 +34,9 @@ PFont titleFont;
 int flightDelay;
 
 int xPos, yPos;
-int previousWidgetX, previousWidgetY, previousWidgetX1, previousWidgetY1;
+int previousWidgetX, previousWidgetY, previousWidgetX1, previousWidgetY1, previousWidgetX2, previousWidgetY2;
 boolean displayStateToStateDist, displayState, displayPopUp;
-widget previousWidget, newWidget, previousWidget1; 
+widget previousWidget, newWidget, previousWidget1, previousWidget2; 
 //z scores for each airline 
 HashMap<String,Double> co2Map,delaysMap,cancellationsMap;
 double Co2Mean, delaysMean, cancellationsMean;
@@ -47,7 +47,7 @@ TreeMap<String, Double> ratings;
 TreeMap<String, Double> weightedRatings; 
 heatMapMetrics delaysHM, cancellationsHM, Co2HM;
 
-
+PImage plane;
 //>>>>>>> 79523ae65028150909a7bc4268f3d9f044c2abe1
 void setup() {
   screen = 0;
@@ -58,6 +58,8 @@ void setup() {
   usa = loadShape("us.svg");
   titleFont = loadFont("AdelleSansDevanagari-Regular-48.vlw");
   textFont(titleFont);
+  plane = loadImage("airplane.gif"); 
+  plane.resize(50, 50); 
   
   statesWidArray = new widget[51];
   delaysArray = new widget[51];
@@ -368,55 +370,55 @@ states.add(triangleWidget1);
 states.add(triangleWidget2); 
 
 delaysStates = new ArrayList(); 
-delaysArray[0] = new widget(michigan, color(240, 158, 105), "Michigan", "MI");
-delaysArray[1] = new widget (ohio, color(242, 138, 73), "Ohio", "OH");
-delaysArray[2] = new widget (alabama, color(240, 158, 103), "Alabama", "AL");
+delaysArray[0] = new widget(michigan, color(224, 158, 105), "Michigan", "MI");
+delaysArray[1] = new widget (ohio, color(205, 138, 73), "Ohio", "OH");
+delaysArray[2] = new widget (alabama, color(222, 158, 103), "Alabama", "AL");
 delaysArray[3] = new widget (alaska, color(117, 46, 1), "Alaska", "AK");
-delaysArray[4] = new widget (arizona, color(209, 88, 11), "Arizona", "AZ");
-delaysArray[5] = new widget (arkansas, color(240, 160, 105), "Arkansas", "AR");
-delaysArray[6] = new widget (california, color(242, 158, 105), "California", "CA");
-delaysArray[7] = new widget (colorado, color(240, 155, 105), "Colorado", "CO");
+delaysArray[4] = new widget (arizona, color(204, 88, 11), "Arizona", "AZ");
+delaysArray[5] = new widget (arkansas, color(221, 160, 105), "Arkansas", "AR");
+delaysArray[6] = new widget (california, color(203, 158, 105), "California", "CA");
+delaysArray[7] = new widget (colorado, color(220, 155, 105), "Colorado", "CO");
 delaysArray[8] = new widget (connecticut, color(240, 158, 102), "Connecticut", "CT");
-delaysArray[9] = new widget (delaware, color(240, 154, 105), "Delaware", "DE");
+delaysArray[9] = new widget (delaware, color(230, 154, 105), "Delaware", "DE");
 delaysArray[10] = new widget (districtofColumbia, color(241, 153, 105), "District of Columbia", "DC");
-delaysArray[11] = new widget (florida, color(244, 158, 105), "Florida", "FL");
-delaysArray[12] = new widget (georgia, color(240, 158, 109), "Georgia", "GA");
-delaysArray[13] = new widget (hawaii, color(232, 158, 105), "Hawaii", "HI");
-delaysArray[14] = new widget (idaho, color(246, 158, 105), "Idaho", "ID");
+delaysArray[11] = new widget (florida, color(199, 158, 105), "Florida", "FL");
+delaysArray[12] = new widget (georgia, color(215, 158, 109), "Georgia", "GA");
+delaysArray[13] = new widget (hawaii, color(236, 158, 105), "Hawaii", "HI");
+delaysArray[14] = new widget (idaho, color(225, 158, 105), "Idaho", "ID");
 delaysArray[15] = new widget (illinois, color(208, 88, 8), "Illinois", "IL");
-delaysArray[16] = new widget (indiana, color(246, 158, 105), "Indiana", "IN");
-delaysArray[17] = new widget (iowa, color(240, 158, 99), "Iowa", "IA");
+delaysArray[16] = new widget (indiana, color(250, 158, 105), "Indiana", "IN");
+delaysArray[17] = new widget (iowa, color(239, 158, 99), "Iowa", "IA");
 delaysArray[18] = new widget (kansas, color(248, 158, 105), "Kansas", "KS");
-delaysArray[19] = new widget (kentucky, color(240, 168, 105), "Kentucky", "KY");
-delaysArray[20] = new widget (louisiana, color(240, 158, 113), "Louisiana", "LA");
-delaysArray[21] = new widget (maine, color(247, 159, 105), "Maine", "ME");
-delaysArray[22] = new widget (maryland, color(240, 158, 112), "Maryland", "MD");
-delaysArray[23] = new widget (massachusetts, color(240, 155, 106), "Massachusetts", "MA");
-delaysArray[24] = new widget (minnesota, color(241, 148, 105), "Minnesota", "MN");
+delaysArray[19] = new widget (kentucky, color(217, 168, 105), "Kentucky", "KY");
+delaysArray[20] = new widget (louisiana, color(253, 158, 113), "Louisiana", "LA");
+delaysArray[21] = new widget (maine, color(254, 159, 105), "Maine", "ME");
+delaysArray[22] = new widget (maryland, color(218, 158, 112), "Maryland", "MD");
+delaysArray[23] = new widget (massachusetts, color(231, 155, 106), "Massachusetts", "MA");
+delaysArray[24] = new widget (minnesota, color(252, 148, 105), "Minnesota", "MN");
 delaysArray[25] = new widget (mississippi, color(243, 158, 107), "Mississippi", "MS");
-delaysArray[26] = new widget (missouri, color(243, 159, 106), "Missouri", "MO");
-delaysArray[27] = new widget (montana, color(241, 155, 103), "Montana", "MT");
+delaysArray[26] = new widget (missouri, color(226, 159, 106), "Missouri", "MO");
+delaysArray[27] = new widget (montana, color(209, 155, 103), "Montana", "MT");
 delaysArray[28] = new widget (nebraska, color(247, 158, 103), "Nebraska", "NE");
-delaysArray[29] = new widget (nevada, color(241, 157, 109), "Nevada", "NV");
-delaysArray[30] = new widget (newHampshire, color(240, 158, 109), "New Hampshire", "NH");
+delaysArray[29] = new widget (nevada, color(219, 157, 109), "Nevada", "NV");
+delaysArray[30] = new widget (newHampshire, color(200, 158, 109), "New Hampshire", "NH");
 delaysArray[31] = new widget (newJersey, color(242, 158, 109), "New Jersey", "NJ");
-delaysArray[32] = new widget (newMexico, color(241, 155, 105), "New Mexico", "NM");
+delaysArray[32] = new widget (newMexico, color(245, 155, 105), "New Mexico", "NM");
 delaysArray[33] = new widget (newYork, color(168, 71, 10), "New York", "NY");
 delaysArray[34] = new widget (northCarolina, color(241, 158, 107), "North Carolina", "NC");
-delaysArray[35] = new widget (northDakota, color(240, 158, 111), "North Dakota", "NK");
-delaysArray[36] = new widget (oklahoma, color(240, 168, 105), "Oklahoma", "OK");
-delaysArray[37] = new widget (oregon,color(226, 158, 105), "Oregon", "OR");
-delaysArray[38] = new widget (pennsylvania, color(241, 153, 105), "Pennsylvania", "PA");
-delaysArray[39] = new widget (rhodeIsland, color(240, 158, 101), "Rhode Island", "RI");
-delaysArray[40] = new widget (southCarolina, color(240, 157, 102), "South Carolina", "SC");
-delaysArray[41]= new widget (southDakota, color(234, 156, 105), "South Dakota", "SD");
+delaysArray[35] = new widget (northDakota, color(251, 158, 111), "North Dakota", "NK");
+delaysArray[36] = new widget (oklahoma, color(229, 168, 104), "Oklahoma", "OK");
+delaysArray[37] = new widget (oregon,color(210, 158, 105), "Oregon", "OR");
+delaysArray[38] = new widget (pennsylvania, color(246, 153, 105), "Pennsylvania", "PA");
+delaysArray[39] = new widget (rhodeIsland, color(232, 158, 101), "Rhode Island", "RI");
+delaysArray[40] = new widget (southCarolina, color(227, 157, 102), "South Carolina", "SC");
+delaysArray[41]= new widget (southDakota, color(235, 156, 105), "South Dakota", "SD");
 delaysArray[42] = new widget (tennessee, color(233, 154, 105), "Tennessee", "TN");
-delaysArray[43] = new widget (texas, color(209, 86, 9), "Texas", "TX");
-delaysArray[44] = new widget (utah, color(240, 156, 110), "Utah", "UT");
-delaysArray[45] = new widget (vermont, color(242, 155, 105), "Vermont", "VT");
-delaysArray[46] = new widget (virginia, color(227, 159, 105), "Virginia", "VA");
+delaysArray[43] = new widget (texas, color(197, 86, 9), "Texas", "TX");
+delaysArray[44] = new widget (utah, color(255, 156, 110), "Utah", "UT");
+delaysArray[45] = new widget (vermont, color(230, 155, 105), "Vermont", "VT");
+delaysArray[46] = new widget (virginia, color(228, 159, 105), "Virginia", "VA");
 delaysArray[47] = new widget (washington, color(206, 88, 13), "Washington", "WA");
-delaysArray[48] = new widget (westVirginia, color(243, 154, 106), "West Virginia", "WV");
+delaysArray[48] = new widget (westVirginia, color(237, 154, 106), "West Virginia", "WV");
 delaysArray[50]= new widget (wisconsin, color(207, 88, 10), "Wisconsin", "WI");
 delaysArray[49] = new widget (wyoming, color(244, 151, 108), "Wyoming", "WY"); 
  
@@ -426,11 +428,72 @@ delaysArray[49] = new widget (wyoming, color(244, 151, 108), "Wyoming", "WY");
   }
   delaysStates.add(triangleWidget1); 
   delaysStates.add(triangleWidget2); 
-  println(delaysStates.size());
+ 
+ 
+ //creating cancellations array 
+ cancellationsStates = new ArrayList(); 
+cancellationsA[0] = new widget(michigan, color(237, 109, 97), "Michigan", "MI");
+cancellationsA[1] = new widget (ohio, color(237, 114, 97), "Ohio", "OH");
+cancellationsA[2] = new widget (alabama, color(237, 83, 97), "Alabama", "AL");
+cancellationsA[3] = new widget (alaska, color(153, 27, 15), "Alaska", "AK");
+cancellationsA[4] = new widget (arizona, color(209, 56, 36), "Arizona", "AZ");
+cancellationsA[5] = new widget (arkansas, color(237, 86, 97), "Arkansas", "AR");
+cancellationsA[6] = new widget (california, color(153, 25, 15), "California", "CA");
+cancellationsA[7] = new widget (colorado, color(242, 35, 10), "Colorado", "CO");
+cancellationsA[8] = new widget (connecticut, color(237, 64, 38), "Connecticut", "CT");
+cancellationsA[9] = new widget (delaware, color(237, 61, 38), "Delaware", "DE");
+cancellationsA[10] = new widget (districtofColumbia, color(237, 60, 38), "District of Columbia", "DC");
+cancellationsA[11] = new widget (florida, color(242, 19, 10), "Florida", "FL");
+cancellationsA[12] = new widget (georgia, color(209, 59, 36), "Georgia", "GA");
+cancellationsA[13] = new widget (hawaii, color(242, 29, 10), "Hawaii", "HI");
+cancellationsA[14] = new widget (idaho, color(237, 118, 97), "Idaho", "ID");
+cancellationsA[15] = new widget (illinois, color(242, 26, 10), "Illinois", "IL");
+cancellationsA[16] = new widget (indiana, color(237, 84, 97), "Indiana", "IN");
+cancellationsA[17] = new widget (iowa, color(237, 57, 38), "Iowa", "IA");
+cancellationsA[18] = new widget (kansas, color(237, 88, 97), "Kansas", "KS");
+cancellationsA[19] = new widget (kentucky, color(237, 115, 97), "Kentucky", "KY");
+cancellationsA[20] = new widget (louisiana, color(237, 113, 97), "Louisiana", "LA");
+cancellationsA[21] = new widget (maine, color(237, 112, 97), "Maine", "ME");
+cancellationsA[22] = new widget (maryland, color(237, 108, 97), "Maryland", "MD");
+cancellationsA[23] = new widget (massachusetts, color(242, 54, 10), "Massachusetts", "MA");
+cancellationsA[24] = new widget (minnesota, color(237, 110, 97), "Minnesota", "MN");
+cancellationsA[25] = new widget (mississippi, color(237, 111, 97), "Mississippi", "MS");
+cancellationsA[26] = new widget (missouri, color(237, 89, 97), "Missouri", "MO");
+cancellationsA[27] = new widget (montana, color(209, 53, 36), "Montana", "MT");
+cancellationsA[28] = new widget (nebraska, color(237, 91, 97), "Nebraska", "NE");
+cancellationsA[29] = new widget (nevada, color(242, 31, 10), "Nevada", "NV");
+cancellationsA[30] = new widget (newHampshire, color(237, 92, 97), "New Hampshire", "NH");
+cancellationsA[31] = new widget (newJersey, color(237, 93, 97), "New Jersey", "NJ");
+cancellationsA[32] = new widget (newMexico, color(237, 94, 97), "New Mexico", "NM");
+cancellationsA[33] = new widget (newYork, color(242, 33, 10), "New York", "NY");
+cancellationsA[34] = new widget (northCarolina, color(209, 51, 36), "North Carolina", "NC");
+cancellationsA[35] = new widget (northDakota, color(237, 96, 97), "North Dakota", "NK");
+cancellationsA[36] = new widget (oklahoma, color(237, 85, 97), "Oklahoma", "OK");
+cancellationsA[37] = new widget (oregon,color(242, 30, 10), "Oregon", "OR");
+cancellationsA[38] = new widget (pennsylvania, color(209, 71, 36), "Pennsylvania", "PA");
+cancellationsA[39] = new widget (rhodeIsland, color(237, 97, 97), "Rhode Island", "RI");
+cancellationsA[40] = new widget (southCarolina, color(237, 98, 97), "South Carolina", "SC");
+cancellationsA[41]= new widget (southDakota, color(237, 99, 97), "South Dakota", "SD");
+cancellationsA[42] = new widget (tennessee, color(237, 100, 97), "Tennessee", "TN");
+cancellationsA[43] = new widget (texas, color(242, 28, 10), "Texas", "TX");
+cancellationsA[44] = new widget (utah, color(237, 101, 97), "Utah", "UT");
+cancellationsA[45] = new widget (vermont, color(237, 102, 97), "Vermont", "VT");
+cancellationsA[46] = new widget (virginia, color(209, 50, 36), "Virginia", "VA");
+cancellationsA[47] = new widget (washington, color(171, 24, 10), "Washington", "WA");
+cancellationsA[48] = new widget (westVirginia, color(237, 107, 97), "West Virginia", "WV");
+cancellationsA[50]= new widget (wisconsin, color(237, 106, 97), "Wisconsin", "WI");
+cancellationsA[49] = new widget (wyoming, color(237, 105, 97), "Wyoming", "WY"); 
+
+for(int k = 0;k<cancellationsA.length;k++){
+  cancellationsStates.add(cancellationsA[k]); 
+}
+cancellationsStates.add(triangleWidget1); 
+cancellationsStates.add(triangleWidget2); 
 
   mapScreen2 = new screen(255, delaysStates); 
   mainScreen = new screen(255, carrierWidgets);
   mapScreen = new screen (255, states);
+  mapScreen3 = new screen(255, cancellationsStates); 
   
 }
 
@@ -452,7 +515,10 @@ void draw() {
   //}
   //else if (screen == 2){
   //  messageScreen.draw("Messages");
-  if(previousWidgetX != 0 && xPos != 0) line(previousWidgetX, previousWidgetY, xPos, yPos);
+  if(previousWidgetX != 0 && xPos != 0){
+    //image(plane, xPos-25, yPos-25);
+    line(previousWidgetX, previousWidgetY, xPos, yPos);
+  }
   if(displayStateToStateDist && newWidget != null){
     fill(0);
     int S2SCo2 = calculateDistance(previousWidget.origin, newWidget.origin);
@@ -484,13 +550,13 @@ void draw() {
     
   }
   else if(screen == 3){
-    mapScreen.draw(1); 
+    mapScreen3.draw(1); 
     fill(148, 10, 10); stroke(0);
     text("Cancellations per state", 250, 65); 
     line(250, 80, 750, 80);
     fill(148, 10, 10);
-    for (int i = 0; i < states.size() - 2; i++){
-      widget cur = (widget) states.get(i);
+    for (int i = 0; i < cancellationsStates.size() - 2; i++){
+      widget cur = (widget) cancellationsStates.get(i);
       if (cur.widgetColor == 0 && displayState == true){
         fill(0);
         long frequency = Math.round(cancellationsHM.calculateFrequency(cur.origin));
@@ -499,7 +565,6 @@ void draw() {
     }
   }
     if(displayPopUp == true && screen == 1) {
-    println("Yes");
     fill(88, 172, 191);
     rect(mouseX, mouseY, 120, 40, 10);
     fill(255); textSize(12);
@@ -559,6 +624,7 @@ void draw() {
 //previousWidget = null; 
 int previousColor = 0;
 int previousColor1 = 0;
+int previousColor2 = 0;
 color xCol = 0;
 void mousePressed() {
  
@@ -618,9 +684,10 @@ int event;
       break;
     case triLeft:
       println("TRIANGLE LEFT");
-      if(screen == 3) screen = 2;
+      if(screen == 3) screen = 1;
       else if(screen == 2) screen = 1; 
       else screen = 0; 
+      println(screen); 
       break;
     case triRight:
       if(screen == 1) screen =2;
@@ -645,12 +712,22 @@ int event;
       }
     }
     for(widget state: delaysArray){
-    if((int)blue(xCol) ==(int)blue(state.widgetColor)){
-      if(previousWidget != null && previousColor1 != 0) previousWidget1.widgetColor = previousColor1;
+    if((int)red(xCol) ==(int)red(state.widgetColor)){
+      if(previousWidget1 != null && previousColor1 != 0) previousWidget1.widgetColor = previousColor1;
         previousWidget1 = state; 
         previousColor1 = state.widgetColor;
         previousWidgetX1 = mouseX; 
         previousWidgetY1 = mouseY; 
+        state.widgetColor = 0; 
+      }
+    }
+    for(widget state: cancellationsA){
+    if((int)green(xCol) ==(int)green(state.widgetColor)){
+      if(previousWidget2 != null && previousColor2 != 0) previousWidget2.widgetColor = previousColor2;
+        previousWidget2 = state; 
+        previousColor2 = state.widgetColor;
+        previousWidgetX2 = mouseX; 
+        previousWidgetY2 = mouseY; 
         state.widgetColor = 0; 
       }
     }
