@@ -3,10 +3,12 @@ class heatMapMetrics{
     String columnName; 
     String[] states;
     
-    public heatMapMetrics(String columnName){
+    public heatMapMetrics(String columnName, String[] states){
       this.columnName = columnName; 
-      states = table.getStringColumn("ORIGIN_STATE_ABR");
+      //states = table.getStringColumn("ORIGIN_STATE_ABR");
+      this.states = states;
       frequencies = new TreeMap<String, Double>(); 
+      
     }
     int i = 0;
     public void insertFrequencies(){

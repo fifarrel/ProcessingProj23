@@ -3,6 +3,7 @@ class screen {
   ArrayList<widget> w;
   int event;
   
+
   screen(color bG, ArrayList<widget> widget){
     this.bG = bG;
     this.w = widget;
@@ -17,7 +18,7 @@ class screen {
   //  }
   //  return EVENT_NULL;
   //}
-  
+
   void draw() {
     background(#000000); // bG
     for (int i = 0; i < w.size(); i++){
@@ -37,6 +38,7 @@ class screen {
     for (i = 0; i < w.size() - 2; i++){
       w.get(i).draw(w.get(i).widgetShape);  
     }
+     println(i);
      w.get(i).drawTriangle();
      i++;
      w.get(i).drawTriangle();
@@ -45,4 +47,17 @@ class screen {
   void addWidget(widget widget1) {
     w.add(widget1);
   }
+  
+  //void draw(double b){
+  //  background(bG);
+  //  b = b - 1;
+  //  int i = 0;
+  //  for (i = 0; i < w.size() - 2; i++){
+  //    w.get(i).draw(w.get(i).widgetShape);  
+  //  }
+  //   w.get(i).drawTriangle();
+  //   i++;
+  //   w.get(i).drawTriangle();
+    
+  //}
 }

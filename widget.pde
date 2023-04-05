@@ -1,19 +1,20 @@
-int x, y;
-int x1, x2, x3, y1, y2, y3;
-int width, height;
-int direction;
-String label = " ";
-color widgetColour, fontColour, shadeColour;
-PFont widgetFont;
+  int x, y;
+  int x1, x2, x3, y1, y2, y3;
+  int width, height;
+  int direction;
+  String label = " ";
+  color widgetColour, fontColour, shadeColour;
+  PFont widgetFont;
 
-String widgetName;
-int event;
-color widgetColor, labelColor, StrokeColor;
- int trustRatingType;
-PShape widgetShape;
+   
+  String widgetName; 
+  int event;
+  color widgetColor, labelColor, StrokeColor;
+
+  PShape widgetShape;
 
 class widget {
-
+  
   int x, y;
   int x1, x2, x3, y1, y2, y3;
   int width, height;
@@ -23,14 +24,13 @@ class widget {
   PFont widgetFont;
   PShape triangle;
   float trustRating;
-  int trustRatingType;
-
-  String widgetName, origin;
+   
+  String widgetName, origin; 
   int event;
   color widgetColor, labelColor, StrokeColor;
   PShape widgetShape;
   int flightDelay = (int) random(0, 10);
-  widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour)
+  widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour) 
   {
     this.x1 = x1;
     this.y1 = y1;
@@ -40,21 +40,11 @@ class widget {
     this.y3 = y3;
     this.direction = direction;
     this.widgetColour = widgetColour;
-  }
-  // trust rating widget
-  widget(int x, int y, int width, int height, int trustRatingType, String label, color widgetColour, PFont widgetFont) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.trustRatingType = trustRatingType;
-    this.label = label;
-    this.widgetColour = widgetColour;
-    this.widgetFont = widgetFont;
+    
   }
 
   widget(int x, int y, int width, int height, int direction, String label,
-    color widgetColour, color shadeColour, float trustRating, int trustRatingType, PFont widgetFont) {
+    color widgetColour, color shadeColour, float trustRating, PFont widgetFont) {
     this.x=x;
     this.y=y;
     this.width = width;
@@ -65,10 +55,9 @@ class widget {
     this.widgetFont=widgetFont;
     this.shadeColour = shadeColour;
     this.trustRating = trustRating;
-    this.trustRatingType = trustRatingType;
   }
 
-  int getEvent(int mouseX, int mouseY) {
+   int getEvent(int mouseX, int mouseY) {
     if ((mouseX >= 100) && (mouseX <= 300) && (mouseY >= 200) && (mouseY <= 325)) {
       return 1;
     }
@@ -114,27 +103,17 @@ class widget {
     if ((mouseX >= 325) && (mouseX <= 725) && (mouseY >= 40) && (mouseY <= 140)) {
       return 22;
     }
-    if ((mouseX >= 100) && (mouseX <= 250) && (mouseY >= 20) && (mouseY <= 60)) { //// <<<<<<<<<<<<<<<<<<<<<<<<<<<< TRUST RATING WIDGETS.
-      return 31;
-    }
-    if ((mouseX >= 100) && (mouseX <= 250) && (mouseY >= 70) && (mouseY <= 110)) { //// <<<<<<<<<<<<<<<<<<<<<<<<<<<< TRUST RATING WIDGETS.
-      return 32;
-    }
-    if ((mouseX >= 100) && (mouseX <= 250) && (mouseY >= 120) && (mouseY <= 160)) { //// <<<<<<<<<<<<<<<<<<<<<<<<<<<< TRUST RATING WIDGETS.
-      return 33;
-    }
     return 0;
   }
-
-  widget(PShape widgetShape, color widgetColor, String widgetName, String origin) {
-    this.widgetShape = widgetShape;
-    this.origin = origin;
-    this.widgetColor = widgetColor;
-    this.widgetName = widgetName;
-  }
-
+   
+   widget(PShape widgetShape, color widgetColor, String widgetName, String origin){
+      this.widgetShape = widgetShape;
+      this.origin = origin; 
+      this.widgetColor = widgetColor;
+      this.widgetName = widgetName;
+   }
+   
   void draw() {
-    //widgetColor = (int)(double)Co2HM.frequencies.get(origin);
     fill(widgetColour);
     rect(x, y, width, height, 28);
     fill(shadeColour);
@@ -142,19 +121,14 @@ class widget {
     fill(#39994a);
     text(label, x+50, y+68);
   }
-
-  void draw(PShape state) {
+  
+   void draw(PShape state) {
+     //if(screen == 2) this.widgetColor = 10;
     state.setFill(widgetColor);
     shape(state, -60, 75);
   }
-  void drawTRWid() {
-    textFont(dataFont);
-    fill(widgetColour);
-    rect(x, y, width, height+20);
-    println("Success");
-  }
-
-  void drawTriangle() {
+  
+  void drawTriangle(){
     fill(0, 255, 0);
     triangle(x1, y1, x2, y2, x3, y3);
   }
