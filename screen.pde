@@ -20,7 +20,7 @@ class screen {
   //}
 
   void draw() {
-    background(bG);
+    background(#000000); // bG
     for (int i = 0; i < w.size(); i++){
       w.get(i).draw();
       if (i == w.size() - 1){
