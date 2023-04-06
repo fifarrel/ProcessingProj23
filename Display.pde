@@ -1,5 +1,3 @@
-
-
 class Display {
   int gap = 20;
   int x = 50;
@@ -8,6 +6,7 @@ class Display {
   PFont f;
 
     Display (int a, int b, PFont f ){
+      b = b - 1;
       this.f = f;
       if (a == 0) {
         displayMessage = "False";
@@ -18,6 +17,8 @@ class Display {
     }
     
     Display(Integer a, int b, int c, PFont f) {
+       b = b - 1;
+       c = c - 1;
        String unit = " metres";
        displayMessage = a.toString();
        displayMessage = displayMessage + unit;
