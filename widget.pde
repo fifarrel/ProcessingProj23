@@ -1,35 +1,14 @@
-int x, y;
-int x1, x2, x3, y1, y2, y3;
-int width, height;
-int direction;
-String label = " ";
-color widgetColour, fontColour, shadeColour;
-PFont widgetFont;
-
-String widgetName;
-int event;
-color widgetColor, labelColor, StrokeColor;
- int trustRatingType;
-PShape widgetShape;
-
 class widget {
-
-  int x, y;
-  int x1, x2, x3, y1, y2, y3;
-  int width, height;
-  int direction;
-  String label = " ";
+  int x, y, x1, x2, x3, y1, y2, y3, width, height, direction, trustRatingType, event;
+  String label = " ", widgetName, origin;
   color widgetColour, fontColour, shadeColour;
   PFont widgetFont;
-  PShape triangle;
+  PShape triangle, widgetShape;
   float trustRating;
-  int trustRatingType;
-
-  String widgetName, origin;
-  int event;
   color widgetColor, labelColor, StrokeColor;
-  PShape widgetShape;
   int flightDelay = (int) random(0, 10);
+
+  // Traingle Widgets
   widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour)
   {
     this.x1 = x1;
@@ -52,7 +31,7 @@ class widget {
     this.widgetColour = widgetColour;
     this.widgetFont = widgetFont;
   }
-
+  // Data Changing Widgets
   widget(int x, int y, int width, int height, int direction, String label,
     color widgetColour, color shadeColour, float trustRating, int trustRatingType, PFont widgetFont) {
     this.x=x;
@@ -66,6 +45,13 @@ class widget {
     this.shadeColour = shadeColour;
     this.trustRating = trustRating;
     this.trustRatingType = trustRatingType;
+  }
+  // State Widgets
+  widget(PShape widgetShape, color widgetColor, String widgetName, String origin) {
+    this.widgetShape = widgetShape;
+    this.origin = origin;
+    this.widgetColor = widgetColor;
+    this.widgetName = widgetName;
   }
 
   int getEvent(int mouseX, int mouseY) {
@@ -125,16 +111,8 @@ class widget {
     }
     return 0;
   }
-
-  widget(PShape widgetShape, color widgetColor, String widgetName, String origin) {
-    this.widgetShape = widgetShape;
-    this.origin = origin;
-    this.widgetColor = widgetColor;
-    this.widgetName = widgetName;
-  }
-
+  // Draw Carrier Widgets
   void draw() {
-    //widgetColor = (int)(double)Co2HM.frequencies.get(origin);
     fill(widgetColour);
     rect(x, y, width, height, 28);
     fill(shadeColour);
@@ -142,11 +120,12 @@ class widget {
     fill(#39994a);
     text(label, x+50, y+68);
   }
-
+  // Draw State
   void draw(PShape state) {
     state.setFill(widgetColor);
     shape(state, -60, 75);
   }
+  // Draw Data Changing Widget
   void drawTRWid() {
     textFont(dataFont);
     fill(widgetColour);

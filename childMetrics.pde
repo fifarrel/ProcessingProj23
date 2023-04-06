@@ -13,5 +13,4 @@ class AirlineMetrics extends DistributionMetrics{
       double x = (CO2Object) ? calculateMean() * CO2_EMISSIONS : calculateMean();
       return (x - distMean) / distSD;
   }
-  
 }

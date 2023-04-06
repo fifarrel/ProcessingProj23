@@ -1,3 +1,4 @@
+// Airline Buttons
 final int BUTTON1 = 1;
 final int BUTTON2 = 2;
 final int BUTTON3 = 3;
@@ -10,19 +11,19 @@ final int BUTTON9 = 9;
 final int BUTTON10 = 10;
 final int BUTTON11 = 11;
 final int BUTTON12 = 12;
-
+// Homescreen Buttons
 final int triLeft = 20;
 final int triRight = 21;
 final int home = 22;
-
+// Data Changing Buttons
 final int TYPEEVENT1 = 31;
 final int TYPEEVENT2 = 32;
 final int TYPEEVENT3 = 33;
-
+// Data Changers
 final int RATINGTYPE1 = 1;
 final int RATINGTYPE2 = 2;
 final int RATINGTYPE3 = 3;
-
+// Data calculation weights
 final double WEIGHT_1 = 0.4;
 final double WEIGHT_2 = 0.35;
 final double WEIGHT_3 = 0.25;

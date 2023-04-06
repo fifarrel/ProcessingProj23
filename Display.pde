@@ -1,7 +1,6 @@
 class Display {
   int gap = 20;
   int x = 50;
-
   String displayMessage;
   PFont f;
 
@@ -34,7 +33,6 @@ class Display {
         
         ;
       }
-     
       this.f = f;
     }
     
@@ -42,32 +40,15 @@ class Display {
       displayMessage = a;
       this.f = f;
       }
-    
-    
+  
     String toString() {
       return displayMessage;
     }
-  
-  
     
     void draw(int x, int y) {
     fill(0);
     textFont(f); 
     text(displayMessage, x , y);
-    
-    //for (int k = 0; k < arrayOfMessages.length; k++)
-    //{
-    //  text(arrayOfMessages[k], 50 , 50 + (k * gap));
-    //}
-
-    //int x = 10;
-    //for (int i = 0; i < displayMessage.length(); i++) {
-    //  textSize(15);
-    //  text(displayMessage.charAt(i),x,height/2);
-    //  x += textWidth(displayMessage.charAt(i));
-    //}
-    //text(displayMessage,50,50 + (gap * x)); make the message move
-    //x++;
     }
   
 }

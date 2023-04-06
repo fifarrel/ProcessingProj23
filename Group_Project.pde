@@ -1,54 +1,30 @@
 import java.util.*;
 Table table;
-
 String date, carrier, origin, originCity, orginCityAbr,
   destination, destinationCity, destinationStateAbr;
-
 int flightNumber, originAirportWAC, destinationWAC, ScheduledDepTime, ActDepTime, ScheduledArrTime,
-  ActARRTime, distance, diverted, cancelled;
-
-int screen, i;
+  ActARRTime, distance, diverted, cancelled, screen, i, flightDelay;
 screen mainScreen, mapScreen;
-PFont font, niceFont;
-
-widget titleWidget, triangleWidget1, triangleWidget2,
-
-  carrierWid1, carrierWid2, carrierWid3, carrierWid4,
-  carrierWid5, carrierWid6, carrierWid7, carrierWid8, carrierWid9, carrierWid10, carrierWid11, carrierWid12;
-
-widget trustRatingWid1, trustRatingWid2, trustRatingWid3;
-widget statesWidArray[];
-
-Message message;
+double Co2Mean, delaysMean, cancellationsMean, Co2SD, delaysSD, cancellationsSD;
+float trustRating;
+PShape usa, triangle;
+PFont font, niceFont, titleFont, dataFont;
+ArrayList carrierWidgets, states;
 float [] chart = new float [2000];
 int [] onOfVDistance = new int [2000];
-
-PShape usa;
-
-Map map;
-
-PShape triangle;
-ArrayList carrierWidgets;
-ArrayList states;
-float trustRating;
-
-PFont titleFont, dataFont;
-//<<<<<<< HEAD
-int flightDelay;
-//=======
-
 //z scores for each airline
 HashMap<String, Double> co2Map, delaysMap, cancellationsMap;
-double Co2Mean, delaysMean, cancellationsMean;
-double Co2SD, delaysSD, cancellationsSD;
 String[] airlineNames = {"AA", "AS", "B6", "HA", "NK", "G4", "WN", "F9", "UA", "DL"};
 //ratings for each airline
-TreeMap<String, Double> ratings;
-TreeMap<String, Double> weightedRatings;
+TreeMap<String, Double> ratings, weightedRatings;
 heatMapMetrics delaysHM, cancellationsHM, Co2HM;
 
+widget titleWidget, triangleWidget1, triangleWidget2,
+  carrierWid1, carrierWid2, carrierWid3, carrierWid4,
+  carrierWid5, carrierWid6, carrierWid7, carrierWid8, carrierWid9, carrierWid10, carrierWid11, carrierWid12, trustRatingWid1, trustRatingWid2, trustRatingWid3, statesWidArray[];
+Message message;
+Map map;
 
-//>>>>>>> 79523ae65028150909a7bc4268f3d9f044c2abe1
 void setup() {
 
   size (1000, 835);
@@ -58,7 +34,7 @@ void setup() {
   usa = loadShape("us.svg");
   titleFont = loadFont("AdelleSansDevanagari-Regular-48.vlw");
   dataFont = loadFont("Arial-ItalicMT-15.vlw");
-  //textFont(titleFont);
+
 
   statesWidArray = new widget[51];
 
@@ -204,6 +180,7 @@ void setup() {
     }
   }
 
+  // State Widgets
   michigan = usa.getChild("MI");
   ohio = usa.getChild("OH");
   massachusetts = usa.getChild("MA");
@@ -256,6 +233,7 @@ void setup() {
   wisconsin = usa.getChild("WI"); // 55
   wyoming = usa.getChild("WY"); // 56
 
+  // Add states to widget array
   statesWidArray[0] = new widget(michigan, 150, "Michigan", "MI");
   statesWidArray[1] = new widget (ohio, 195, "Ohio", "OH");
   statesWidArray[2] = new widget (alabama, 210, "Alabama", "AL");
@@ -308,31 +286,31 @@ void setup() {
   statesWidArray[50]= new widget (wisconsin, 139, "Wisconsin", "WI");
   statesWidArray[49] = new widget (wyoming, 140, "Wyoming", "WY");
 
-
   map = new Map(statesWidArray);
+
+  // Home Screen Widgets
   titleWidget = new widget(325, 40, 400, 100, 1, "TRUST-PILOT*", color(#123266), color(#123266), (1), RATINGTYPE1, titleFont);
   triangleWidget1 = new widget(950, 425, 950, 475, 975, 450, 1, color(#123266));
   triangleWidget2 = new widget(50, 425, 50, 475, 25, 450, 1, color(#123266));
 
+  // Airline Widgets
   carrierWid1 = new widget(100, 200, 200, 125, 2, "AA", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
   carrierWid2 = new widget(400, 200, 200, 125, 2, "AS", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
   carrierWid3 = new widget(700, 200, 200, 125, 2, "B6", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
-
   carrierWid4 = new widget(100, 358, 200, 125, 2, "HA", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
   carrierWid5 = new widget(400, 358, 200, 125, 2, "NK", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
   carrierWid6 = new widget(700, 358, 200, 125, 2, "G4", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
-
   carrierWid7 = new widget(100, 516, 200, 125, 2, "WN", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
   carrierWid8 = new widget(400, 516, 200, 125, 2, "F9", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
   carrierWid9 = new widget(700, 516, 200, 125, 2, "UA", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
   carrierWid11 = new widget(400, 674, 200, 125, 2, "DL", color(#123266), color(#166bba), (0), RATINGTYPE1, titleFont);
 
+  // Data Changing Widgets
+  trustRatingWid1 = new widget(100, 20, 150, 40, RATINGTYPE1, "", color(#4287f5), dataFont);
+  trustRatingWid2 = new widget(100, 70, 150, 40, RATINGTYPE1, "", color(#4287f5), dataFont);
+  trustRatingWid3 = new widget(100, 120, 150, 40, RATINGTYPE1, " ", color(#4287f5), dataFont);
 
-
-  trustRatingWid1 = new widget(100, 20, 150, 40, RATINGTYPE1, "", color(#123456), dataFont);
-  trustRatingWid2 = new widget(100, 70, 150, 40, RATINGTYPE1, "", color(#123456), dataFont);
-  trustRatingWid3 = new widget(100, 120, 150, 40, RATINGTYPE1, " ", color(#123456), dataFont);
-
+  // Homescreen Widgets
   carrierWidgets = new ArrayList();
   carrierWidgets.add(carrierWid1);
   carrierWidgets.add(carrierWid2);
@@ -356,6 +334,7 @@ void setup() {
     states.add(statesWidArray[k]);
   }
 
+  // Screens
   mainScreen = new screen(255, carrierWidgets);
   mapScreen = new screen (255, states);
 }
@@ -365,7 +344,15 @@ void draw() {
   fill(0);
 
   if (screen != 1) {
-    mainScreen.draw();
+  mainScreen.draw();
+  textFont(dataFont);
+  fill(#166bba);
+  text("TrustWorthyness", 115, 45);
+  fill(#fcba03);
+  text("co2", 160, 97);
+  fill(#e303fc);
+  text("Punctuality", 140, 145);
+  textFont(titleFont);
   } else {
     mapScreen.draw(1);
 
@@ -378,14 +365,8 @@ void draw() {
       }
     }
   }
-  textFont(dataFont);
-  fill(#166bba);
-  text("TrustWorthyness", 115, 45);
-  fill(#fcba03);
-  text("co2", 160, 97);
-  fill(#e303fc);
-  text("Punctuality", 140, 145);
-  textFont(titleFont);
+
+  // Mouse hover to display ratings
   int event;
   for (int i = 0; i < carrierWidgets.size(); i++) {
     widget currentWidget = (widget) carrierWidgets.get(i);
@@ -393,63 +374,44 @@ void draw() {
     if (carrierWid1.trustRatingType == 1) {
       switch(event) {
       case BUTTON1:
-        carrierWid1.trustRating = 0.3;
+        carrierWid1.trustRating = 0.3; //  <<<<<<<<<<<<<<<<< emmas get function
         carrierWid1.shadeColour = (#166bba);
-
         break;
       case BUTTON2:
         carrierWid2.trustRating = 0.8;
         carrierWid2.shadeColour = (#166bba);
-
         break;
       case BUTTON3:
         carrierWid3.trustRating = 0.28;
         carrierWid3.shadeColour = (#166bba);
-
         break;
       case BUTTON4:
         carrierWid4.trustRating = 0.45;
         carrierWid4.shadeColour = (#166bba);
-
         break;
       case BUTTON5:
         carrierWid5.trustRating = 0.33;
         carrierWid5.shadeColour = (#166bba);
-
         break;
       case BUTTON6:
         carrierWid6.trustRating = 0.56;
         carrierWid6.shadeColour = (#166bba);
-
         break;
       case BUTTON7:
         carrierWid7.trustRating = 0.77;
         carrierWid7.shadeColour = (#166bba);
-
         break;
       case BUTTON8:
         carrierWid8.trustRating = 0.452;
         carrierWid8.shadeColour = (#166bba);
-
         break;
       case BUTTON9:
         carrierWid9.trustRating = 0.79;
         carrierWid9.shadeColour = (#166bba);
-
         break;
       case BUTTON11:
         carrierWid11.trustRating = 0.90;
         carrierWid11.shadeColour = (#166bba);
-
-        break;
-      case home:
-        println("HOME");
-        break;
-      case triLeft:
-        println("TRIANGLE LEFT");
-        break;
-      case triRight:
-        println("TRIANGLE RIGHT");
         break;
       }
     }
@@ -495,15 +457,6 @@ void draw() {
         carrierWid11.trustRating = 0.5;
         carrierWid11.shadeColour = (#fcba03);
         break;
-      case home:
-        println("HOME");
-        break;
-      case triLeft:
-        println("TRIANGLE LEFT");
-        break;
-      case triRight:
-        println("TRIANGLE RIGHT");
-        break;
       }
     }
     if (carrierWid1.trustRatingType == 3) {
@@ -548,23 +501,12 @@ void draw() {
         carrierWid11.trustRating = 0.21;
         carrierWid11.shadeColour = (#e303fc);
         break;
-      case home:
-        println("HOME");
-        break;
-      case triLeft:
-        println("TRIANGLE LEFT");
-        break;
-      case triRight:
-        println("TRIANGLE RIGHT");
-        break;
       }
     }
   }
 
   widget previousWidget = null;
   int previousColor = 0;
-
-
   color x = get(mouseX, mouseY);
 
   for (widget state : statesWidArray) {
@@ -643,14 +585,23 @@ void mousePressed() {
     case TYPEEVENT1:
       println("111111111");
       carrierWid1.trustRatingType = RATINGTYPE1;
+      trustRatingWid1.widgetColour = #ffffff;
+      trustRatingWid2.widgetColour = #4287f5;
+      trustRatingWid3.widgetColour = #4287f5;
       break;
     case TYPEEVENT2:
       println("2222222222");
       carrierWid1.trustRatingType = RATINGTYPE2;
+      trustRatingWid1.widgetColour = #4287f5;
+      trustRatingWid2.widgetColour = #ffffff;
+      trustRatingWid3.widgetColour = #4287f5;
       break;
     case TYPEEVENT3:
       println("333333333");
       carrierWid1.trustRatingType = RATINGTYPE3;
+      trustRatingWid1.widgetColour = #4287f5;
+      trustRatingWid2.widgetColour = #4287f5;
+      trustRatingWid3.widgetColour = #ffffff;
       break;
     }
   }

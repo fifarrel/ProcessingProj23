@@ -11,7 +11,6 @@
 class Map {
   widget mapWidArray[] = new widget[51];
 
-  
   Map(widget[] statesArray){
     for(int i =0;i<statesArray.length;i++){
         mapWidArray[i] = statesArray[i];
@@ -21,8 +20,7 @@ class Map {
   void draw(){
     for(widget state: mapWidArray){
       state.draw(state.widgetShape); 
-    }
-        
+    }        
     triangleWidget1.drawTriangle();
     triangleWidget2.drawTriangle();
   }
