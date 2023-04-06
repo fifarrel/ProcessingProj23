@@ -1,4 +1,5 @@
-
+final int screenWidth = 1000;
+final int screenLength = 835;
 final int BUTTON1 = 1;
 final int BUTTON2 = 2;
 final int BUTTON3 = 3;

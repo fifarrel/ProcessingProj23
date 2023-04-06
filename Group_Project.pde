@@ -48,10 +48,15 @@ TreeMap<String, Double> weightedRatings;
 heatMapMetrics delaysHM, cancellationsHM, Co2HM;
 
 PImage plane;
-//>>>>>>> 79523ae65028150909a7bc4268f3d9f044c2abe1
+PImage [] background;
+int numberOfFrames;
+ArrayList backG;
+
+void settings() {
+   size (screenWidth, screenLength);
+}
 void setup() {
   screen = 0;
-  size (1000, 835);
   background (255);
   table = loadTable("flights2k(1).csv", "header");
   println(table.getRowCount() + " total rows in table");
@@ -118,7 +123,16 @@ void setup() {
      for(String key: weightedRatings.keySet()){
          println(key + ":" + weightedRatings.get(key)); 
      }
-
+     numberOfFrames = 61;
+     background = new PImage [numberOfFrames];
+    //background gif
+     backG = new ArrayList();
+    int p = 0;
+    while (p < numberOfFrames){
+    background[p] = loadImage("frame_"+p+"_delay-0.07s.gif");
+    backG.add(background[p]);
+    p++;
+  }
 
     //println("Mean distance: " + Math.round(distanceMean) + " miles. ");
     ////state with highest number of cancellations
@@ -146,7 +160,7 @@ void setup() {
   someMessage4 = new Display[table.getRowCount()];
   someMessage5 = new Display[table.getRowCount()];
   someMessage6 = new Display[table.getRowCount()];
-  someMessage7 =  new Display[table.getRowCount()];
+  someMessage7 = new Display[table.getRowCount()];
   someMessage8 = new Display[table.getRowCount()];
   someMessage9 = new Display[table.getRowCount()];
   someMessage10 = new Display[table.getRowCount()];
@@ -184,23 +198,23 @@ void setup() {
        onOfVDistance[i] = distance;
        niceFont = loadFont("AdelleSansDevanagari-Regular-20.vlw");
        
-       someMessage[i] = new Display(date, niceFont);
-       someMessage2[i] = new Display(carrier, niceFont);
-       someMessage3[i] = new Display(flightNumber, niceFont);
-       someMessage4[i] = new Display(origin, niceFont);
-       someMessage5[i] = new Display(originCity, niceFont);
-       someMessage7[i] = new Display(originAirportWAC, niceFont);
-       someMessage8[i] = new Display(destination, niceFont);
-       someMessage9[i] = new Display(destinationCity, niceFont);
-       someMessage10[i] = new Display(destinationWAC, niceFont);
-       someMessage11[i] = new Display(ScheduledDepTime, niceFont);
-       someMessage12[i] = new Display(ActDepTime, niceFont);
-       someMessage13[i] = new Display(ScheduledArrTime, niceFont);
-       someMessage14[i] = new Display(ActARRTime, niceFont);
-       someMessage15[i] = new Display(destinationWAC, niceFont);
-       someMessage16[i] = new Display(distance, 0 , 0, niceFont);
-       someMessage17[i] = new Display(cancelled, 0, niceFont);
-       someMessage18[i] = new Display(diverted, 0, niceFont );
+       //someMessage[i] = new Display(date, niceFont);
+       //someMessage2[i] = new Display(carrier, niceFont);
+       //someMessage3[i] = new Display(flightNumber, niceFont);
+       //someMessage4[i] = new Display(origin, niceFont);
+       //someMessage5[i] = new Display(originCity, niceFont);
+       //someMessage7[i] = new Display(originAirportWAC, niceFont);
+       //someMessage8[i] = new Display(destination, niceFont);
+       //someMessage9[i] = new Display(destinationCity, niceFont);
+       //someMessage10[i] = new Display(destinationWAC, niceFont);
+       //someMessage11[i] = new Display(ScheduledDepTime, niceFont);
+       //someMessage12[i] = new Display(ActDepTime, niceFont);
+       //someMessage13[i] = new Display(ScheduledArrTime, niceFont);
+       //someMessage14[i] = new Display(ActARRTime, niceFont);
+       //someMessage15[i] = new Display(destinationWAC, niceFont);
+       //someMessage16[i] = new Display(distance, 0 , 0, niceFont);
+       //someMessage17[i] = new Display(cancelled, 0, niceFont);
+       //someMessage18[i] = new Display(diverted, 0, niceFont );
        i++;
      }
    }
@@ -326,23 +340,20 @@ statesWidArray[49] = new widget (wyoming, 243, "Wyoming", "WY");
      
 
   map = new Map(statesWidArray); 
+  
   titleWidget = new widget(325, 40, 400, 100, 1, "TRUST-PILOT*", color(#123266), color(#123266), (1), titleFont);
   triangleWidget1 = new widget(950, 425, 950, 475, 975, 450, 1, color(#123266));
   triangleWidget2 = new widget(50, 425, 50, 475, 25, 450, 1, color(#123266));
-
   carrierWid1 = new widget(100, 200, 200, 125, 2, "AA", color(#123266), color(#166bba), (0), titleFont);
   carrierWid2 = new widget(400, 200, 200, 125, 2, "AS", color(#123266), color(#166bba), (0), titleFont);
   carrierWid3 = new widget(700, 200, 200, 125, 2, "B6", color(#123266), color(#166bba), (0), titleFont);
-
   carrierWid4 = new widget(100, 358, 200, 125, 2, "HA", color(#123266), color(#166bba), (0), titleFont);
   carrierWid5 = new widget(400, 358, 200, 125, 2, "NK", color(#123266), color(#166bba), (0), titleFont);
   carrierWid6 = new widget(700, 358, 200, 125, 2, "G4", color(#123266), color(#166bba), (0), titleFont);
-
   carrierWid7 = new widget(100, 516, 200, 125, 2, "WN", color(#123266), color(#166bba), (0), titleFont);
   carrierWid8 = new widget(400, 516, 200, 125, 2, "F9", color(#123266), color(#166bba), (0), titleFont);
   carrierWid9 = new widget(700, 516, 200, 125, 2, "UA", color(#123266), color(#166bba), (0), titleFont);
   carrierWid11 = new widget(400, 674, 200, 125, 2, "DL", color(#123266), color(#166bba), (0), titleFont);
-
   messageWidget = new widget(20, 30, 50, 50, 2, "Press", color(0), color(255), 0, titleFont); 
   
   carrierWidgets = new ArrayList();
@@ -411,7 +422,7 @@ delaysArray[37] = new widget (oregon,color(210, 158, 105), "Oregon", "OR");
 delaysArray[38] = new widget (pennsylvania, color(246, 153, 105), "Pennsylvania", "PA");
 delaysArray[39] = new widget (rhodeIsland, color(232, 158, 101), "Rhode Island", "RI");
 delaysArray[40] = new widget (southCarolina, color(227, 157, 102), "South Carolina", "SC");
-delaysArray[41]= new widget (southDakota, color(235, 156, 105), "South Dakota", "SD");
+delaysArray[41] = new widget (southDakota, color(235, 156, 105), "South Dakota", "SD");
 delaysArray[42] = new widget (tennessee, color(233, 154, 105), "Tennessee", "TN");
 delaysArray[43] = new widget (texas, color(197, 86, 9), "Texas", "TX");
 delaysArray[44] = new widget (utah, color(255, 156, 110), "Utah", "UT");
@@ -432,6 +443,7 @@ delaysArray[49] = new widget (wyoming, color(244, 151, 108), "Wyoming", "WY");
  
  //creating cancellations array 
  cancellationsStates = new ArrayList(); 
+ //3rd map 
 cancellationsA[0] = new widget(michigan, color(237, 109, 97), "Michigan", "MI");
 cancellationsA[1] = new widget (ohio, color(237, 114, 97), "Ohio", "OH");
 cancellationsA[2] = new widget (alabama, color(237, 83, 97), "Alabama", "AL");
@@ -490,10 +502,11 @@ for(int k = 0;k<cancellationsA.length;k++){
 cancellationsStates.add(triangleWidget1); 
 cancellationsStates.add(triangleWidget2); 
 
-  mapScreen2 = new screen(255, delaysStates); 
-  mainScreen = new screen(255, carrierWidgets);
-  mapScreen = new screen (255, states);
-  mapScreen3 = new screen(255, cancellationsStates); 
+
+  mainScreen = new screen(255, carrierWidgets, backG);
+  mapScreen = new screen (255, states, backG);
+  mapScreen2 = new screen(255, delaysStates, backG); 
+  mapScreen3 = new screen(255, cancellationsStates, backG); 
   
 }
 
@@ -501,7 +514,6 @@ void draw() {
   
   background(255);
   fill(0);
-  //message.draw();
 
   if (screen == 0){
     mainScreen.draw();
@@ -608,15 +620,16 @@ void draw() {
     case BUTTON11:
       carrierWid11.trustRating = 0.90;
       break;
-    case home:
-      println("HOME");
-      break;
-    case triLeft:
-      //println("TRIANGLE LEFT");
-      break;
-    case triRight:
-      //println("TRIANGLE RIGHT");
-      break;
+    //case home:
+    //  println("HOME");
+    //  break;
+    //case triLeft:
+    //  //println("TRIANGLE LEFT");
+    //  break;
+    //case triRight:
+    //  //println("TRIANGLE RIGHT");
+    //  break;
+    //}
     }
   }
 }
@@ -626,12 +639,17 @@ int previousColor = 0;
 int previousColor1 = 0;
 int previousColor2 = 0;
 color xCol = 0;
+
+int specificScreen = screen;
+
+
 void mousePressed() {
- 
-int event;
+int event =0;
   for (int i = 0; i < carrierWidgets.size(); i++) {
     widget currentWidget = (widget) carrierWidgets.get(i);
     event = currentWidget.getEvent(mouseX, mouseY);
+  }
+    println("Clicked");
     switch(event) {
     case BUTTON1:
       println("Button 1");
@@ -669,8 +687,7 @@ int event;
     case BUTTON12:
       println("Button 12");
       break;
-    case home:
-      println("HOME");   
+    case home:  
       carrierWid1.trustRating = 0;
       carrierWid2.trustRating = 0;
       carrierWid3.trustRating = 0;
@@ -683,19 +700,27 @@ int event;
       carrierWid11.trustRating = 0;
       break;
     case triLeft:
-      println("TRIANGLE LEFT");
-      if(screen == 3) screen = 1;
-      else if(screen == 2) screen = 1; 
-      else screen = 0; 
-      println(screen); 
+      //println("TRIANGLE LEFT");
+      //screen--;
+      if(screen == 3){ 
+        screen =2;
+        break;
+      }
+      if(screen == 2){
+        screen = 1;
+        break;
+      }
+      else screen = 0;
       break;
     case triRight:
+      //specificScreen = specificScreen + 1;
+      println(screen);
       if(screen == 1) screen =2;
       else if(screen == 2) screen = 3;
       else screen = 1; 
       break;
     }
-  }
+  
     xCol = get(mouseX, mouseY);
     xPos = 0; 
     yPos = 0;
@@ -731,8 +756,6 @@ int event;
         state.widgetColor = 0; 
       }
     }
-
-
 }
 void mouseMoved(){
   color xCol = get(mouseX, mouseY); 
@@ -762,7 +785,6 @@ void mouseDragged(){
           println("located"); 
         }
       }
-  
 }
 
 
