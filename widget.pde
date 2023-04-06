@@ -5,8 +5,6 @@
   String label = " ";
   color widgetColour, fontColour, shadeColour;
   PFont widgetFont;
-
-   
   String widgetName; 
   int event;
   color widgetColor, labelColor, StrokeColor;
@@ -122,8 +120,7 @@ class widget {
     text(label, x+50, y+68);
   }
   
-   void draw(PShape state) {
-     //if(screen == 2) this.widgetColor = 10;
+   void draw(PShape state) { // draws each state as widgets
     state.setFill(widgetColor);
     shape(state, -60, 75);
   }

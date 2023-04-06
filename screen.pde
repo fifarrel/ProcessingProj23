@@ -1,19 +1,19 @@
+
 class screen {
   color bG;
   ArrayList<widget> w;
   int event;
   ArrayList<PImage> backG;
   int tmp;
-  
+  // screen constructor
   screen(color bG, ArrayList<widget> widget, ArrayList <PImage> backG){
     this.bG = bG;
     this.w = widget;
     this.backG = backG;
   }
   
-  void draw() {
-    background(255);
-    image(backG.get(tmp), 0, 0, 1000, 850);
+  void draw() {                             // draw the main screens' widgets 
+    image(backG.get(tmp), 0, 0, 1000, 850); // draw the background
     for (int i = 0; i < w.size(); i++){
       w.get(i).draw();
       if (i == w.size() - 1){
@@ -26,8 +26,7 @@ class screen {
     tmp++;
     if (tmp == 61) tmp =0;
   }
-  void draw(int a){
-    background(bG);
+  void draw(int a){                          // draws the maps
     image(backG.get(tmp), 0, 0, 1000, 850);
     a = a - 1;
     int i = 0;

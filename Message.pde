@@ -1,3 +1,6 @@
+// draw the the complete message on the message from the display class
+// not used in the main project
+// by YCZ
 class Message {
   void draw(){
     int tmp = i+2;

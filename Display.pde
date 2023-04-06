@@ -1,10 +1,15 @@
+// This class was used to display the info from the csv file 
+// It is not use at all in the main project 
+// by YCZ
 class Display {
   int gap = 20;
   int x = 50;
 
   String displayMessage;
   PFont f;
-
+    //  display constructor is especially made for true or false (boolean) 
+    //  value loaded form the csv, int b is used to seperate it of the other one 
+    //  i.e. different signatures
     Display (int a, int b, PFont f ){
       b = b - 1;
       this.f = f;
@@ -15,7 +20,7 @@ class Display {
         displayMessage = "True";
       }
     }
-    
+    // this display constructor is use to display the times from the csv file
     Display(Integer a, int b, int c, PFont f) {
        b = b - 1;
        c = c - 1;
@@ -25,6 +30,7 @@ class Display {
        this.f = f;
     }
     
+    // dusplay strings
     Display(Integer a, PFont f){
       displayMessage = a.toString();
       if (a > 100) {
@@ -32,9 +38,7 @@ class Display {
         str.insert(displayMessage.length() - 2, ":");
         displayMessage = str.toString();
         
-        ;
       }
-     
       this.f = f;
     }
     
@@ -42,32 +46,16 @@ class Display {
       displayMessage = a;
       this.f = f;
       }
-    
-    
     String toString() {
       return displayMessage;
     }
-  
-  
-    
+ 
+    //drawing the message on the screen
     void draw(int x, int y) {
     fill(0);
     textFont(f); 
     text(displayMessage, x , y);
-    
-    //for (int k = 0; k < arrayOfMessages.length; k++)
-    //{
-    //  text(arrayOfMessages[k], 50 , 50 + (k * gap));
-    //}
 
-    //int x = 10;
-    //for (int i = 0; i < displayMessage.length(); i++) {
-    //  textSize(15);
-    //  text(displayMessage.charAt(i),x,height/2);
-    //  x += textWidth(displayMessage.charAt(i));
-    //}
-    //text(displayMessage,50,50 + (gap * x)); make the message move
-    //x++;
     }
   
 }
