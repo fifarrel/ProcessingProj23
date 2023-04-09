@@ -1,5 +1,6 @@
+  
   int x, y;
-  int x1, x2, x3, y1, y2, y3;
+  int x1, x2, x3, y1, y2, y3, trustRatingType;
   int width, height;
   int direction;
   String label = " ";
@@ -8,13 +9,12 @@
   String widgetName; 
   int event;
   color widgetColor, labelColor, StrokeColor;
-
   PShape widgetShape;
-
+// the widget class have 5 different constructor for different widgets
 class widget {
   
   int x, y;
-  int x1, x2, x3, y1, y2, y3;
+  int x1, x2, x3, y1, y2, y3, trustRatingType;
   int width, height;
   int direction;
   String label = " ";
@@ -22,12 +22,12 @@ class widget {
   PFont widgetFont;
   PShape triangle;
   float trustRating;
-   
   String widgetName, origin; 
   int event;
   color widgetColor, labelColor, StrokeColor;
   PShape widgetShape;
-  int flightDelay = (int) random(0, 10);
+
+  
   widget(int x1, int y1, int x2, int y2, int x3, int y3, int direction, color widgetColour) 
   {
     this.x1 = x1;
@@ -38,10 +38,24 @@ class widget {
     this.y3 = y3;
     this.direction = direction;
     this.widgetColour = widgetColour;
-    
   }
-
+  
   widget(int x, int y, int width, int height, int direction, String label,
+    color widgetColour, color shadeColour, float trustRating, int trustRatingType, PFont widgetFont) {
+    this.x=x;
+    this.y=y;
+    this.width = width;
+    this.height= height;
+    this.label=label;
+    this.direction = direction;
+    this.widgetColour=widgetColour;
+    this.widgetFont=widgetFont;
+    this.shadeColour = shadeColour;
+    this.trustRating = trustRating;
+    this.trustRatingType = trustRatingType;
+  }
+    // this is made for widgets on the main screen 
+    widget(int x, int y, int width, int height, int direction, String label,
     color widgetColour, color shadeColour, float trustRating, PFont widgetFont) {
     this.x=x;
     this.y=y;
@@ -53,6 +67,18 @@ class widget {
     this.widgetFont=widgetFont;
     this.shadeColour = shadeColour;
     this.trustRating = trustRating;
+  }
+     // this is made for widgets on the main screen 
+    widget(int x, int y, int width, int height, int trustRatingType, String label,
+    color widgetColour, PFont widgetFont) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.trustRatingType = trustRatingType;
+    this.label = label;
+    this.widgetColour = widgetColour;
+    this.widgetFont = widgetFont;
   }
 
    int getEvent(int mouseX, int mouseY) {
@@ -101,9 +127,18 @@ class widget {
     if ((mouseX >= 325) && (mouseX <= 725) && (mouseY >= 40) && (mouseY <= 140)) {
       return 22;
     }
+    if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 10) && (mouseY <= 60)) { //// <<<<<<<<<<<<<<<<<<<<<<<<<<<< TRUST RATING WIDGETS.
+      return 31;
+    }
+    if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 68) && (mouseY <= 110)) { //// <<<<<<<<<<<<<<<<<<<<<<<<<<<< TRUST RATING WIDGETS.
+      return 32;
+    }
+    if ((mouseX >= 100) && (mouseX <= 250) && (mouseY >= 120) && (mouseY <= 160)) { //// <<<<<<<<<<<<<<<<<<<<<<<<<<<< TRUST RATING WIDGETS.
+      return 33;
+    }
     return 0;
   }
-   
+   // this constructor is specially made for the each state of our USA map
    widget(PShape widgetShape, color widgetColor, String widgetName, String origin){
       this.widgetShape = widgetShape;
       this.origin = origin; 
@@ -111,7 +146,7 @@ class widget {
       this.widgetName = widgetName;
    }
    
-  void draw() {
+  void draw() {    // draw the other widgets
     fill(widgetColour);
     rect(x, y, width, height, 28);
     fill(shadeColour);
@@ -125,7 +160,7 @@ class widget {
     shape(state, -60, 75);
   }
   
-  void drawTriangle(){
+  void drawTriangle(){ // draw the triangle buttoms
     fill(0, 255, 0);
     triangle(x1, y1, x2, y2, x3, y3);
   }

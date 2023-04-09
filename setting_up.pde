@@ -1,7 +1,11 @@
+
+// this tab just contain the initialisation of variables 
+
 void settings() {
    size (screenWidth, screenLength);
 }
 void setup() {
+  
   screen = 0;
   background (255);
   table = loadTable("flights2k(1).csv", "header");
@@ -9,9 +13,9 @@ void setup() {
   usa = loadShape("us.svg");
   titleFont = loadFont("AdelleSansDevanagari-Regular-48.vlw");
   textFont(titleFont);
+  
   plane = loadImage("airplane.gif"); 
   plane.resize(50, 50); 
-  
   statesWidArray = new widget[51];
   delaysArray = new widget[51];
   cancellationsA = new widget[51]; 
@@ -69,16 +73,19 @@ void setup() {
      for(String key: weightedRatings.keySet()){
          println(key + ":" + weightedRatings.get(key)); 
      }
-     numberOfFrames = 61;
-     background = new PImage [numberOfFrames];
-    //background gif
-     backG = new ArrayList();
+     
+    //background gif is made here, using a splitter on online, I am able to turn a gif to our background
+    // YCZ
+    numberOfFrames = 61;
+    background = new PImage [numberOfFrames];
+    backG = new ArrayList();
     int p = 0;
-    while (p < numberOfFrames){
-    background[p] = loadImage("frame_"+p+"_delay-0.07s.gif");
-    backG.add(background[p]);
-    p++;
-  }
+    while (p < numberOfFrames)
+    {
+      background[p] = loadImage("frame_"+p+"_delay-0.07s.gif");
+      backG.add(background[p]);
+      p++;
+    }
 
     //println("Mean distance: " + Math.round(distanceMean) + " miles. ");
     ////state with highest number of cancellations
@@ -100,27 +107,28 @@ void setup() {
     //  println(HMKey + ":" + Co2HM.frequencies.get(HMKey));
     //}
   
-  someMessage =  new Display[table.getRowCount()];
-  someMessage2 = new Display[table.getRowCount()];
-  someMessage3 = new Display[table.getRowCount()];
-  someMessage4 = new Display[table.getRowCount()];
-  someMessage5 = new Display[table.getRowCount()];
-  someMessage6 = new Display[table.getRowCount()];
-  someMessage7 = new Display[table.getRowCount()];
-  someMessage8 = new Display[table.getRowCount()];
-  someMessage9 = new Display[table.getRowCount()];
-  someMessage10 = new Display[table.getRowCount()];
-  someMessage11 = new Display[table.getRowCount()];
-  someMessage12 = new Display[table.getRowCount()];
-  someMessage13 = new Display[table.getRowCount()];
-  someMessage14 = new Display[table.getRowCount()];
-  someMessage15 = new Display[table.getRowCount()];
-  someMessage16 = new Display[table.getRowCount()];
-  someMessage17 = new Display[table.getRowCount()];
-  someMessage18 = new Display[table.getRowCount()];
+  //someMessage =  new Display[table.getRowCount()];
+  //someMessage2 = new Display[table.getRowCount()];
+  //someMessage3 = new Display[table.getRowCount()];
+  //someMessage4 = new Display[table.getRowCount()];
+  //someMessage5 = new Display[table.getRowCount()];
+  //someMessage6 = new Display[table.getRowCount()];
+  //someMessage7 = new Display[table.getRowCount()];
+  //someMessage8 = new Display[table.getRowCount()];
+  //someMessage9 = new Display[table.getRowCount()];
+  //someMessage10 = new Display[table.getRowCount()];
+  //someMessage11 = new Display[table.getRowCount()];
+  //someMessage12 = new Display[table.getRowCount()];
+  //someMessage13 = new Display[table.getRowCount()];
+  //someMessage14 = new Display[table.getRowCount()];
+  //someMessage15 = new Display[table.getRowCount()];
+  //someMessage16 = new Display[table.getRowCount()];
+  //someMessage17 = new Display[table.getRowCount()];
+  //someMessage18 = new Display[table.getRowCount()];
+  //message = new Message();
   
-  message = new Message();
   int i = 0;
+  // get the data from the csv file
    while (i < table.getRowCount()){ 
      for (TableRow row : table.rows()) { 
        date = row.getString("FL_DATE");
@@ -164,7 +172,7 @@ void setup() {
        i++;
      }
    }
-
+  // assign each state as PImages
   michigan = usa.getChild("MI");
   ohio = usa.getChild("OH");
   massachusetts = usa.getChild("MA");
@@ -218,7 +226,7 @@ void setup() {
   wyoming = usa.getChild("WY"); // 56
 
 
-
+// using the PImages to create widgets 
 statesWidArray[0] = new widget(michigan, 150, "Michigan", "MI");
 statesWidArray[1] = new widget (ohio, 195, "Ohio", "OH");
 statesWidArray[2] = new widget (alabama, 210, "Alabama", "AL");
@@ -302,6 +310,10 @@ statesWidArray[49] = new widget (wyoming, 243, "Wyoming", "WY");
   carrierWid11 = new widget(400, 674, 200, 125, 2, "DL", color(#123266), color(#166bba), (0), titleFont);
   messageWidget = new widget(20, 30, 50, 50, 2, "Press", color(0), color(255), 0, titleFont); 
   
+  trustRatingWid1 = new widget(600, 20, 150, 40, RATINGTYPE1, "", color(#4287f5), titleFont);
+  trustRatingWid2 = new widget(650, 70, 150, 40, RATINGTYPE1, "", color(#4287f5), titleFont);
+  trustRatingWid3 = new widget(700, 120, 150, 40, RATINGTYPE1, "", color(#4287f5), titleFont);
+  
   carrierWidgets = new ArrayList();
   carrierWidgets.add(carrierWid1);
   carrierWidgets.add(carrierWid2);
@@ -314,6 +326,7 @@ statesWidArray[49] = new widget (wyoming, 243, "Wyoming", "WY");
   carrierWidgets.add(carrierWid9);
   carrierWidgets.add(carrierWid11);
   carrierWidgets.add(titleWidget);
+
   carrierWidgets.add(triangleWidget1);
   carrierWidgets.add(triangleWidget2);
   
@@ -449,9 +462,14 @@ cancellationsStates.add(triangleWidget1);
 cancellationsStates.add(triangleWidget2); 
 
 
+empty = new ArrayList();
+empty.add(triangleWidget1); 
+empty.add(triangleWidget2); 
   mainScreen = new screen(255, carrierWidgets, backG);
   mapScreen = new screen (255, states, backG);
   mapScreen2 = new screen(255, delaysStates, backG); 
   mapScreen3 = new screen(255, cancellationsStates, backG); 
+  sourceScreen = new screen (255, empty, backG);
+  creditScreen = new screen(255, empty, backG);
   
 }

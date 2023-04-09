@@ -8,29 +8,24 @@ int flightNumber, originAirportWAC, destinationWAC, ScheduledDepTime, ActDepTime
 ActARRTime, distance, diverted, cancelled;
 
 int screen, i;
-screen mainScreen, mapScreen, mapScreen2, mapScreen3;
+screen mainScreen, mapScreen, mapScreen2, mapScreen3, creditScreen, sourceScreen;
 PFont font, niceFont;
 
 widget titleWidget, triangleWidget1, triangleWidget2, carrierWid1, carrierWid2, carrierWid3, carrierWid4,
-carrierWid5, carrierWid6, carrierWid7, carrierWid8, carrierWid9, carrierWid10, carrierWid11, carrierWid12, messageWidget;
-
+carrierWid5, carrierWid6, carrierWid7, carrierWid8, carrierWid9, carrierWid10, carrierWid11, carrierWid12, messageWidget
+, trustRatingWid1, trustRatingWid2, trustRatingWid3;
 widget statesWidArray[], delaysArray[], cancellationsA[];
-
 Message message;
 float [] chart = new float [2000];
 int [] onOfVDistance = new int [2000];
-
 PShape usa;
-
 Map map;
-
 PShape triangle;
 ArrayList carrierWidgets;
 ArrayList states, delaysStates, cancellationsStates;
 float trustRating;
-
 PFont titleFont;
-//<<<<<<< HEAD
+
 int flightDelay;
 
 int xPos, yPos;
@@ -42,92 +37,255 @@ HashMap<String,Double> co2Map,delaysMap,cancellationsMap;
 double Co2Mean, delaysMean, cancellationsMean;
 double Co2SD, delaysSD, cancellationsSD;
 String[] airlineNames = {"AA", "AS", "B6", "HA", "NK", "G4", "WN", "F9", "UA", "DL"};
-//ratings for each airline 
+
 TreeMap<String, Double> ratings;
 TreeMap<String, Double> weightedRatings; 
 heatMapMetrics delaysHM, cancellationsHM, Co2HM;
 PImage plane;
 PImage [] background;
 int numberOfFrames;
-ArrayList backG;
+ArrayList backG, empty;
+int a = 825;
+int g = 700;
+int h = 950;
 
-
+boolean selector = false;
 void draw() {
-  
   background(255);
   fill(0);
-
-  if (screen == 0){
+  if (screen == 0)
+  {
+    a = 825;
+    g = 700;
+    h = 900;
     mainScreen.draw();
-      
+    mainScreen.selection();
   }
-  else if (screen == 1){
-    mapScreen.draw(1);
-    fill(60); stroke(0);
-    text("Co2 emissions per state", 250, 65); 
-    line(250, 80, 770, 80);
-
-  
-  if(previousWidgetX != 0 && xPos != 0){
-    line(previousWidgetX, previousWidgetY, xPos, yPos);
-  }
-  if(displayStateToStateDist && newWidget != null){
-    fill(0);
-    int S2SCo2 = calculateDistance(previousWidget.origin, newWidget.origin);
-    text("Distance from " + previousWidget.widgetName+" airport to ", 70, 700);
-    text(newWidget.widgetName + " airport is " + S2SCo2 + " miles", 80, 750);
-  }
-    for (int i = 0; i < states.size() - 2; i++){
-      widget cur = (widget) states.get(i);
-      if (cur.widgetColor == 0 && displayState == true){
+    else if (screen == 1)
+    {
+      mapScreen.draw(1);
+      fill(60); stroke(0);
+      text("Co2 emissions per state", 250, 65); 
+      line(250, 80, 770, 80);
+      if(previousWidgetX != 0 && xPos != 0)
+      {
+        line(previousWidgetX, previousWidgetY, xPos, yPos);
+      }
+      if(displayStateToStateDist && newWidget != null)
+      {
         fill(0);
-        long frequency = Math.round(Co2HM.calculateFrequency(cur.origin));
-        text(cur.widgetName + " Co2 emissions = " +  frequency + ((frequency == 1) ? " tonne" : " tonnes"), 90, 700);
+        int S2SCo2 = calculateDistance(previousWidget.origin, newWidget.origin);
+        text("Distance from " + previousWidget.widgetName+" airport to ", 70, 700);
+        text(newWidget.widgetName + " airport is " + S2SCo2 + " miles", 80, 750);
+      }
+      for (int i = 0; i < states.size() - 2; i++)
+      {
+        widget cur = (widget) states.get(i);
+        if (cur.widgetColor == 0 && displayState == true)
+        {
+          fill(0);
+          long frequency = Math.round(Co2HM.calculateFrequency(cur.origin));
+          text(cur.widgetName + " Co2 emissions = " +  frequency + ((frequency == 1) ? " tonne" : " tonnes"), 90, 700);
+        }
       }
     }
-  }
-  else if(screen == 2){
-    mapScreen2.draw(1); 
-    fill(173, 71, 3); stroke(0);
-    text("Delays per state", 300, 65); 
-    line(300, 80, 630, 80);
-    for (int i = 0; i < delaysStates.size() - 2; i++){
-      widget cur = (widget) delaysStates.get(i);
-      if (cur.widgetColor == 0 && displayState == true){
-        fill(0);
-        long frequency = Math.round(delaysHM.calculateFrequency(cur.origin));
-        text(cur.widgetName + " delays = " +  frequency, 190, 700);
+    else if(screen == 2)
+    {
+      mapScreen2.draw(1); 
+      fill(173, 71, 3); stroke(0);
+      text("Delays per state", 300, 65); 
+      line(300, 80, 630, 80);
+      for (int i = 0; i < delaysStates.size() - 2; i++)
+      {
+        widget cur = (widget) delaysStates.get(i);
+        if (cur.widgetColor == 0 && displayState == true)
+        {
+          fill(0);
+          long frequency = Math.round(delaysHM.calculateFrequency(cur.origin));
+          text(cur.widgetName + " delays = " +  frequency, 190, 700);
+        }
       }
-    }
     
-  }
-  else if(screen == 3){
-    mapScreen3.draw(1); 
-    fill(148, 10, 10); stroke(0);
-    text("Cancellations per state", 250, 65); 
-    line(250, 80, 750, 80);
-    fill(148, 10, 10);
-    for (int i = 0; i < cancellationsStates.size() - 2; i++){
-      widget cur = (widget) cancellationsStates.get(i);
-      if (cur.widgetColor == 0 && displayState == true){
-        fill(0);
-        long frequency = Math.round(cancellationsHM.calculateFrequency(cur.origin));
-        text(cur.widgetName + " Cancellations = " +  frequency, 90, 700);
+    }  
+    else if(screen == 3)
+    {
+      mapScreen3.draw(1); 
+      fill(148, 10, 10); stroke(0);
+      text("Cancellations per state", 250, 65); 
+      line(250, 80, 750, 80);
+      fill(148, 10, 10);
+      for (int i = 0; i < cancellationsStates.size() - 2; i++)
+      {
+        widget cur = (widget) cancellationsStates.get(i);
+        if (cur.widgetColor == 0 && displayState == true)
+        {
+          fill(0);
+          long frequency = Math.round(cancellationsHM.calculateFrequency(cur.origin));
+          text(cur.widgetName + " Cancellations = " +  frequency, 90, 700);
+        }
       }
     }
-  }
-    if(displayPopUp == true && screen == 1) {
-    fill(88, 172, 191);
-    rect(mouseX, mouseY, 120, 40, 10);
-    fill(255); textSize(12);
-    text("Click and drag to", mouseX+10, mouseY+20);
-    text("get the distance!", mouseX + 10, mouseY + 33); 
-    textSize(48);
-  }
+    else if (screen == -1)
+    {
+      sourceScreen.draw();
+      sourceScreen.message(1);
+    }
+    else if (screen == -2)
+    {
+      creditScreen.draw();
+      creditScreen.message();
+    }
+    if(displayPopUp == true && screen == 1) 
+    {
+      fill(88, 172, 191);
+      rect(mouseX, mouseY, 120, 40, 10);
+      fill(255); textSize(12);
+      text("Click and drag to", mouseX+10, mouseY+20);
+      text("get the distance!", mouseX + 10, mouseY + 33); 
+      textSize(48);
+    }
+  
   int event;
-  for (int i = 0; i < carrierWidgets.size(); i++) {
+  for (int i = 0; i < carrierWidgets.size(); i++) 
+  {
     widget currentWidget = (widget) carrierWidgets.get(i);
     event = currentWidget.getEvent(mouseX, mouseY);
+    if (carrierWid1.trustRatingType == 1) 
+    {
+        switch(event) 
+        {
+          case BUTTON1:
+            carrierWid1.trustRating = 0.3; //  <<<<<<<<<<<<<<<<< emmas get function
+            carrierWid1.shadeColour = (#166bba);
+            break;
+          case BUTTON2:
+            carrierWid2.trustRating = 0.8;
+            carrierWid2.shadeColour = (#166bba);
+            break;
+          case BUTTON3:
+            carrierWid3.trustRating = 0.28;
+            carrierWid3.shadeColour = (#166bba);
+            break;
+          case BUTTON4:
+            carrierWid4.trustRating = 0.45;
+            carrierWid4.shadeColour = (#166bba);
+            break;
+          case BUTTON5:
+            carrierWid5.trustRating = 0.33;
+            carrierWid5.shadeColour = (#166bba);
+            break;
+          case BUTTON6:
+            carrierWid6.trustRating = 0.56;
+            carrierWid6.shadeColour = (#166bba);
+            break;
+          case BUTTON7:
+            carrierWid7.trustRating = 0.77;
+            carrierWid7.shadeColour = (#166bba);
+            break;
+          case BUTTON8:
+            carrierWid8.trustRating = 0.452;
+            carrierWid8.shadeColour = (#166bba);
+            break;
+          case BUTTON9:
+            carrierWid9.trustRating = 0.79;
+            carrierWid9.shadeColour = (#166bba);
+            break;
+          case BUTTON11:
+            carrierWid11.trustRating = 0.90;
+            carrierWid11.shadeColour = (#166bba);
+            break;
+        }
+    }
+    if (carrierWid1.trustRatingType == 2) 
+    {
+      switch(event) 
+      {
+        case BUTTON1:
+          carrierWid1.trustRating = 0.6;
+          carrierWid1.shadeColour = (#fcba03);
+          break;
+        case BUTTON2:
+          carrierWid2.trustRating = 0.2;
+          carrierWid2.shadeColour = (#fcba03);
+          break;
+        case BUTTON3:
+          carrierWid3.trustRating = 0.9;
+          carrierWid3.shadeColour = (#fcba03);
+          break;
+        case BUTTON4:
+          carrierWid4.trustRating = 0.15;
+          carrierWid4.shadeColour = (#fcba03);
+          break;
+        case BUTTON5:
+          carrierWid5.trustRating = 0.23;
+          carrierWid5.shadeColour = (#fcba03);
+          break;
+        case BUTTON6:
+          carrierWid6.trustRating = 0.76;
+          carrierWid6.shadeColour = (#fcba03);
+          break;
+        case BUTTON7:
+          carrierWid7.trustRating = 0.37;
+          carrierWid7.shadeColour = (#fcba03);
+          break;
+        case BUTTON8:
+          carrierWid8.trustRating = 0.6;
+          carrierWid8.shadeColour = (#fcba03);
+          break;
+        case BUTTON9:
+          carrierWid9.trustRating = 0.19;
+          carrierWid9.shadeColour = (#fcba03);
+          break;
+        case BUTTON11:
+          carrierWid11.trustRating = 0.5;
+          carrierWid11.shadeColour = (#fcba03);
+          break;
+        }
+      }
+    if (carrierWid1.trustRatingType == 3) {
+      switch(event) {
+      case BUTTON1:
+        carrierWid1.trustRating = 0.7;
+        carrierWid1.shadeColour = (#e303fc);
+        break;
+      case BUTTON2:
+        carrierWid2.trustRating = 0.6;
+        carrierWid2.shadeColour = (#e303fc);
+        break;
+      case BUTTON3:
+        carrierWid3.trustRating = 0.48;
+        carrierWid3.shadeColour = (#e303fc);
+        break;
+      case BUTTON4:
+        carrierWid4.trustRating = 0.65;
+        carrierWid4.shadeColour = (#e303fc);
+        break;
+      case BUTTON5:
+        carrierWid5.trustRating = 0.73;
+        carrierWid5.shadeColour = (#e303fc);
+        break;
+      case BUTTON6:
+        carrierWid6.trustRating = 0.64;
+        carrierWid6.shadeColour = (#e303fc);
+        break;
+      case BUTTON7:
+        carrierWid7.trustRating = 0.54;
+        carrierWid7.shadeColour = (#e303fc);
+        break;
+      case BUTTON8:
+        carrierWid8.trustRating = 0.2;
+        carrierWid8.shadeColour = (#e303fc);
+        break;
+      case BUTTON9:
+        carrierWid9.trustRating = 0.9;
+        carrierWid9.shadeColour = (#e303fc);
+        break;
+      case BUTTON11:
+        carrierWid11.trustRating = 0.21;
+        carrierWid11.shadeColour = (#e303fc);
+        break;
+      }
+    }
     switch(event) {
     case BUTTON1:
       carrierWid1.trustRating = 0.3;
@@ -163,19 +321,19 @@ void draw() {
   }
 }
 
-//previousWidget = null; 
 int previousColor = 0;
 int previousColor1 = 0;
 int previousColor2 = 0;
 color xCol = 0;
 
-void mousePressed() {
-int event =0;
-  for (int i = 0; i < carrierWidgets.size(); i++) {
-    widget currentWidget = (widget) carrierWidgets.get(i);
-    event = currentWidget.getEvent(mouseX, mouseY);
-  }
-    println("Clicked");
+void mousePressed() 
+{
+    int event =0;
+    for (int i = 0; i < carrierWidgets.size(); i++) 
+    {
+      widget currentWidget = (widget) carrierWidgets.get(i);
+      event = currentWidget.getEvent(mouseX, mouseY);
+    }  
     switch(event) {
     case BUTTON1:
       println("Button 1");
@@ -226,25 +384,47 @@ int event =0;
       carrierWid11.trustRating = 0;
       break;
     case triLeft:
-      //println("TRIANGLE LEFT");
-      //screen--;
       if(screen == 3){ 
         screen =2;
-        break;
       }
-      if(screen == 2){
+      else if(screen == 2){
         screen = 1;
-        break;
       }
-      else screen = 0;
+      else if(screen == 1){
+        screen = 0;
+      }
+      else if (screen == 0) {
+         screen = -1;
+      }
+      else if (screen == -1) {
+        screen = -2;
+      }
       break;
     case triRight:
-      //specificScreen = specificScreen + 1;
-      println(screen);
-      if(screen == 1) screen =2;
-      else if(screen == 2) screen = 3;
-      else screen = 1; 
-      break;
+        if(screen == 1) screen =2;
+        else if(screen == 2) screen = 3;
+        else if (screen == -1) screen = 0;
+        else if (screen == -2) screen = -1;
+        else screen = 1; 
+        break;
+      case TYPEEVENT1:
+        carrierWid1.trustRatingType = RATINGTYPE1;
+        trustRatingWid1.widgetColour = #ffffff;
+        trustRatingWid2.widgetColour = #4287f5;
+        trustRatingWid3.widgetColour = #4287f5;
+        break;
+    case TYPEEVENT2:
+        carrierWid1.trustRatingType = RATINGTYPE2;
+        trustRatingWid1.widgetColour = #4287f5;
+        trustRatingWid2.widgetColour = #ffffff;
+        trustRatingWid3.widgetColour = #4287f5;
+        break;
+    case TYPEEVENT3:
+        carrierWid1.trustRatingType = RATINGTYPE3;
+        trustRatingWid1.widgetColour = #4287f5;
+        trustRatingWid2.widgetColour = #4287f5;
+        trustRatingWid3.widgetColour = #ffffff;
+        break;
     }
   
     xCol = get(mouseX, mouseY);
@@ -293,7 +473,6 @@ void mouseReleased(){
   if((int)blue(xCol) != (int)blue(newCol) && (int)blue(newCol) != 0){
     displayStateToStateDist = true;  
     displayState = false; 
-    
   }
   else{
     displayState = true;  
@@ -301,16 +480,19 @@ void mouseReleased(){
   }
 }
 
-void mouseDragged(){
+void mouseDragged()
+{
   xPos = mouseX; 
   yPos = mouseY; 
   color currCol = get(mouseX, mouseY); 
-  for(widget state: statesWidArray){
-      if((int)blue(currCol) == state.widgetColor){
+  for(widget state: statesWidArray)
+  {
+      if((int)blue(currCol) == state.widgetColor)
+      {
           newWidget = state;
           println("located"); 
-        }
-      }
+       }
+  }
 }
 
 
