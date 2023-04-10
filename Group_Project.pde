@@ -24,7 +24,7 @@ PShape triangle;
 ArrayList carrierWidgets;
 ArrayList states, delaysStates, cancellationsStates;
 float trustRating;
-PFont titleFont;
+PFont titleFont, TpFont;
 
 int flightDelay;
 
@@ -202,43 +202,43 @@ void draw() {
       {
         case BUTTON1:
           carrierWid1.trustRating = 0.6;
-          carrierWid1.shadeColour = (#fcba03);
+          carrierWid1.shadeColour = (#fc2803);
           break;
         case BUTTON2:
           carrierWid2.trustRating = 0.2;
-          carrierWid2.shadeColour = (#fcba03);
+          carrierWid2.shadeColour = (#fc2803);
           break;
         case BUTTON3:
           carrierWid3.trustRating = 0.9;
-          carrierWid3.shadeColour = (#fcba03);
+          carrierWid3.shadeColour = (#fc2803);
           break;
         case BUTTON4:
           carrierWid4.trustRating = 0.15;
-          carrierWid4.shadeColour = (#fcba03);
+          carrierWid4.shadeColour = (#fc2803);
           break;
         case BUTTON5:
           carrierWid5.trustRating = 0.23;
-          carrierWid5.shadeColour = (#fcba03);
+          carrierWid5.shadeColour = (#fc2803);
           break;
         case BUTTON6:
           carrierWid6.trustRating = 0.76;
-          carrierWid6.shadeColour = (#fcba03);
+          carrierWid6.shadeColour = (#fc2803);
           break;
         case BUTTON7:
           carrierWid7.trustRating = 0.37;
-          carrierWid7.shadeColour = (#fcba03);
+          carrierWid7.shadeColour = (#fc2803);
           break;
         case BUTTON8:
           carrierWid8.trustRating = 0.6;
-          carrierWid8.shadeColour = (#fcba03);
+          carrierWid8.shadeColour = (#fc2803);
           break;
         case BUTTON9:
           carrierWid9.trustRating = 0.19;
-          carrierWid9.shadeColour = (#fcba03);
+          carrierWid9.shadeColour = (#fc2803);
           break;
         case BUTTON11:
           carrierWid11.trustRating = 0.5;
-          carrierWid11.shadeColour = (#fcba03);
+          carrierWid11.shadeColour = (#fc2803);
           break;
         }
       }

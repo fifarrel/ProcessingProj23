@@ -150,9 +150,10 @@ class widget {
     fill(widgetColour);
     rect(x, y, width, height, 28);
     fill(shadeColour);
-    rect(x, y, width*(trustRating), height, 28);
-    fill(#39994a);
-    text(label, x+50, y+68);
+    noStroke();
+    rect(x, y, width*(trustRating), height, 28); 
+    fill(#ffffff);
+    text(label, x+45, y+58);
   }
   
    void draw(PShape state) { // draws each state as widgets

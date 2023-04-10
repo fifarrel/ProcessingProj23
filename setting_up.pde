@@ -13,7 +13,7 @@ void setup() {
   usa = loadShape("us.svg");
   titleFont = loadFont("AdelleSansDevanagari-Regular-48.vlw");
   textFont(titleFont);
-  
+   
   plane = loadImage("airplane.gif"); 
   plane.resize(50, 50); 
   statesWidArray = new widget[51];
@@ -295,19 +295,19 @@ statesWidArray[49] = new widget (wyoming, 243, "Wyoming", "WY");
 
   map = new Map(statesWidArray); 
   
-  titleWidget = new widget(325, 40, 400, 100, 1, "TRUST-PILOT*", color(#123266), color(#123266), (1), titleFont);
+  titleWidget = new widget(325, 40, 400, 100, 1, "", color(#123266), color(#123266), (1), titleFont);
   triangleWidget1 = new widget(950, 425, 950, 475, 975, 450, 1, color(#123266));
   triangleWidget2 = new widget(50, 425, 50, 475, 25, 450, 1, color(#123266));
-  carrierWid1 = new widget(100, 200, 200, 125, 2, "AA", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid2 = new widget(400, 200, 200, 125, 2, "AS", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid3 = new widget(700, 200, 200, 125, 2, "B6", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid4 = new widget(100, 358, 200, 125, 2, "HA", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid5 = new widget(400, 358, 200, 125, 2, "NK", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid6 = new widget(700, 358, 200, 125, 2, "G4", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid7 = new widget(100, 516, 200, 125, 2, "WN", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid8 = new widget(400, 516, 200, 125, 2, "F9", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid9 = new widget(700, 516, 200, 125, 2, "UA", color(#123266), color(#166bba), (0), titleFont);
-  carrierWid11 = new widget(400, 674, 200, 125, 2, "DL", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid1 = new widget(100, 200, 200, 125, 2, "American\nAirlines", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid2 = new widget(400, 200, 200, 125, 2, "Alaskan\nAirlines", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid3 = new widget(700, 200, 200, 125, 2, "JetBlue", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid4 = new widget(100, 358, 200, 125, 2, "Hawiian\nAirlines", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid5 = new widget(400, 358, 200, 125, 2, "Spirit", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid6 = new widget(700, 358, 200, 125, 2, "Allegiant\nAir", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid7 = new widget(100, 516, 200, 125, 2, "Southwest\nAirlines", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid8 = new widget(400, 516, 200, 125, 2, "Frontier\nAirlines", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid9 = new widget(700, 516, 200, 125, 2, "United\nAirlines", color(#123266), color(#166bba), (0), titleFont);
+  carrierWid11 = new widget(400, 674, 200, 125, 2, "Delta", color(#123266), color(#166bba), (0), titleFont);
   messageWidget = new widget(20, 30, 50, 50, 2, "Press", color(0), color(255), 0, titleFont); 
   
   trustRatingWid1 = new widget(600, 20, 150, 40, RATINGTYPE1, "", color(#4287f5), titleFont);

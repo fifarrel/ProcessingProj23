@@ -5,6 +5,7 @@ class screen {
   int event;
   ArrayList<PImage> backG;
   int tmp;
+  PFont TpFont;
   // screen constructor
   screen(color bG, ArrayList<widget> widget, ArrayList <PImage> backG){
     this.bG = bG;
@@ -157,6 +158,11 @@ class screen {
   }
   // main screen selector
   void selection (){
+    TpFont = loadFont("Calibri-BoldItalic-32.vlw");
+    textFont(TpFont);
+    textSize(55);
+    text("TRUST-PILOT*", 362, 110);
+    
     textFont(titleFont);
       textSize(30);
       if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 10) && (mouseY <= 60)) { 
@@ -168,39 +174,39 @@ class screen {
       else {
         fill(255);
       }
-      rect(40, 10, 250, 45);
-      fill(0, 0, 90);
+      rect(40, 10, 250, 45, 12);
+      fill(#000000); // 0, 0, 90
       text("Press to select", 50, 45);
       
       if (selector){
       if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 10) && (mouseY <= 60)) { 
-        fill(137, 207, 240);
+        fill(#1c89ed); //  Trustwothyness button hover colour
       }
       else {
         fill(255);
       }
-      rect(40, 10, 250, 45);
-      fill(0, 0, 90);
-      text("TrustWorthyness", 50, 45);
+      rect(40, 10, 250, 45, 12);
+      fill(#07092e);//
+      text("TrustWorthiness", 50, 45);
       
       if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 68) && (mouseY <= 110)) { 
-        fill(255, 255, 0);
+        fill(#fa4b2d); //  // CO2 button hover colour
       }
       else {
         fill(255);
       }
-      rect(40, 65, 250, 45);
-      fill(0, 90, 0);
+      rect(40, 65, 250, 45, 12);
+      fill(#38020e);
       text("CO2", 50, 97);
       
       if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 120) && (mouseY <= 164)) { 
-        fill(255, 192, 203);
+        fill(#ec6efa); // punctuality button hover colour
       }
       else {
         fill(255);
       }
-      rect(40, 120, 250, 45);
-      fill(90, 0, 0);
+      rect(40, 120, 250, 45, 12);
+      fill(#260238);
       text("Punctuality", 50, 150);
       }
   }
