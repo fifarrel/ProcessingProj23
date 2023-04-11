@@ -24,7 +24,9 @@ void setup() {
      delaysMap = new HashMap<String, Double>();
      co2Map = new HashMap<String, Double>(); 
      ratings =  new TreeMap<String, Double>();
-     weightedRatings = new TreeMap<String, Double>(); 
+     weightedRatings = new TreeMap<String, Double>();
+     weightedDelays = new TreeMap<String, Double>();
+     weightedCancellations = new TreeMap<String, Double>(); 
      
      //Creating objects for each data point 
 
@@ -48,6 +50,7 @@ void setup() {
      combineCo2();
      calculateRating(); 
      
+     //println(delaysMap.get("B6")); 
      //adjusting ratings to be relative 
      println("The following is a rating out of 5 for each airline");
      float[] ratingsArray = new float[10];
@@ -70,9 +73,53 @@ void setup() {
        weightedRatings.put(currAirline, newRating);
      }
      
-     for(String key: weightedRatings.keySet()){
-         println(key + ":" + weightedRatings.get(key)); 
+     //sorting delays 
+     float[] delayArray = new float[10]; 
+     int q = 0;
+       for(String key:delaysMap.keySet()){
+       float currRating = (float)(double)delaysMap.get(key);
+       currRating *= 100; 
+       delayArray[q] = currRating; 
+       q++; 
      }
+     delayArray = sort(delayArray); 
+
+     
+     for(int j = 0;j<delayArray.length-1;j++){
+       String currAirline = airlineNames[j]; 
+       double searchRating = (double)delaysMap.get(currAirline)*100; 
+       int index = 0;
+       for(int k = 0;k<delayArray.length-1;k++){
+           if(Math.round(delayArray[k]) == Math.round(searchRating)) index = k;
+       }
+       Double newRating = (((double)index * 0.5)+1) /5;
+       weightedDelays.put(currAirline, newRating);
+     }
+     
+  //sorting cancellations 
+     float[] cancellArray = new float[10]; 
+     int e = 0;
+     for(String key:cancellationsMap.keySet()){
+       float currRating = (float)(double)cancellationsMap.get(key);
+       currRating *= 100; 
+       cancellArray[e] = currRating; 
+       e++; 
+     }
+     cancellArray = sort(cancellArray);
+     
+    for(int j = 0;j<cancellArray.length-1;j++){
+       String currAirline = airlineNames[j]; 
+       double searchRating = (double)cancellationsMap.get(currAirline)*100; 
+       int index = 0;
+       for(int k = 0;k<cancellArray.length-1;k++){
+           if(Math.round(cancellArray[k]) == Math.round(searchRating)) index = k;
+       }
+       Double newRating = (((double)index * 0.5)+1) /5;
+       weightedCancellations.put(currAirline, newRating);
+     }
+     
+     
+     
      
     //background gif is made here, using a splitter on online, I am able to turn a gif to our background
     // YCZ
@@ -289,8 +336,6 @@ statesWidArray[49] = new widget (wyoming, 243, "Wyoming", "WY");
      cancellationsHM = new heatMapMetrics("CANCELLED", originArray); 
      Co2HM = new heatMapMetrics("DISTANCE", originArray);
      delaysHM.insertFrequencies();
-     
-     println(delaysHM.frequencies.get("AA")); 
      
      cancellationsHM.insertFrequencies();
      Co2HM.insertFrequencies(); 

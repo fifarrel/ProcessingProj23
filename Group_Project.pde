@@ -39,7 +39,7 @@ double Co2SD, delaysSD, cancellationsSD;
 String[] airlineNames = {"AA", "AS", "B6", "HA", "NK", "G4", "WN", "F9", "UA", "DL"};
 
 TreeMap<String, Double> ratings;
-TreeMap<String, Double> weightedRatings; 
+TreeMap<String, Double> weightedRatings, weightedDelays, weightedCancellations; 
 heatMapMetrics delaysHM, cancellationsHM, Co2HM;
 PImage plane;
 PImage [] background;
@@ -205,43 +205,43 @@ void draw() {
       switch(event) 
       {
         case BUTTON1:
-          carrierWid1.trustRating = 0.6;
+          carrierWid1.trustRating = (float)(double)weightedDelays.get("AA");
           carrierWid1.shadeColour = (#fc2803);
           break;
         case BUTTON2:
-          carrierWid2.trustRating = 0.2;
+          carrierWid2.trustRating = (float)(double)weightedRatings.get("AS");
           carrierWid2.shadeColour = (#fc2803);
           break;
         case BUTTON3:
-          carrierWid3.trustRating = 0.9;
+          carrierWid3.trustRating = (float)(double)weightedRatings.get("B6");
           carrierWid3.shadeColour = (#fc2803);
           break;
         case BUTTON4:
-          carrierWid4.trustRating = 0.15;
+          carrierWid4.trustRating = (float)(double)weightedRatings.get("HA");
           carrierWid4.shadeColour = (#fc2803);
           break;
         case BUTTON5:
-          carrierWid5.trustRating = 0.23;
+          carrierWid5.trustRating = (float)(double)weightedRatings.get("NK");
           carrierWid5.shadeColour = (#fc2803);
           break;
         case BUTTON6:
-          carrierWid6.trustRating = 0.76;
+          carrierWid6.trustRating = (float)(double)weightedRatings.get("G4");
           carrierWid6.shadeColour = (#fc2803);
           break;
         case BUTTON7:
-          carrierWid7.trustRating = 0.37;
+          carrierWid7.trustRating = (float)(double)weightedRatings.get("WN");
           carrierWid7.shadeColour = (#fc2803);
           break;
         case BUTTON8:
-          carrierWid8.trustRating = 0.6;
+          carrierWid8.trustRating = (float)(double)weightedRatings.get("F9");
           carrierWid8.shadeColour = (#fc2803);
           break;
         case BUTTON9:
-          carrierWid9.trustRating = 0.19;
+          carrierWid9.trustRating = (float)(double)weightedRatings.get("UA");
           carrierWid9.shadeColour = (#fc2803);
           break;
         case BUTTON11:
-          carrierWid11.trustRating = 0.5;
+          carrierWid11.trustRating = 0.7;
           carrierWid11.shadeColour = (#fc2803);
           break;
         }
@@ -249,39 +249,39 @@ void draw() {
     if (carrierWid1.trustRatingType == 3) {
       switch(event) {
       case BUTTON1:
-        carrierWid1.trustRating = 0.7;
+        carrierWid1.trustRating = (float)(double)weightedCancellations.get("AA");
         carrierWid1.shadeColour = (#e303fc);
         break;
       case BUTTON2:
-        carrierWid2.trustRating = 0.6;
+        carrierWid2.trustRating = (float)(double)weightedCancellations.get("AS");
         carrierWid2.shadeColour = (#e303fc);
         break;
       case BUTTON3:
-        carrierWid3.trustRating = 0.48;
+        carrierWid3.trustRating = (float)(double)weightedCancellations.get("B6");
         carrierWid3.shadeColour = (#e303fc);
         break;
       case BUTTON4:
-        carrierWid4.trustRating = 0.65;
+        carrierWid4.trustRating = (float)(double)weightedCancellations.get("HA");
         carrierWid4.shadeColour = (#e303fc);
         break;
       case BUTTON5:
-        carrierWid5.trustRating = 0.73;
+        carrierWid5.trustRating = (float)(double)weightedCancellations.get("NK");
         carrierWid5.shadeColour = (#e303fc);
         break;
       case BUTTON6:
-        carrierWid6.trustRating = 0.64;
+        carrierWid6.trustRating = (float)(double)weightedCancellations.get("G4");
         carrierWid6.shadeColour = (#e303fc);
         break;
       case BUTTON7:
-        carrierWid7.trustRating = 0.54;
+        carrierWid7.trustRating = (float)(double)weightedCancellations.get("WN");
         carrierWid7.shadeColour = (#e303fc);
         break;
       case BUTTON8:
-        carrierWid8.trustRating = 0.2;
+        carrierWid8.trustRating = (float)(double)weightedCancellations.get("F9");
         carrierWid8.shadeColour = (#e303fc);
         break;
       case BUTTON9:
-        carrierWid9.trustRating = 0.9;
+        carrierWid9.trustRating = (float)(double)weightedCancellations.get("UA");
         carrierWid9.shadeColour = (#e303fc);
         break;
       case BUTTON11:
