@@ -162,7 +162,8 @@ class widget {
   }
   
   void drawTriangle(){ // draw the triangle buttoms
-    fill(0, 255, 0);
+    fill(224, 210, 9);
+    stroke(0);
     triangle(x1, y1, x2, y2, x3, y3);
   }
 }
