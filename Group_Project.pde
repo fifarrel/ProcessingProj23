@@ -8,7 +8,7 @@ int flightNumber, originAirportWAC, destinationWAC, ScheduledDepTime, ActDepTime
 ActARRTime, distance, diverted, cancelled;
 
 int screen, i;
-screen mainScreen, mapScreen, mapScreen2, mapScreen3, creditScreen, sourceScreen;
+screen mainScreen, mapScreen, mapScreen2, mapScreen3, creditScreen, sourceScreen, histoScreen;
 PFont font, niceFont;
 
 widget titleWidget, triangleWidget1, triangleWidget2, carrierWid1, carrierWid2, carrierWid3, carrierWid4,
@@ -49,7 +49,8 @@ int a = 825;
 int g = 700;
 int h = 950;
 int pixelCount; 
-int S2SCo2; 
+int S2SCo2;
+Histogram histogram;
 
 boolean selector = false;
 void draw() {
@@ -129,12 +130,15 @@ void draw() {
         }
       }
     }
-    else if (screen == -1)
+    else if(screen == -1) {
+      histoScreen.draw("Histogram");
+    }
+    else if (screen == -2)
     {
       sourceScreen.draw();
       sourceScreen.message(1);
     }
-    else if (screen == -2)
+    else if (screen == -3)
     {
       creditScreen.draw();
       creditScreen.message();
@@ -403,12 +407,16 @@ void mousePressed()
       else if (screen == -1) {
         screen = -2;
       }
+      else if (screen == -2) {
+        screen = -3;
+      }
       break;
     case triRight:
         if(screen == 1) screen =2;
         else if(screen == 2) screen = 3;
         else if (screen == -1) screen = 0;
         else if (screen == -2) screen = -1;
+        else if (screen == -3) screen = -2;
         else screen = 1; 
         break;
       case TYPEEVENT1:

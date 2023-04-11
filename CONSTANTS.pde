@@ -1,5 +1,5 @@
 final int screenWidth = 1000;
-final int screenLength = 835;
+final int screenHeight = 835;
 final int BUTTON1 = 1;
 final int BUTTON2 = 2;
 final int BUTTON3 = 3;
@@ -29,6 +29,9 @@ final double WEIGHT_1 = 0.4;
 final double WEIGHT_2 = 0.35;
 final double WEIGHT_3 = 0.25;
 final double CO2_EMISSIONS = 2.786e-4;
+
+final int margin = 50;
+int hoverIndex = -1;
 
 Display [] someMessage, someMessage2, someMessage3, someMessage4, someMessage5, someMessage6,
 someMessage7, someMessage8, someMessage9, someMessage10, someMessage11, someMessage12, someMessage13, someMessage14,
