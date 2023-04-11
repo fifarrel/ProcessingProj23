@@ -343,7 +343,7 @@ statesWidArray[49] = new widget (wyoming, 243, "Wyoming", "WY");
 
   map = new Map(statesWidArray); 
   
-  titleWidget = new widget(325, 40, 400, 100, 1, "", color(#123266), color(#123266), (1), titleFont);
+  titleWidget = new widget(325, 40, 400, 100, 1, "", color(128, 10, 26), color(#123266), (1), titleFont);
   triangleWidget1 = new widget(950, 425, 950, 475, 975, 450, 1, color(#123266));
   triangleWidget2 = new widget(50, 425, 50, 475, 25, 450, 1, color(#123266));
   carrierWid1 = new widget(100, 200, 200, 125, 2, "American\nAirlines", color(#123266), color(#166bba), (0), titleFont);
