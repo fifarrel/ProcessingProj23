@@ -187,7 +187,7 @@ class screen {
       }
       rect(40, 10, 250, 45, 12);
       fill(#07092e);//
-      text("TrustWorthiness", 50, 45);
+      text("Trustworthiness", 50, 45);
       
       if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 68) && (mouseY <= 110)) { 
         fill(#fa4b2d); //  // CO2 button hover colour
@@ -197,7 +197,7 @@ class screen {
       }
       rect(40, 65, 250, 45, 12);
       fill(#38020e);
-      text("CO2", 50, 97);
+      text("Delays", 50, 97);
       
       if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 120) && (mouseY <= 164)) { 
         fill(#ec6efa); // punctuality button hover colour
@@ -207,7 +207,7 @@ class screen {
       }
       rect(40, 120, 250, 45, 12);
       fill(#260238);
-      text("Punctuality", 50, 150);
+      text("Cancellations", 50, 150);
       }
   }
 }

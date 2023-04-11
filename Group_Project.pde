@@ -48,6 +48,8 @@ ArrayList backG, empty;
 int a = 825;
 int g = 700;
 int h = 950;
+int pixelCount; 
+int S2SCo2; 
 
 boolean selector = false;
 void draw() {
@@ -67,14 +69,16 @@ void draw() {
       fill(60); stroke(0);
       text("Co2 emissions per state", 250, 65); 
       line(250, 80, 770, 80);
+      
       if(previousWidgetX != 0 && xPos != 0)
       {
         line(previousWidgetX, previousWidgetY, xPos, yPos);
+        //pixelCount++; 
       }
       if(displayStateToStateDist && newWidget != null)
       {
         fill(0);
-        int S2SCo2 = calculateDistance(previousWidget.origin, newWidget.origin);
+        //S2SCo2 = calculateDistance(previousWidget.origin, newWidget.origin);
         text("Distance from " + previousWidget.widgetName+" airport to ", 70, 700);
         text(newWidget.widgetName + " airport is " + S2SCo2 + " miles", 80, 750);
       }
@@ -155,39 +159,39 @@ void draw() {
         switch(event) 
         {
           case BUTTON1:
-            carrierWid1.trustRating = 0.3; //  <<<<<<<<<<<<<<<<< emmas get function
+            carrierWid1.trustRating = (float)(double)weightedRatings.get("AA"); //  <<<<<<<<<<<<<<<<< emmas get function
             carrierWid1.shadeColour = (#166bba);
             break;
           case BUTTON2:
-            carrierWid2.trustRating = 0.8;
+            carrierWid2.trustRating = (float)(double)weightedRatings.get("AS");
             carrierWid2.shadeColour = (#166bba);
             break;
           case BUTTON3:
-            carrierWid3.trustRating = 0.28;
+            carrierWid3.trustRating = (float)(double)weightedRatings.get("B6");
             carrierWid3.shadeColour = (#166bba);
             break;
           case BUTTON4:
-            carrierWid4.trustRating = 0.45;
+            carrierWid4.trustRating = (float)(double)weightedRatings.get("HA");
             carrierWid4.shadeColour = (#166bba);
             break;
           case BUTTON5:
-            carrierWid5.trustRating = 0.33;
+            carrierWid5.trustRating = (float)(double)weightedRatings.get("NK");
             carrierWid5.shadeColour = (#166bba);
             break;
           case BUTTON6:
-            carrierWid6.trustRating = 0.56;
+            carrierWid6.trustRating = (float)(double)weightedRatings.get("G4");
             carrierWid6.shadeColour = (#166bba);
             break;
           case BUTTON7:
-            carrierWid7.trustRating = 0.77;
+            carrierWid7.trustRating = (float)(double)weightedRatings.get("WN");
             carrierWid7.shadeColour = (#166bba);
             break;
           case BUTTON8:
-            carrierWid8.trustRating = 0.452;
+            carrierWid8.trustRating = (float)(double)weightedRatings.get("F9");
             carrierWid8.shadeColour = (#166bba);
             break;
           case BUTTON9:
-            carrierWid9.trustRating = 0.79;
+            carrierWid9.trustRating = (float)(double)weightedRatings.get("UA");
             carrierWid9.shadeColour = (#166bba);
             break;
           case BUTTON11:
@@ -431,6 +435,7 @@ void mousePressed()
     xPos = 0; 
     yPos = 0;
     displayStateToStateDist = false; 
+    pixelCount = 0;
     for(widget state: statesWidArray){
     if((int)blue(xCol) == state.widgetColor){
       if(previousWidget != null && previousColor != 0) previousWidget.widgetColor = previousColor;
@@ -440,6 +445,7 @@ void mousePressed()
         previousWidgetY = mouseY; 
         state.widgetColor = 0; 
         displayPopUp = false;
+         
       }
     }
     for(widget state: delaysArray){
@@ -473,8 +479,10 @@ void mouseReleased(){
   if((int)blue(xCol) != (int)blue(newCol) && (int)blue(newCol) != 0){
     displayStateToStateDist = true;  
     displayState = false; 
+    pixelCount = 0; 
   }
   else{
+    pixelCount = 0; 
     displayState = true;  
     displayStateToStateDist = false; 
   }
@@ -484,13 +492,14 @@ void mouseDragged()
 {
   xPos = mouseX; 
   yPos = mouseY; 
-  color currCol = get(mouseX, mouseY); 
+  color currCol = get(mouseX, mouseY);  
   for(widget state: statesWidArray)
   {
       if((int)blue(currCol) == state.widgetColor)
       {
           newWidget = state;
-          println("located"); 
+          pixelCount++;
+          S2SCo2 = calculateDistance(previousWidget.origin, newWidget.origin); 
        }
   }
 }
@@ -565,6 +574,6 @@ void mouseDragged()
           return currRow.getInt("DISTANCE") ; 
         } 
     }
-    return -1; 
+    return pixelCount*17; 
   }
   

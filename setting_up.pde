@@ -289,6 +289,9 @@ statesWidArray[49] = new widget (wyoming, 243, "Wyoming", "WY");
      cancellationsHM = new heatMapMetrics("CANCELLED", originArray); 
      Co2HM = new heatMapMetrics("DISTANCE", originArray);
      delaysHM.insertFrequencies();
+     
+     println(delaysHM.frequencies.get("AA")); 
+     
      cancellationsHM.insertFrequencies();
      Co2HM.insertFrequencies(); 
      
