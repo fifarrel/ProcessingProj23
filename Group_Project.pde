@@ -200,7 +200,7 @@ void draw() {
             break;
         }
     }
-    if (carrierWid1.trustRatingType == 2) 
+    else if (carrierWid1.trustRatingType == 2) 
     {
       switch(event) 
       {
@@ -246,7 +246,7 @@ void draw() {
           break;
         }
       }
-    if (carrierWid1.trustRatingType == 3) {
+    else if (carrierWid1.trustRatingType == 3) {
       switch(event) {
       case BUTTON1:
         carrierWid1.trustRating = (float)(double)weightedCancellations.get("AA");
@@ -290,37 +290,51 @@ void draw() {
         break;
       }
     }
-    switch(event) {
-    case BUTTON1:
-      carrierWid1.trustRating = 0.3;
-      break;
-    case BUTTON2:
-      carrierWid2.trustRating = 0.8;
-      break;
-    case BUTTON3:
-      carrierWid3.trustRating = 0.28;
-      break;
-    case BUTTON4:
-      carrierWid4.trustRating = 0.45;
-      break;
-    case BUTTON5:
-      carrierWid5.trustRating = 0.33;
-      break;
-    case BUTTON6:
-      carrierWid6.trustRating = 0.56;
-      break;
-    case BUTTON7:
-      carrierWid7.trustRating = 0.77;
-      break;
-    case BUTTON8:
-      carrierWid8.trustRating = 0.452;
-      break;
-    case BUTTON9:
-      carrierWid9.trustRating = 0.79;
-      break;
-    case BUTTON11:
-      carrierWid11.trustRating = 0.90;
-      break;
+    else {
+     switch(event) 
+        {
+          case BUTTON1:
+            println((float)(double)weightedRatings.get("AA"));
+            carrierWid1.trustRating = (float)(double)weightedRatings.get("AA"); //  <<<<<<<<<<<<<<<<< emmas get function
+            carrierWid1.shadeColour = (#166bba);
+            break;
+          case BUTTON2:
+            carrierWid2.trustRating = (float)(double)weightedRatings.get("AS");
+            carrierWid2.shadeColour = (#166bba);
+            break;
+          case BUTTON3:
+            carrierWid3.trustRating = (float)(double)weightedRatings.get("B6");
+            carrierWid3.shadeColour = (#166bba);
+            break;
+          case BUTTON4:
+            carrierWid4.trustRating = (float)(double)weightedRatings.get("HA");
+            carrierWid4.shadeColour = (#166bba);
+            break;
+          case BUTTON5:
+            carrierWid5.trustRating = (float)(double)weightedRatings.get("NK");
+            carrierWid5.shadeColour = (#166bba);
+            break;
+          case BUTTON6:
+            carrierWid6.trustRating = (float)(double)weightedRatings.get("G4");
+            carrierWid6.shadeColour = (#166bba);
+            break;
+          case BUTTON7:
+            carrierWid7.trustRating = (float)(double)weightedRatings.get("WN");
+            carrierWid7.shadeColour = (#166bba);
+            break;
+          case BUTTON8:
+            carrierWid8.trustRating = (float)(double)weightedRatings.get("F9");
+            carrierWid8.shadeColour = (#166bba);
+            break;
+          case BUTTON9:
+            carrierWid9.trustRating = (float)(double)weightedRatings.get("UA");
+            carrierWid9.shadeColour = (#166bba);
+            break;
+          case BUTTON11:
+            carrierWid11.trustRating = 0.90;
+            carrierWid11.shadeColour = (#166bba);
+            break;
+        }
     }
   }
 }
