@@ -2,7 +2,7 @@
 // this tab just contain the initialisation of variables 
 
 void settings() {
-   size (screenWidth, screenLength);
+   size (screenWidth, screenHeight);
 }
 void setup() {
   
@@ -133,7 +133,11 @@ void setup() {
       backG.add(background[p]);
       p++;
     }
-
+    double [] distanceData1 = getData("DISTANCE");
+    histogram = new Histogram(distanceData1);
+    
+    histogram.calculateHistogram();
+   
     //println("Mean distance: " + Math.round(distanceMean) + " miles. ");
     ////state with highest number of cancellations
     //double highestFreq = 0;
@@ -279,7 +283,7 @@ statesWidArray[1] = new widget (ohio, 195, "Ohio", "OH");
 statesWidArray[2] = new widget (alabama, 210, "Alabama", "AL");
 statesWidArray[3] = new widget (alaska, 93, "Alaska", "AK");
 statesWidArray[4] = new widget (arizona, 94, "Arizona", "AZ");
-statesWidArray[5] = new widget (arkansas, 245, "Arkansas", "AR");
+statesWidArray[5] = new widget (arkansas, 246, "Arkansas", "AR");
 statesWidArray[6] = new widget (california, 20, "California", "CA");
 statesWidArray[7] = new widget (colorado, 134, "Colorado", "CO");
 statesWidArray[8] = new widget (connecticut, 169, "Connecticut", "CT");
@@ -519,5 +523,6 @@ empty.add(triangleWidget2);
   mapScreen3 = new screen(255, cancellationsStates, backG); 
   sourceScreen = new screen (255, empty, backG);
   creditScreen = new screen(255, empty, backG);
+  histoScreen = new screen(histogram, empty, backG);
   
 }

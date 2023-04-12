@@ -14,7 +14,6 @@ class Message {
     someMessage4[i].draw(770, 175);
     text("The orgin city for the " + tmp + "th row in the table is: ", 5, 225);
     someMessage5[i].draw(770, 225);
-    
     text("The World Area Code of orgin airport for the " + tmp + "th row in the table is: ", 5, 275);
     someMessage7[i].draw(770, 275);
     text("The destination airport's initials  " + tmp + "th row in the table is: ", 5, 325);
