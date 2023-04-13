@@ -56,11 +56,13 @@ boolean selector = false;
 void draw() {
   background(255);
   fill(0);
+  clickMeToStart();
   if (screen == 0)
   {
     a = 825;
     g = 700;
     h = 900;
+
     mainScreen.draw();
     mainScreen.selection();
   }
@@ -343,6 +345,7 @@ void draw() {
   }
 }
 
+
 int previousColor = 0;
 int previousColor1 = 0;
 int previousColor2 = 0;
@@ -597,5 +600,40 @@ void mouseDragged()
         } 
     }
     return pixelCount*17; 
+  }
+  int p = 0;
+  int q = 0;
+  int z = 0;
+  public void clickMeToStart() 
+  {
+    background(250,218,94);
+    image((PImage)backG.get(p), (float)screenWidth/2 - 260, 0);
+    image((PImage)backG.get(p), (float)screenWidth/2 - 260, screenHeight/2 + 100);
+    image((PImage)backG.get(p), (float)screenWidth/2 - 260, screenHeight/2 + 350);
+    
+    image((PImage)backG.get(p), -120, 0);
+    image((PImage)backG.get(p), -120, screenHeight/2 + 100);
+    image((PImage)backG.get(p), -120, screenHeight/2 + 350);
+    
+    image((PImage)backG.get(p), 700, 0);
+    image((PImage)backG.get(p), 700, screenHeight/2 + 100);
+    image((PImage)backG.get(p), 700, screenHeight/2 + 350);
+    text("Click to Start", q, (screenHeight/2) );
+    text("Click to Start", q - 1000, (screenHeight/2) );
+    text("Click to Start", q - 2000, (screenHeight/2) );
+    image((PImage)backG.get(p), (float)screenWidth/2 - 250, screenHeight/2 -150);
+    //text("Click to Start", q, (screenHeight/2) );
+    if ((mousePressed) && (z == 0)){
+       screen = 0;
+       z++;
+    }
+    q = q + 6;
+    if (q > screenWidth + 1000) {
+      q = 0;
+    }
+    p++;
+    if (p > 60){
+      p = 0;
+    }
   }
   

@@ -6,7 +6,7 @@ void settings() {
 }
 void setup() {
   
-  screen = 0;
+  screen = 5;
   background (255);
   table = loadTable("flights2k(1).csv", "header");
   println(table.getRowCount() + " total rows in table");

@@ -55,7 +55,7 @@ class screen {
   void message(){
     textSize(100);
     fill(0);
-    text("Trust-Pilot 2023 Beta", 40, a);
+    text("Trust-Pilot 2023 Beta", 40, a+10);
     textSize(50);
     fill(0);
     text("CSU11013 - Group 46", 40, g);
@@ -90,7 +90,6 @@ class screen {
   }
   void draw(String s){
     s = " Histogram";
-    
     image(backG.get(tmp), 0, 0, 1000, 850);
     a = a - 1;
     int i = 0;
