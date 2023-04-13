@@ -38,7 +38,7 @@ public void drawHistogram() {
   float data1 = (float)data[i];
   
   stroke(0); 
-  strokeWeight(2);
+  
   for (int i = 0; i < 93; i++) {
     
     float Height = map(data1, 0, mV, 0, barHeight);

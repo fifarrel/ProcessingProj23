@@ -55,7 +55,7 @@ class screen {
   void message(){
     textSize(100);
     fill(0);
-    text("Trust-Pilot 2023 Beta", 40, a+10);
+    text("Trust-Pilot 2023 Beta", 40, a);
     textSize(50);
     fill(0);
     text("CSU11013 - Group 46", 40, g);
