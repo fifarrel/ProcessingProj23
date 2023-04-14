@@ -1,4 +1,5 @@
 
+// YuChen Zhuang
 class screen {
   color bG;
   ArrayList<widget> w;
@@ -55,7 +56,7 @@ class screen {
   void message(){
     textSize(100);
     fill(0);
-    text("Trust-Pilot 2023 Beta", 40, a);
+    text("Trust-Pilot 2023 Beta", 40, f);
     textSize(50);
     fill(0);
     text("CSU11013 - Group 46", 40, g);
@@ -84,14 +85,14 @@ class screen {
     text("For the opportunity to work", 40, h + 525);
     text("on this project.", 40, h + 590);
     text("Much Gratitude", 40, h + 720);
-    a--;
-    g--;
-    h--;
+    f = f - 3;
+    g = g - 3;
+    h = h - 3;
   }
   void draw(String s){
     s = " Histogram";
     image(backG.get(tmp), 0, 0, 1000, 850);
-    a = a - 1;
+
     int i = 0;
     for (i = 0; i < w.size() - 2; i++){
       w.get(i).draw(w.get(i).widgetShape);  
@@ -101,7 +102,7 @@ class screen {
      i++;
      w.get(i).drawTriangle();
      tmp++;
-     if (tmp == 61) tmp =0;
+     if (tmp == 61) tmp = 0;
  
   }
   // different signature as the one before
@@ -185,6 +186,47 @@ class screen {
     textFont(TpFont);
     textSize(55);
     text("TRUST-PILOT*", 362, 110);
+    textSize(30);
+    float angle1;
+    if (carrierWid1.trustRatingType == 1) {
+      pushMatrix();
+      angle1 = radians(40);
+      translate(100, 180);
+      rotate(angle1);
+      fill(#166bba);
+      text("NOW DISPLAYING \nTRUSTWORTHINESS*!!!", 420, -550);
+      fill(#ffffff);
+      text("NOW DISPLAYING \nTRUSTWORTHINESS*!!!", 418, -548);
+      popMatrix();
+      textSize(15);
+      fill(#166bba);
+      text("*Trustworthiness is calculated using an algorithm that takes in an airlines gross Co2 emmisions, total cancellations and divertions!", 65, 825);
+      textSize(30);
+    }
+    if (carrierWid1.trustRatingType == 2) {
+      pushMatrix();
+      angle1 = radians(40);
+      translate(100, 180);
+      rotate(angle1);
+      fill(#fc2803);
+      text("NOW DISPLAYING \nDELAYS!!!", 420, -550);
+      fill(#ffffff);
+      text("NOW DISPLAYING \nDELAYS!!!", 418, -548);
+      
+      popMatrix();
+    }
+    if (carrierWid1.trustRatingType == 3) {
+      pushMatrix();
+      angle1 = radians(40);
+      translate(100, 180);
+      rotate(angle1);
+      fill(#e303fc);
+      text("NOW DISPLAYING \nCANCELLATIONS!!!", 420, -550);
+      fill(#ffffff);
+      text("NOW DISPLAYING \nCANCELLATIONS!!!", 418, -548);
+
+      popMatrix();
+    }
     
     textFont(titleFont);
       textSize(30);
@@ -201,6 +243,7 @@ class screen {
       fill(#000000); // 0, 0, 90
       text("Press to select", 50, 45);
       
+      // Finn Farrell
       if (selector){
       if ((mouseX >= 40) && (mouseX <= 295) && (mouseY >= 10) && (mouseY <= 60)) { 
         fill(#1c89ed); //  Trustwothyness button hover colour

@@ -1,4 +1,5 @@
-  
+// Finn Farrell and YuChen Zhuang
+//
   int x, y;
   int x1, x2, x3, y1, y2, y3, trustRatingType;
   int width, height;
@@ -81,6 +82,7 @@ class widget {
     this.widgetFont = widgetFont;
   }
 
+   // Finn Farrell 
    int getEvent(int mouseX, int mouseY) {
     if ((mouseX >= 100) && (mouseX <= 300) && (mouseY >= 200) && (mouseY <= 325)) {
       return 1;

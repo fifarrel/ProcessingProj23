@@ -23,5 +23,5 @@ class Map {
       state.draw(state.widgetShape); 
     }
   }
-// by YCZ
+// by YuChen Zhuang
 }

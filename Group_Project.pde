@@ -1,3 +1,5 @@
+
+
 import java.util.*; 
 Table table;
 
@@ -45,7 +47,7 @@ PImage plane;
 PImage [] background;
 int numberOfFrames;
 ArrayList backG, empty;
-int a = 825;
+int f = 825;
 int g = 700;
 int h = 950;
 int pixelCount; 
@@ -56,18 +58,20 @@ boolean selector = false;
 void draw() {
   background(255);
   fill(0);
+  // YuChen Zhuang
   clickMeToStart();
+  
   if (screen == 0)
   {
-    a = 825;
+    f = 825;
     g = 700;
     h = 900;
-
     mainScreen.draw();
     mainScreen.selection();
   }
     else if (screen == 1)
     {
+      // Emma Murphy
       mapScreen.draw(1);
       fill(60); stroke(0);
       text("Co2 emissions per state", 250, 65); 
@@ -98,6 +102,7 @@ void draw() {
     }
     else if(screen == 2)
     {
+      // Emma Murphy
       mapScreen2.draw(1); 
       fill(173, 71, 3); stroke(0);
       text("Delays per state", 300, 65); 
@@ -116,6 +121,7 @@ void draw() {
     }  
     else if(screen == 3)
     {
+      // Emma Murphy
       mapScreen3.draw(1); 
       fill(148, 10, 10); stroke(0);
       text("Cancellations per state", 250, 65); 
@@ -132,9 +138,12 @@ void draw() {
         }
       }
     }
+    // Bhudhav Singh 
+    // drawing the Histogram when the screen is on -1 
     else if(screen == -1) {
       histoScreen.draw("Histogram");
     }
+    // YuChen Zhuang
     else if (screen == -2)
     {
       sourceScreen.draw();
@@ -145,6 +154,8 @@ void draw() {
       creditScreen.draw();
       creditScreen.message();
     }
+    // Emma Murphy 
+    // Displaying the pop up box/ window when hovering over the co2 map
     if(displayPopUp == true && screen == 1) 
     {
       fill(88, 172, 191);
@@ -154,7 +165,7 @@ void draw() {
       text("get the distance!", mouseX + 10, mouseY + 33); 
       textSize(48);
     }
-  
+  // Finn Farrell
   int event;
   for (int i = 0; i < carrierWidgets.size(); i++) 
   {
@@ -359,6 +370,7 @@ void mousePressed()
       widget currentWidget = (widget) carrierWidgets.get(i);
       event = currentWidget.getEvent(mouseX, mouseY);
     }  
+    // Finn Farrell
     switch(event) {
     case BUTTON1:
       println("Button 1");
@@ -408,6 +420,7 @@ void mousePressed()
       carrierWid9.trustRating = 0;
       carrierWid11.trustRating = 0;
       break;
+      // Emma Murphy
     case triLeft:
       if(screen == 3){ 
         screen =2;
@@ -436,6 +449,7 @@ void mousePressed()
         else if (screen == -3) screen = -2;
         else screen = 1; 
         break;
+        // Finn Farrell
       case TYPEEVENT1:
         carrierWid1.trustRatingType = RATINGTYPE1;
         trustRatingWid1.widgetColour = #ffffff;
@@ -455,7 +469,7 @@ void mousePressed()
         trustRatingWid3.widgetColour = #ffffff;
         break;
     }
-  
+    // Emma Murphy
     xCol = get(mouseX, mouseY);
     xPos = 0; 
     yPos = 0;
@@ -494,11 +508,14 @@ void mousePressed()
       }
     }
 }
+// Emma Murphy 
+// detect when and when not to display the pop up screen
 void mouseMoved(){
   color xCol = get(mouseX, mouseY); 
   if((int)blue(xCol) != 255) displayPopUp = true; 
   else displayPopUp = false;
 }
+// This method is used to get the distance between states airport
 void mouseReleased(){
   color newCol = get(mouseX, mouseY); 
   if((int)blue(xCol) != (int)blue(newCol) && (int)blue(newCol) != 0){
@@ -513,6 +530,8 @@ void mouseReleased(){
   }
 }
 
+// Emma Murphy 
+// In the Co2 Map, this function allow you to check the distance between the states 
 void mouseDragged()
 {
   xPos = mouseX; 
@@ -530,7 +549,7 @@ void mouseDragged()
 }
 
 
-
+  // Emma Murphy
   public void combineCancellations(){
       for(int i = 0;i<airlineNames.length;i++){
          double[] currData = getData("CANCELLED", airlineNames[i], "MKT_CARRIER");
@@ -557,7 +576,7 @@ void mouseDragged()
          co2Map.put(airlineNames[i], currZScore); 
       }
   }
-  
+  // Emma Murphy
   //get data for data point 
   public double[] getData(String column){
     double[] data = new double[table.getRowCount()];
@@ -566,7 +585,7 @@ void mouseDragged()
     }
     return data;
   }
-  
+  // Emma Murphy
   //get data for airline 
   public double[] getData(String columnName, String airlineName, String airlinecol){
     double[] data = new double[table.getRowCount()];
@@ -601,9 +620,14 @@ void mouseDragged()
     }
     return pixelCount*17; 
   }
+  
+  // YuChen Zhuang
   int p = 0;
   int q = 0;
   int z = 0;
+ 
+  // by YuChen Zhuang
+  // using the stuff we did in the first few week and implement them into a click to Start screen
   public void clickMeToStart() 
   {
     background(250,218,94);
@@ -627,7 +651,7 @@ void mouseDragged()
        screen = 0;
        z++;
     }
-    q = q + 6;
+    q = q + 2;
     if (q > screenWidth + 1000) {
       q = 0;
     }

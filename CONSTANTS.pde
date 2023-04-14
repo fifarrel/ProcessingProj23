@@ -1,3 +1,5 @@
+
+// 
 final int screenWidth = 1000;
 final int screenHeight = 835;
 final int BUTTON1 = 1;
@@ -12,7 +14,7 @@ final int BUTTON9 = 9;
 final int BUTTON10 = 10;
 final int BUTTON11 = 11;
 final int BUTTON12 = 12;
-
+// All
 final int triLeft = 20;
 final int triRight = 21;
 final int home = 22;

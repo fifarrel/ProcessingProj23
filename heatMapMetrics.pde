@@ -1,3 +1,5 @@
+
+// Emma Murphy
 class heatMapMetrics{
     public TreeMap<String, Double> frequencies; 
     String columnName; 

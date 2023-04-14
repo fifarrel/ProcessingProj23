@@ -1,3 +1,5 @@
+
+// Emma Murphy
 class DistributionMetrics{
   double[] data;
   

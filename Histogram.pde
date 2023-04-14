@@ -1,5 +1,6 @@
+
+// Bhudhav Singh 
 class Histogram{
- 
     
    int[] histogram;
    
@@ -39,7 +40,7 @@ public void drawHistogram() {
   
   stroke(0); 
   
-  for (int i = 0; i < 93; i++) {
+  for (int i = 0; i < 95; i++) {
     
     float Height = map(data1, 0, mV, 0, barHeight);
     
@@ -66,24 +67,25 @@ public void drawHistogram() {
   fill(178, 0, 37);
   
   pushMatrix();
-  translate(margin/2, screenHeight/2);
+  translate(margin/2, 600);
   rotate(-HALF_PI);
   //textAlign(CENTER);
   textSize(16);
-  text("Frequency", 0, 0);
+  text("Frequency of Top 100 most common flights", 0, 0);
   popMatrix();
   
   
   textSize(20);
   //textAlign(CENTER);
   fill(37, 0 ,0);
+
   text("Histogram", screenWidth/2, margin/2);
   
   
   if (hoverIndex >= 0) {
     fill(0);
     textSize(16);
-    text(" Distance: " + histogram[hoverIndex], 700, 150);
+    text(" Distance: " + histogram[hoverIndex] + " miles" , 700, 150);
   }
   }
  }
